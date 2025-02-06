@@ -1,15 +1,8 @@
-/* General Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 /* Header Container */
 .header {
   background: linear-gradient(135deg, #141e30, #243b55);
   color: white;
-  padding: 1rem 2rem;
+  padding: 0.3rem 2rem; /* Reduced padding for a shorter header */
   position: sticky;
   top: 0;
   width: 100%;
@@ -20,37 +13,44 @@
 /* Navigation Bar */
 .header-nav {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between;  /* Space between logo and menu items */
   align-items: center;
   max-width: 1200px;
   margin: 0 auto;
   position: relative;
+  width: 100%;
 }
 
-/* Logo */
+/* Logo - Align to Left */
 .header-logo {
-  font-size: 1.8rem;
+  font-size: 1.6rem;  /* Reduced font size */
   font-family: 'Poppins', sans-serif;
   font-weight: bold;
+  margin-right: 2rem; /* Space between logo and other elements */
+  background: inherit; /* Inherit background from the header */
+  padding: 0.3rem; /* Reduced padding around the logo */
+  border-radius: 8px; /* Optional: Adds rounded corners to the logo background */
+  flex-shrink: 0; /* Prevents logo from shrinking */
+  display: flex;
+  justify-content: flex-start; /* Ensures the logo stays on the left */
 }
 
-.logo-link {
-  color: white;
-  text-decoration: none;
-  transition: color 0.3s ease-in-out;
+/* Logo Image */
+.header-logo img.logo {
+  height: 150px;    /* Reduced height for a smaller logo */
+  width: 450px;     /* Adjust width as necessary */
+  max-width: 450px;  /* Ensures the image doesn’t exceed its container */
+  background: inherit; /* Makes the logo background inherit from the header */
 }
 
-.logo-link:hover {
-  color: #00ff99;
-}
-
-/* Navigation Links */
+/* Navigation Links - Align to Right */
 .header-links {
   list-style: none;
   display: flex;
   gap: 1.5rem;
   margin: 0;
   padding: 0;
+  margin-left: auto; /* This will push the navigation links to the right */
 }
 
 .header-links li {
@@ -116,19 +116,6 @@
   from {
     opacity: 0;
     transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Keyframe Optimizations */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-    will-change: transform, opacity;
   }
   to {
     opacity: 1;

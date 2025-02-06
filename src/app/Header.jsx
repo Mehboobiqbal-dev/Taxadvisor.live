@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import ChatComponent from "./components/ChatComponent"; // Ensure correct import
+import ChatComponent from "./components/ChatComponent";
 import "./Header.css";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showChat, setShowChat] = useState(false);
 
-  // Close menu when clicking a link
+  // Close menu when clicking outside or on a link
   useEffect(() => {
     if (menuOpen) {
       const closeMenu = () => setMenuOpen(false);
@@ -22,7 +22,11 @@ const Header = () => {
         {/* Logo */}
         <h1 className="header-logo">
           <Link href="/" onClick={() => setMenuOpen(false)}>
-            Tax Advisor
+            <img
+              src="https://i.postimg.cc/xT3d2TBK/photo-removebg-preview-1.png"
+              alt="Tax Advisor Logo"
+              className="logo"
+            />
           </Link>
         </h1>
 
@@ -32,7 +36,7 @@ const Header = () => {
           aria-expanded={menuOpen}
           aria-controls="main-menu"
           onClick={(e) => {
-            e.stopPropagation(); // Prevent immediate closing
+            e.stopPropagation(); // Prevent immediate closing when clicking the button
             setMenuOpen(!menuOpen);
           }}
         >
@@ -47,11 +51,10 @@ const Header = () => {
             </Link>
           </li>
           <li>
-            <Link href="/newslist">  {/* ✅ Fixed the path */}
+            <Link href="/newslist">
               News
             </Link>
           </li>
-          
           <li>
             <button className="chat-toggle-btn" onClick={() => setShowChat(!showChat)}>
               {showChat ? "Close TaxGPT" : "Open TaxGPT"}
@@ -67,3 +70,4 @@ const Header = () => {
 };
 
 export default Header;
+
