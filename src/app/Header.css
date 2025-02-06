@@ -1,0 +1,137 @@
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Header Container */
+.header {
+  background: linear-gradient(135deg, #141e30, #243b55);
+  color: white;
+  padding: 1rem 2rem;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Navigation Bar */
+.header-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* Logo */
+.header-logo {
+  font-size: 1.8rem;
+  font-family: 'Poppins', sans-serif;
+  font-weight: bold;
+}
+
+.logo-link {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s ease-in-out;
+}
+
+.logo-link:hover {
+  color: #00ff99;
+}
+
+/* Navigation Links */
+.header-links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+}
+
+.header-links li {
+  font-size: 1rem;
+}
+
+.header-links a {
+  color: white;
+  text-decoration: none;
+  font-family: 'Poppins', sans-serif;
+  transition: color 0.3s ease-in-out, transform 0.3s;
+}
+
+.header-links a:hover {
+  color: #00d4ff;
+  transform: scale(1.1);
+}
+
+/* Mobile Menu Button */
+.menu-icon {
+  display: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: white;
+}
+
+/* Mobile Responsive Menu */
+@media (max-width: 768px) {
+  .header-nav {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .menu-icon {
+    display: block;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    cursor: pointer;
+  }
+
+  .header-links {
+    display: none;
+    flex-direction: column;
+    background: rgba(0, 0, 0, 0.95);
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    padding: 1rem;
+    text-align: center;
+    border-radius: 0 0 12px 12px;
+  }
+
+  .header-links.show {
+    display: flex;
+    animation: slideDown 0.4s ease-in-out;
+  }
+}
+
+/* Smooth Menu Animation */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Keyframe Optimizations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+    will-change: transform, opacity;
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

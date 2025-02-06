@@ -1,0 +1,62 @@
+.news-article-grid {
+    display: grid;
+    grid-template-areas:
+      "header header"
+      "image content"
+      "related content";
+    grid-template-columns: 1fr 2fr;
+    gap: 2em;
+    width: 80%;
+    margin: auto;
+    font-family: 'Georgia', serif;
+    color: #333;
+  }
+  
+  .article-header {
+    grid-area: header;
+  }
+  
+  .article-image {
+    grid-area: image;
+  }
+  
+  .article-content {
+    grid-area: content;
+    line-height: 1.6;
+  }
+  
+  .related-articles {
+    grid-area: related;
+    background-color: #f9f9f9;
+    padding: 1em;
+  }
+  
+  .headline {
+    font-size: 2.5em;
+    margin-bottom: 0.2em;
+  }
+  
+  .byline {
+    font-size: 1em;
+    color: #777;
+    margin-bottom: 1em;
+  }
+  
+  .article-content p {
+    margin-bottom: 1em;
+  }
+  .tax-news-container {
+    padding: 20px;
+  }
+  
+  .news-articles {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  

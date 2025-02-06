@@ -1,0 +1,119 @@
+/* Home Page Styles */
+.home {
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  color: #ffffff;
+  background: linear-gradient(135deg, #141e30, #243b55);
+  min-height: 100vh;
+  padding: 2rem;
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* Header Styling */
+.home-header {
+  padding: 3rem 1rem;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 12px;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+  transform: translateY(-10px);
+  animation: slideDown 1s ease-in-out;
+}
+
+.home-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+.home-header p {
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+/* Intro Section */
+.home-intro {
+  margin: 2rem auto;
+  max-width: 800px;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  box-shadow: 0px 8px 20px rgba(255, 255, 255, 0.1);
+  transform: scale(0.98);
+  animation: fadeInUp 1.2s ease-in-out;
+}
+
+.home-intro h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.home-intro ul {
+  list-style: none;
+  padding: 0;
+}
+
+.home-intro li {
+  font-size: 1.1rem;
+  padding: 0.5rem 0;
+  transition: transform 0.3s ease-in-out;
+}
+
+.home-intro li:hover {
+  transform: translateX(8px);
+  color: #00d4ff;
+}
+
+/* Call-To-Action Section */
+.home-call-to-action {
+  margin: 3rem auto;
+  max-width: 600px;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  box-shadow: 0px 10px 30px rgba(255, 255, 255, 0.15);
+  animation: bounceIn 1s ease-in-out;
+}
+
+.home-call-to-action h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.cta-btn {
+  display: inline-block;
+  background: linear-gradient(90deg, #ff512f, #dd2476);
+  color: white;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.5s, transform 0.3s ease-in-out;
+}
+
+.cta-btn:hover {
+  background: linear-gradient(90deg, #dd2476, #ff512f);
+  transform: scale(1.1);
+  box-shadow: 0px 10px 30px rgba(255, 81, 47, 0.6);
+}
+
+/* Keyframe Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes bounceIn {
+  0% { transform: scale(0.8); opacity: 0; }
+  60% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); }
+}
