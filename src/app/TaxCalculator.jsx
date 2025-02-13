@@ -1,3 +1,4 @@
+'use client';
 import React, { useState } from 'react';
 import {
   Button,
@@ -10,7 +11,8 @@ import {
   Stack,
   Box
 } from '@mui/material';
-import styles from './TaxCalculator.module.css';
+import styles from '@/app/TaxCalculator.module.css';
+
 
 // 2024 Federal tax brackets (single filer) for ordinary income
 const federalTaxBrackets = [

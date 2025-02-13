@@ -14,7 +14,7 @@
     "@google/generative-ai": "^0.21.0",
     "@heroicons/react": "^2.0.18",
     "@mdx-js/react": "3.1.0",
-    "@mui/material": "^5.15.13",
+    "@mui/material": "^5.16.14",
     "axios": "^1.5.1",
     "bootstrap": "^5.3.2",
     "cheerio": "^1.0.0-rc.12",
