@@ -1,10 +1,11 @@
 import path from 'path';
 import fs from 'fs/promises';
 import matter from 'gray-matter';
-import BlogSearch from './BlogSearch'; // We'll create this next
+import BlogSearch from './BlogSearch';
 import Header from '../Header';
 import Footer from '../Footer';
 
+// Function to fetch blog posts
 async function getBlogPosts() {
   const contentDir = path.join(process.cwd(), 'content'); // Absolute path
   const files = await fs.readdir(contentDir); // Read files asynchronously
@@ -14,13 +15,17 @@ async function getBlogPosts() {
       const filePath = path.join(contentDir, filename);
       const fileContent = await fs.readFile(filePath, 'utf-8'); // Read file content
       const { data } = matter(fileContent); // Extract frontmatter
+
       return { frontMatter: data, slug: filename.replace(/\.mdx?$/, '') };
     })
   );
+
   return posts;
 }
 
+// This is how you fetch data inside the App Directory component
 export default async function BlogListPage() {
+  // Fetch blog posts here
   const blogs = await getBlogPosts();
 
   return (
