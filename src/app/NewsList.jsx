@@ -43,7 +43,51 @@ function NewsList() {
       <Head>
         {/* SEO and Meta Tags */}
         <title>Latest Tax News & Updates - SmartTaxBot</title>
-        {/* ... other meta tags ... */}
+        <meta
+          name="description"
+          content="Stay updated with the latest tax news, tax-saving tips, and tax regulations. SmartTaxBot brings you the most relevant tax-related articles."
+        />
+        <meta name="robots" content="index, follow" /> {/* Index and follow this page */}
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="canonical" href="https://www.smarttaxbot.com/news" /> {/* Canonical URL */}
+
+        {/* Open Graph Meta Tags for Social Sharing */}
+        <meta property="og:title" content="Latest Tax News & Updates - SmartTaxBot" />
+        <meta property="og:description" content="Stay updated with the latest tax news, tax-saving tips, and tax regulations. SmartTaxBot brings you the most relevant tax-related articles." />
+        <meta property="og:image" content="/path/to/thumbnail.jpg" /> {/* Replace with a relevant image */}
+        <meta property="og:url" content="https://www.smarttaxbot.com/news" />
+        <meta property="og:type" content="website" />
+
+        {/* Twitter Card Meta Tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Latest Tax News & Updates - SmartTaxBot" />
+        <meta name="twitter:description" content="Stay updated with the latest tax news, tax-saving tips, and tax regulations." />
+        <meta name="twitter:image" content="/path/to/thumbnail.jpg" /> {/* Replace with a relevant image */}
+
+        {/* Schema.org Structured Data (NewsArticle) */}
+        <script type="application/ld+json">
+          {{
+            "@context": "https://schema.org",
+            "@type": "NewsArticle",
+            "headline": "Latest Tax News & Updates - SmartTaxBot",
+            "description": "Stay updated with the latest tax news, tax-saving tips, and tax regulations.",
+            "image": "/path/to/thumbnail.jpg", // Replace with your thumbnail image
+            "author": {
+              "@type": "Organization",
+              "name": "SmartTaxBot"
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "SmartTaxBot",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "/path/to/logo.jpg" // Replace with your logo
+              }
+            },
+            "datePublished": new Date().toISOString(),
+            "dateModified": new Date().toISOString()
+          }}
+        </script>
       </Head>
 
       <Header />
@@ -77,16 +121,16 @@ function NewsList() {
                         className="text-decoration-none text-dark"
                       >
                         {article.image && (
-                          <img
-                            src={article.image}
-                            alt={article.title}
-                            className="card-img-top"
-                            style={{
-                              objectFit: "cover",
-                              maxHeight: "200px",
-                            }}
-                          />
-                        )}
+  <img
+    src={article.image}
+    alt={article.title} // Added alt text for SEO
+    className="card-img-top"
+    style={{
+      objectFit: "cover",
+      maxHeight: "200px",
+    }}
+  />
+)}
                         <div className="card-body">
                           <h2 className="card-title">{article.title}</h2>
                           <p className="card-text">{article.description}</p>
@@ -112,7 +156,7 @@ function NewsList() {
           </>
         )}
       </div>
-      
+
       <Footer />
     </>
   );

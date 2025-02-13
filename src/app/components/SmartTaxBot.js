@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
+import Head from "next/head";
 import "./SmartTaxBot.css";
 
 export default function SmartTaxBot() {
@@ -100,22 +101,82 @@ export default function SmartTaxBot() {
   }, [messages]);
 
   return (
-    <div className="smarttaxbot-container">
-      <h1 className="smarttaxbot-title">SmartTaxBot</h1>
-      <div ref={messagesContainerRef} className="smarttaxbot-messages">
-        {messages.map((msg, index) => (
-          <div key={index} className={`message ${msg.sender}`}> <p>{msg.text}</p> </div>
-        ))}
-        {loading && <div className="message ai"><p>AI is thinking...</p></div>}
+    <>
+      <Head>
+        <title>SmartTaxBot - Your Virtual Tax Assistant</title>
+        <meta
+          name="description"
+          content="SmartTaxBot provides instant tax assistance. Ask questions and get expert answers powered by AI."
+        />
+        <meta
+          name="keywords"
+          content="tax assistant, AI tax bot, tax questions, virtual assistant, tax advice, chatbot"
+        />
+        <meta
+          property="og:title"
+          content="SmartTaxBot - Your Virtual Tax Assistant"
+        />
+        <meta
+          property="og:description"
+          content="Get instant, AI-powered tax assistance with SmartTaxBot."
+        />
+        <meta property="og:image" content="https://your-site.com/smarttaxbot-image.jpg" />
+        <meta property="og:url" content="https://your-site.com/smarttaxbot" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="SmartTaxBot - Your Virtual Tax Assistant" />
+        <meta name="twitter:description" content="Get expert tax advice with SmartTaxBot, your AI-powered tax assistant." />
+        <meta name="twitter:image" content="https://your-site.com/smarttaxbot-image.jpg" />
+      </Head>
+
+      <div className="smarttaxbot-container">
+        <h1 className="smarttaxbot-title">SmartTaxBot</h1>
+        <div ref={messagesContainerRef} className="smarttaxbot-messages" aria-live="polite">
+          {messages.map((msg, index) => (
+            <div key={index} className={`message ${msg.sender}`}>
+              <p>{msg.text}</p>
+            </div>
+          ))}
+          {loading && <div className="message ai"><p>AI is thinking...</p></div>}
+        </div>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmit(input);
+          }}
+          className="smarttaxbot-form"
+          aria-label="Submit your tax question"
+        >
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Ask a tax question..."
+            className="smarttaxbot-input"
+            aria-label="Type your tax question"
+            required
+          />
+          <button
+            type="submit"
+            className="smarttaxbot-submit"
+            disabled={loading || !input}
+            aria-label="Submit your question to the AI"
+          >
+            {loading ? "Thinking..." : "Ask AI"}
+          </button>
+          <button
+            type="button"
+            className="smarttaxbot-speak"
+            onClick={startListening}
+            disabled={loading}
+            aria-label="Speak your tax question"
+          >
+            Speak
+          </button>
+          {listening && <div className="listening-indicator" aria-live="assertive"></div>}
+          {speaking && <div className="speaking-indicator" aria-live="assertive"></div>}
+          {permissionError && <p style={{ color: "red" }} aria-live="assertive">Microphone access denied. Please allow microphone access.</p>}
+        </form>
       </div>
-      <form onSubmit={(e) => { e.preventDefault(); handleSubmit(input); }} className="smarttaxbot-form">
-        <input type="text" value={input} onChange={(e) => setInput(e.target.value)} placeholder="Ask a tax question..." className="smarttaxbot-input" />
-        <button type="submit" className="smarttaxbot-submit" disabled={loading || !input}>{loading ? "Thinking..." : "Ask AI"}</button>
-        <button type="button" className="smarttaxbot-speak" onClick={startListening} disabled={loading}>Speak</button>
-        {listening && <div className="listening-indicator"></div>}
-        {speaking && <div className="speaking-indicator"></div>}
-        {permissionError && <p style={{ color: "red" }}>Microphone access denied. Please allow microphone access.</p>}
-      </form>
-    </div>
+    </>
   );
 }

@@ -19,6 +19,27 @@ export default function Home() {
           name="description"
           content="TaxAdvisor offers professional tax and financial solutions. Get the latest tools and advice to manage your taxes efficiently."
         />
+        <meta
+          name="keywords"
+          content="tax solutions, professional tax advice, financial tools, tax calculator, tax news, smart tax bot"
+        />
+        <meta
+          property="og:title"
+          content="TaxAdvisor - Professional Tax Solutions"
+        />
+        <meta
+          property="og:description"
+          content="Get the latest tools and advice from TaxAdvisor to manage your taxes efficiently."
+        />
+        <meta property="og:image" content="https://i.ibb.co/vxKbKLHT/photo.jpg" />
+        <meta property="og:url" content="https://taxadvisor.live" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="TaxAdvisor - Professional Tax Solutions" />
+        <meta name="twitter:description" content="Get the latest tools and advice from TaxAdvisor to manage your taxes efficiently." />
+        <meta name="twitter:image" content="https://i.ibb.co/vxKbKLHT/photo.jpg" />
+        <meta name="twitter:creator" content="@TaxAdvisorLive" />
+        <link rel="canonical" href="https://taxadvisor.live" />
+        <meta name="robots" content="index, follow" />
       </Head>
 
       {/* Google AdSense Script using Next.js Script component */}

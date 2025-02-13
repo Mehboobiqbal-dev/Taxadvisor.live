@@ -4,7 +4,7 @@ import path from 'path';
 import matter from 'gray-matter';
 import { remark } from 'remark';
 import html from 'remark-html';
-import Script from "next/script"; // ✅ Correct way to load scripts
+import Script from "next/script";
 import Head from 'next/head';
 import Header from '@/app/Header';
 import Footer from '@/app/Footer';
@@ -20,7 +20,7 @@ function calculateReadingTime(text) {
 async function getBlogContent(slug) {
   const normalizedSlug = slug.endsWith('.md') ? slug.slice(0, -3) : slug;
   const filePath = path.join(process.cwd(), 'content', `${normalizedSlug}.md`);
-  
+
   if (!fs.existsSync(filePath)) {
     throw new Error(`File not found: ${filePath}`);
   }
@@ -52,7 +52,6 @@ export default async function BlogPost({ params }) {
 
   return (
     <>
-      {/* ✅ Correct placement for Google AdSense */}
       <Script 
         async 
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2663142027592405"
@@ -68,6 +67,26 @@ export default async function BlogPost({ params }) {
             name="description"
             content={frontMatter.excerpt || frontMatter.title}
           />
+          <meta name="robots" content="index, follow" />
+          <meta property="og:type" content="article" />
+          <meta property="og:title" content={frontMatter.title} />
+          <meta
+            property="og:description"
+            content={frontMatter.excerpt || frontMatter.title}
+          />
+          <meta property="og:url" content={`https://taxadvisor.live/blog/${params.slug}`} />
+          <meta property="og:image" content={frontMatter.image || "/default-image.jpg"} />
+          <meta property="og:author" content={frontMatter.author || 'TaxAdvisor'} />
+          <meta property="article:published_time" content={frontMatter.date} />
+          <meta property="article:modified_time" content={frontMatter.date} />
+          <meta property="article:section" content="Blog" />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:title" content={frontMatter.title} />
+          <meta
+            name="twitter:description"
+            content={frontMatter.excerpt || frontMatter.title}
+          />
+          <meta name="twitter:image" content={frontMatter.image || "/default-image.jpg"} />
         </Head>
 
         {/* Blog Post Header */}
