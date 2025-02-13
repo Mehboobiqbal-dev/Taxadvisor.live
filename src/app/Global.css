@@ -1,11 +1,27 @@
-/* Import Bootstrap */
+/* globals.css */
+
+/* Import Bootstrap first */
 @import url('https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css');
 
-/* Global Reset */
-* {
+/* Tailwind CSS Directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global Reset for All Elements */
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+/* Ensure HTML & Body have no default margin/padding */
+html,
+body {
+  margin: 0;
+  padding: 0;
 }
 
 /* Global Body Styling */
@@ -17,7 +33,12 @@ body {
 }
 
 /* Headers */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: bold;
   color: #212529;
   margin-bottom: 0.5rem;
@@ -35,7 +56,9 @@ h3 {
   font-size: 1.75rem;
 }
 
-h4, h5, h6 {
+h4,
+h5,
+h6 {
   font-size: 1.5rem;
 }
 
@@ -130,24 +153,17 @@ a:hover {
   transform: translateY(-5px);
   box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
 }
+
+/* Header Styling */
 .header {
-    background-color: #1e9fa3;
-    color: rgb(165, 58, 58);
-    padding: 20px 0;
-    text-align: center;
-  }
-  
-  .header a {
-    color: white;
-    text-decoration: none;
-    transition: color 0.3s ease-in-out;
-  }
-  
-  .header a:hover {
-    color: #28a745;
-  }
-  
-/* Footer */
+  background-color: #1e9fa3;
+  color: rgb(165, 58, 58);
+  padding: 20px 0;
+  text-align: center;
+  margin: 0; /* Ensure no extra margin is added */
+}
+
+/* Footer Styling */
 .footer {
   background-color: #dcedee;
   color: rgb(165, 58, 58);
@@ -157,18 +173,12 @@ a:hover {
 
 .footer a {
   color: white;
-  text-decoration: solid;
+  text-decoration: none;
   transition: color 0.3s ease-in-out;
 }
 
 .footer a:hover {
   color: #28a745;
-}
-.header h1 {
-    font-size: 1.5rem; /* Adjust the size as needed */
-    font-weight: normal; /* Optional: to reduce boldness */
-    line-height: 1.2; /* Adjust line height for better spacing */
-    color: #fff; /* Optional: Set a color for better contrast */
 }
 
 /* Media Queries */
@@ -185,20 +195,3 @@ a:hover {
     padding: 10px;
   }
 }
-  .header {
-    background-color: #1e9fa3;
-    color: rgb(165, 58, 58);
-    padding: 20px 0;
-    text-align: center;
-  }
-  
-  .header a {
-    color: white;
-    text-decoration: none;
-    transition: color 0.3s ease-in-out;
-  }
-  
-  .header a:hover {
-    color: #28a745;
-  }
-  

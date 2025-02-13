@@ -1,8 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Head from "next/head";
+import Header from "./Header";
+import Footer from "./Footer";
+import "./NewsList.css";
 
-export function NewsList() {
+function NewsList() {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -12,20 +16,9 @@ export function NewsList() {
       try {
         const response = await fetch("/api/google-news");
         if (!response.ok) throw new Error(`Error: ${response.status}`);
-
         const data = await response.json();
         console.log("News API Response:", data);
-
-        // Remove duplicate articles based on the link
-        const uniqueArticles = [];
-        const seenLinks = new Set();
-        data.articles.forEach((article) => {
-          if (!seenLinks.has(article.link)) {
-            seenLinks.add(article.link);
-            uniqueArticles.push(article);
-          }
-        });
-        setNews(uniqueArticles);
+        setNews(data.articles);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -36,43 +29,82 @@ export function NewsList() {
     fetchNews();
   }, []);
 
-  if (loading) return <div>Loading latest tax news...</div>;
-  if (error) return <div>Error: {error}</div>;
-
   return (
-    <div className="container py-4">
-      <h2 className="mb-4 text-center">Latest Tax News</h2>
-      {news.length === 0 ? (
-        <p className="text-center">No tax-related news found.</p>
-      ) : (
-        <div className="row">
-          {news.map((article) => (
-            <div
-              key={article.link}
-              className="col-md-4 mb-4 animate__animated animate__fadeInUp"
-            >
-              <div className="card h-100 shadow-sm">
-                <a
-                  href={article.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-decoration-none text-dark"
-                >
-                  <div className="card-body">
-                    <h5 className="card-title">{article.title}</h5>
-                    <p className="card-text">
-                      <small className="text-muted">
-                        {new Date(article.published).toLocaleString()}
-                      </small>
-                    </p>
+    <>
+      <Header />
+
+      <Head>
+        {/* SEO and Meta Tags */}
+        <title>Latest Tax News & Updates - SmartTaxBot</title>
+        {/* ... other meta tags ... */}
+      </Head>
+
+      <div className="container py-4">
+        <h1 className="mb-4 text-center">
+          Latest Tax News & Updates - SmartTaxBot
+        </h1>
+
+        {loading && <div>Loading latest tax news...</div>}
+        {error && <div>Error: {error}</div>}
+
+        {!loading && !error && (
+          <>
+            {news.length === 0 ? (
+              <p className="text-center">
+                No tax-related news found. Check back later for updates.
+              </p>
+            ) : (
+              <div className="row">
+                {news.map((article) => (
+                  <div
+                    key={article.link}
+                    className="col-md-4 mb-4 animate__animated animate__fadeInUp"
+                  >
+                    <article className="card h-100 shadow-sm">
+                      <a
+                        href={article.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-decoration-none text-dark"
+                      >
+                        {article.image && (
+                          <img
+                            src={article.image}
+                            alt={article.title}
+                            className="card-img-top"
+                            style={{
+                              objectFit: "cover",
+                              maxHeight: "200px",
+                            }}
+                          />
+                        )}
+                        <div className="card-body">
+                          <h2 className="card-title">{article.title}</h2>
+                          <p className="card-text">{article.description}</p>
+                          <p className="card-text">
+                            <small className="text-muted">
+                              {new Date(article.published).toLocaleDateString(
+                                "en-US",
+                                {
+                                  year: "numeric",
+                                  month: "long",
+                                  day: "numeric",
+                                }
+                              )}
+                            </small>
+                          </p>
+                        </div>
+                      </a>
+                    </article>
                   </div>
-                </a>
+                ))}
               </div>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
+            )}
+          </>
+        )}
+      </div>
+      <Footer />
+    </>
   );
 }
 

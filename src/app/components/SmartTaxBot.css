@@ -1,0 +1,218 @@
+/* SmartTaxBot Container */
+.smarttaxbot-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 600px;
+  min-height: 500px;
+  max-height: 80vh;
+  margin: 2rem auto;
+  background: #212e3f;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  padding: 2rem;
+}
+
+/* Title */
+.smarttaxbot-title {
+  text-align: center;
+  color: #fff;
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Messages Container */
+.smarttaxbot-messages {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+  background: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 10;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Message Style */
+.message {
+  max-width: 80%;
+  padding: 15px 18px;
+  border-radius: 10px;
+  margin: 8px 0;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  color: #000;
+  line-height: 1.4;
+  transition: background-color 0.3s ease;
+}
+
+/* User's Message */
+.message.user {
+  background-color: #ffcccc;
+  align-self: flex-end;
+}
+
+/* AI's Message */
+.message.ai {
+  background-color: #e6e6e6;
+  align-self: flex-start;
+}
+
+/* Hover Effects */
+.message:hover {
+  background-color: #d1e7dd;
+}
+
+/* Form */
+.smarttaxbot-form {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  border-top: 1px solid #ccc;
+  padding-top: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Input Area */
+.smarttaxbot-input {
+  flex-grow: 1;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  background-color: #f1f1f1;
+  color: #000;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  transition: box-shadow 0.3s ease;
+}
+
+.smarttaxbot-input:focus {
+  outline: none;
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+}
+
+/* Submit Button */
+.smarttaxbot-submit {
+  background-color: #007bff;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  white-space: nowrap;
+}
+
+.smarttaxbot-submit:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+.smarttaxbot-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Listening Indicator */
+.listening-indicator {
+  background-color: #ffd700;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  margin-left: 1rem;
+  animation: pulse 1s infinite;
+}
+
+/* Speaking Indicator */
+.speaking-indicator {
+  background-color: #32cd32;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  margin-left: 1rem;
+  animation: pulse 1s infinite;
+}
+
+/* Keyframes for pulse animation */
+@keyframes pulse {
+  0% { transform: scale(0.9); opacity: 0.7; }
+  50% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0.7; }
+}
+
+/* Responsive Adjustments for Tablets */
+@media (max-width: 768px) {
+  .smarttaxbot-container {
+    max-width: 90%;
+    height: 70vh;
+    margin: 1rem auto;
+    padding: 1.5rem;
+  }
+  
+  .smarttaxbot-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .message {
+    font-size: 14px;
+    padding: 12px 15px;
+  }
+  
+  .smarttaxbot-input,
+  .smarttaxbot-submit {
+    padding: 12px;
+    font-size: 14px;
+  }
+}
+
+/* Additional Responsive Adjustments for Mobile Phones */
+@media (max-width: 480px) {
+  .smarttaxbot-container {
+    max-width: 100%;
+    height: 80vh;
+    margin: 0.5rem auto;
+    padding: 1rem;
+    border-radius: 0;
+  }
+  
+  .smarttaxbot-title {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .smarttaxbot-messages {
+    padding: 10px;
+  }
+  
+  .message {
+    font-size: 13px;
+    padding: 10px 12px;
+  }
+  
+  .smarttaxbot-input,
+  .smarttaxbot-submit {
+    font-size: 13px;
+    padding: 10px;
+  }
+  
+  .smarttaxbot-form {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .smarttaxbot-submit {
+    width: 100%;
+  }
+}

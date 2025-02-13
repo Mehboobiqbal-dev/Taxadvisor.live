@@ -1,21 +1,201 @@
+/* globals.css */
+
+/* Import Bootstrap first */
+@import url('https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css');
+
+/* Tailwind CSS Directives */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Global Reset for All Elements */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Ensure HTML & Body have no default margin/padding */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* Ensure body takes up full viewport height */
 }
 
+#__next {
+  height: 100%; /* Ensure Next.js wrapper takes full viewport height */
+}
+
+/* Global Body Styling */
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Roboto', sans-serif;
+  background-color: #f8f9fa;
+  color: #343a40;
+  line-height: 1.6;
+}
+
+/* Headers */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: bold;
+  color: #212529;
+  margin-bottom: 0.5rem;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.75rem;
+}
+
+h4,
+h5,
+h6 {
+  font-size: 1.5rem;
+}
+
+/* Links */
+a {
+  text-decoration: none;
+  color: #007bff;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #0056b3;
+}
+
+/* Buttons */
+.btn-custom {
+  background-color: #28a745;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.btn-custom:hover {
+  background-color: #218838;
+  color: white;
+}
+
+/* Containers */
+.container {
+  padding: 15px;
+  margin: 0 auto;
+}
+
+/* Spacing Utilities */
+.mt-3 {
+  margin-top: 1rem;
+}
+
+.mt-5 {
+  margin-top: 3rem;
+}
+
+.mb-3 {
+  margin-bottom: 1rem;
+}
+
+.mb-5 {
+  margin-bottom: 3rem;
+}
+
+.pt-3 {
+  padding-top: 1rem;
+}
+
+.pt-5 {
+  padding-top: 3rem;
+}
+
+.pb-3 {
+  padding-bottom: 1rem;
+}
+
+.pb-5 {
+  padding-bottom: 3rem;
+}
+
+/* Dynamic Elements */
+.dynamic-gradient {
+  background: linear-gradient(to right, #28a745, #218838);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+}
+
+.shadow-custom {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+/* Cards */
+.card {
+  background: white;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Header Styling */
+.header {
+  background-color: #1e9fa3;
+  color: rgb(165, 58, 58);
+  padding: 20px 0;
+  text-align: center;
+  margin: 0; /* Ensure no extra margin is added */
+}
+
+/* Footer Styling */
+.footer {
+  background-color: #dcedee;
+  color: rgb(165, 58, 58);
+  padding: 20px 0;
+  text-align: center;
+}
+
+.footer a {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s ease-in-out;
+}
+
+.footer a:hover {
+  color: #28a745;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+  }
+
+  .container {
+    padding: 10px;
+  }
 }

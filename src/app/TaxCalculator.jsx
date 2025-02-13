@@ -279,7 +279,7 @@ const TaxCalculator = () => {
           </Select>
         </FormControl>
 
-        <Stack direction="row" className={styles.buttons}>
+        <Stack direction="row" className={styles.buttons} spacing={2}>
           <Button variant="contained" color="primary" onClick={calculateTaxes}>
             Calculate Taxes
           </Button>

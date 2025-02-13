@@ -1,17 +1,14 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    './src/**/*.{js,ts,jsx,tsx}',        // All files under src
+    './pages/**/*.{js,ts,jsx,tsx}',       // All files under pages
+    './components/**/*.{js,ts,jsx,tsx}',  // All files under components
+    './app/**/*.{js,ts,jsx,tsx}',         // All files under app
+    './content/**/*.{js,ts,jsx,tsx}',     // All files under content at the root
   ],
   theme: {
-    extend: {
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-      },
-    },
+    extend: {},
   },
   plugins: [],
 };

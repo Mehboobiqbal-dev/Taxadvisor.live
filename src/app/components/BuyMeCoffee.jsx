@@ -1,6 +1,5 @@
-// components/BuyMeCoffee.jsx
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
@@ -24,7 +23,6 @@ export function BuyMeCoffee() {
       const data = await res.json();
       if (data.address) {
         setPaymentDetails(data);
-        setShowModal(true); // Open the modal when payment details are available
       } else {
         alert('Payment creation failed: ' + data.error);
       }
@@ -34,55 +32,72 @@ export function BuyMeCoffee() {
     setLoading(false);
   };
 
-  return (
-    <div className="container my-5">
-      <div className="card mx-auto" style={{ maxWidth: '500px' }}>
-        <div className="card-header text-center">
-          <h3>Buy Me a Coffee ☕</h3>
-          <p>Support me with your donation</p>
-        </div>
-        <div className="card-body">
-          <div className="mb-3">
-            <label className="form-label">Amount in USD</label>
-            <input
-              type="number"
-              className="form-control"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              min="1"
-            />
-          </div>
-          <div className="mb-3">
-            <label className="form-label">Select Cryptocurrency</label>
-            <select
-              className="form-select"
-              onChange={(e) => setCurrency(e.target.value)}
-              value={currency}
-            >
-              <option value="BTC">Bitcoin (BTC)</option>
-              <option value="ETH">Ethereum (ETH)</option>
-              <option value="LTC">Litecoin (LTC)</option>
-              <option value="USDT">Tether (USDT)</option>
-            </select>
-          </div>
-          <div className="d-grid">
-            <button
-              className="btn btn-primary"
-              onClick={handlePayment}
-              disabled={loading}
-            >
-              {loading ? 'Processing...' : 'Pay Now'}
-            </button>
-          </div>
-        </div>
-      </div>
+  useEffect(() => {
+    const timeIntervals = [15000, 60000, 120000]; // 15s, 1m, and 2m intervals
+    let currentIntervalIndex = 0;
 
+    const showModalSequence = () => {
+      if (currentIntervalIndex < timeIntervals.length) {
+        setShowModal(true);
+        setTimeout(() => {
+          setShowModal(false);
+          currentIntervalIndex++;
+          setTimeout(showModalSequence, timeIntervals[currentIntervalIndex]);
+        }, 15000); // Modal shows for 15 seconds
+      }
+    };
+
+    setTimeout(showModalSequence, timeIntervals[currentIntervalIndex]);
+
+    return () => clearTimeout(showModalSequence); // Clean up the timeout on component unmount
+  }, []);
+
+  return (
+    <>
       {/* Bootstrap Modal for Payment Details */}
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Payment Details</Modal.Title>
+          <Modal.Title>Buy Me a Coffee ☕</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          <div className="container my-5">
+            <div className="card mx-auto" style={{ maxWidth: '500px' }}>
+              <div className="card-body">
+                <div className="mb-3">
+                  <label className="form-label">Amount in USD</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    min="1"
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Select Cryptocurrency</label>
+                  <select
+                    className="form-select"
+                    onChange={(e) => setCurrency(e.target.value)}
+                    value={currency}
+                  >
+                    <option value="BTC">Bitcoin (BTC)</option>
+                    <option value="ETH">Ethereum (ETH)</option>
+                    <option value="LTC">Litecoin (LTC)</option>
+                    <option value="USDT">Tether (USDT)</option>
+                  </select>
+                </div>
+                <div className="d-grid">
+                  <button
+                    className="btn btn-primary"
+                    onClick={handlePayment}
+                    disabled={loading}
+                  >
+                    {loading ? 'Processing...' : 'Pay Now'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
           {paymentDetails && (
             <div>
               <p>
@@ -101,7 +116,7 @@ export function BuyMeCoffee() {
           </Button>
         </Modal.Footer>
       </Modal>
-    </div>
+    </>
   );
 }
 

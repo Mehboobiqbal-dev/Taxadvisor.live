@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import ChatComponent from "./components/ChatComponent";
+import SmartTaxBot from "./components/SmartTaxBot";
 import "./Header.css";
 
 const Header = () => {
@@ -17,16 +17,19 @@ const Header = () => {
   }, [menuOpen]);
 
   return (
-    <header className="header">
+    <header className="header" role="banner">
       <nav className="header-nav" role="navigation" aria-label="Main Navigation">
         {/* Logo */}
         <h1 className="header-logo">
-          <Link href="/" onClick={() => setMenuOpen(false)}>
-            <img
-              src="https://i.postimg.cc/xT3d2TBK/photo-removebg-preview-1.png"
-              alt="Tax Advisor Logo"
-              className="logo"
-            />
+          <Link href="/" legacyBehavior>
+            <a onClick={() => setMenuOpen(false)} aria-label="Tax Advisor Home">
+              <img
+                src="https://i.postimg.cc/xT3d2TBK/photo-removebg-preview-1.png"
+                alt="Tax Advisor Logo"
+                className="logo"
+                loading="lazy" // Lazy loading for performance optimization
+              />
+            </a>
           </Link>
         </h1>
 
@@ -39,35 +42,61 @@ const Header = () => {
             e.stopPropagation(); // Prevent immediate closing when clicking the button
             setMenuOpen(!menuOpen);
           }}
+          aria-label="Toggle Navigation Menu"
         >
           ☰
         </button>
 
         {/* Navigation Links */}
-        <ul id="main-menu" className={`header-links ${menuOpen ? "show" : ""}`}>
+        <ul
+          id="main-menu"
+          className={`header-links ${menuOpen ? "show" : ""}`}
+          aria-label="Main Menu"
+        >
           <li>
-            <Link href="/tax-calculator">
-              Tax Calculator
+            <Link href="/home" legacyBehavior>
+              <a onClick={() => setMenuOpen(false)} aria-label="Go to Home Page">
+                Home
+              </a>
             </Link>
           </li>
           <li>
-            <Link href="/newslist">
-              News
+            <Link href="/tax-calculator" legacyBehavior>
+              <a onClick={() => setMenuOpen(false)} aria-label="Tax Calculator">
+                Tax Calculator
+              </a>
             </Link>
           </li>
           <li>
-            <button className="chat-toggle-btn" onClick={() => setShowChat(!showChat)}>
-              {showChat ? "Close TaxGPT" : "Open TaxGPT"}
+            <Link href="/newslist" legacyBehavior>
+              <a onClick={() => setMenuOpen(false)} aria-label="Go to News Page">
+                News
+              </a>
+            </Link>
+          </li>
+          <li>
+            <Link href="/blog" legacyBehavior>
+              <a onClick={() => setMenuOpen(false)} aria-label="Go to Blog Page">
+                Blog
+              </a>
+            </Link>
+          </li>
+          <li>
+            <button
+              className="chat-toggle-btn"
+              onClick={() => setShowChat(!showChat)}
+              aria-label="Toggle SmartTaxBot"
+            >
+              {showChat ? "Close SmartTaxBot" : "Open SmartTaxBot"}
             </button>
           </li>
         </ul>
       </nav>
 
       {/* ChatComponent */}
-      {showChat && <ChatComponent />}
+      {showChat && <SmartTaxBot />}
     </header>
   );
 };
 
 export default Header;
-

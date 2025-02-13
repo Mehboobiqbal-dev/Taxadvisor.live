@@ -2,7 +2,7 @@
 .header {
   background: linear-gradient(135deg, #141e30, #243b55);
   color: white;
-  padding: 0.3rem 2rem; /* Reduced padding for a shorter header */
+  padding: 0.5rem 2rem; /* Base padding for desktop */
   position: sticky;
   top: 0;
   width: 100%;
@@ -13,7 +13,7 @@
 /* Navigation Bar */
 .header-nav {
   display: flex;
-  justify-content: space-between;  /* Space between logo and menu items */
+  justify-content: space-between;
   align-items: center;
   max-width: 1200px;
   margin: 0 auto;
@@ -23,24 +23,23 @@
 
 /* Logo - Align to Left */
 .header-logo {
-  font-size: 1.6rem;  /* Reduced font size */
+  font-size: 1.6rem;
   font-family: 'Poppins', sans-serif;
   font-weight: bold;
-  margin-right: 2rem; /* Space between logo and other elements */
-  background: inherit; /* Inherit background from the header */
-  padding: 0.3rem; /* Reduced padding around the logo */
-  border-radius: 8px; /* Optional: Adds rounded corners to the logo background */
-  flex-shrink: 0; /* Prevents logo from shrinking */
+  margin-right: 2rem;
+  background: inherit;
+  padding: 0.3rem;
+  border-radius: 8px;
+  flex-shrink: 0;
   display: flex;
-  justify-content: flex-start; /* Ensures the logo stays on the left */
+  justify-content: flex-start;
 }
 
 /* Logo Image */
 .header-logo img.logo {
-  height: 150px;    /* Reduced height for a smaller logo */
-  width: 450px;     /* Adjust width as necessary */
-  max-width: 450px;  /* Ensures the image doesn’t exceed its container */
-  background: inherit; /* Makes the logo background inherit from the header */
+  height: auto;
+  width: 100%;
+  max-width: 200px; /* Desktop size */
 }
 
 /* Navigation Links - Align to Right */
@@ -50,7 +49,7 @@
   gap: 1.5rem;
   margin: 0;
   padding: 0;
-  margin-left: auto; /* This will push the navigation links to the right */
+  margin-left: auto;
 }
 
 .header-links li {
@@ -79,28 +78,43 @@
 
 /* Mobile Responsive Menu */
 @media (max-width: 768px) {
+  .header {
+    padding: 0.2rem 0.5rem; /* Reduced padding for a much shorter header */
+  }
+
   .header-nav {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* Reduce logo size on mobile */
+  .header-logo {
+    margin: 0;
+  }
+
+  .header-logo img.logo {
+    max-width: 120px;  /* Significantly reduced logo size */
   }
 
   .menu-icon {
     display: block;
     position: absolute;
-    right: 20px;
-    top: 20px;
-    cursor: pointer;
+    right: 0.5rem;  /* Reduced offset */
+    top: 0.3rem;    /* Reduced offset */
+    font-size: 1.5rem; /* Smaller icon */
   }
 
+  /* If you still use a dropdown menu, adjust its position */
   .header-links {
     display: none;
     flex-direction: column;
     background: rgba(0, 0, 0, 0.95);
     position: absolute;
-    top: 60px;
+    top: 30px; /* Adjusted for the shorter header */
     left: 0;
     width: 100%;
-    padding: 1rem;
+    padding: 0.5rem; /* Reduced padding */
     text-align: center;
     border-radius: 0 0 12px 12px;
   }

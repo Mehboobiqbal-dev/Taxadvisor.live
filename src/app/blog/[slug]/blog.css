@@ -1,0 +1,121 @@
+/* Global Blog Styles */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #141e30, #243b55);
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
+}
+
+/* Blog Post Container */
+.blog-post {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+/* Header */
+.blog-post-header {
+  text-align: center;
+  padding: 2rem;
+  background: rgba(0, 0, 0, 0.8); /* Increased opacity for better contrast */
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  animation: slideDown 1s ease-in-out;
+}
+
+
+.blog-post-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); /* Ensure text stands out */
+}
+.blog-meta {
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.blog-meta span {
+  margin: 0 0.5rem;
+}
+
+.blog-author {
+  font-style: italic;
+  opacity: 0.8;
+}
+
+/* Blog Content */
+.blog-content {
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.1);
+  animation: fadeInUp 1.2s ease-in-out;
+}
+
+/* Styling for content elements like headings, paragraphs, code blocks, etc. */
+.blog-content h2,
+.blog-content h3,
+.blog-content h4 {
+  margin-top: 1.5rem;
+  color: #ffffff;
+}
+
+.blog-content p {
+  line-height: 1.8;
+  margin: 1rem 0;
+  color: #ffffff;
+}
+
+/* Code block styling */
+.blog-content pre {
+  background: #1e293b;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.9rem;
+}
+/* Ensure unordered lists in blog content use disc markers */
+.blog-content ul {
+  list-style-type: disc; /* Use round bullets */
+  padding-left: 1.5rem;  /* Provide some indentation */
+  margin-bottom: 1rem;
+}
+
+/* Style the bullet markers to be larger and white */
+.blog-content li::marker {
+  font-size: 1.5em; /* Increase the size of the marker */
+  color: #ffffff;   /* Set marker color to white */
+}
+
+/* Footer */
+.blog-footer {
+  text-align: center;
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.back-to-blog {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.back-to-blog:hover {
+  text-decoration: underline;
+}
+
+/* Keyframe Animations */
+@keyframes slideDown {
+  from { transform: translateY(-50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}

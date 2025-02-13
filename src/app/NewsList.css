@@ -1,0 +1,112 @@
+/* Container for the news list */
+.container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2); /* Gradient background */
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Title styling */
+  h1.text-center {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    color: #343a40;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  /* Styling for the loading and error messages */
+  div {
+    font-size: 1.2rem;
+    color: #6c757d;
+  }
+  
+  /* Styling for the no news message */
+  .text-center {
+    font-size: 1.2rem;
+    color: #6c757d;
+  }
+  
+  /* Card container */
+  .card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #ffffff; /* White background color for the card */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  /* Hover effects for the card */
+  .card:hover {
+    transform: translateY(-0.5rem);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Anchor styling */
+  .text-dark {
+    color: #343a40;
+    text-decoration: none;
+  }
+  
+  /* Styling for the card body */
+  .card-body {
+    padding: 1rem;
+    flex-grow: 0; /* Prevent growing and allow content to flow naturally */
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    justify-content: space-between; /* Distribute space if needed */
+  }
+  
+  /* Styling for the card title */
+  /* Allow text wrapping and avoid overflow issues */
+.card-title, .card-text {
+    white-space: normal;  /* Allow text to wrap */
+    overflow: hidden;     /* Hide overflow if needed, allowing it to wrap */
+    text-overflow: ellipsis; /* Add ellipsis if content overflows */
+  }
+  
+  
+  /* Ensure full description is displayed */
+  .card-text p {
+    white-space: normal;
+    overflow: visible;
+  }
+  
+  /* Responsive adjustments for different screen sizes */
+  @media (max-width: 768px) {
+    .container {
+      padding: 1rem;
+    }
+    
+    h1.text-center {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    
+    .card-title {
+      font-size: 1.3rem;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .container {
+      padding: 0.5rem;
+    }
+    
+    h1.text-center {
+      font-size: 1.5rem;
+    }
+    
+    .card-title {
+      font-size: 1rem;
+    }
+  }
+  
+  

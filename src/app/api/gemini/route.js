@@ -1,5 +1,3 @@
-// src/app/api/gemini/route.js
-
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export async function POST(request) {
@@ -11,6 +9,24 @@ export async function POST(request) {
         status: 400,
         headers: { "Content-Type": "application/json" },
       });
+    }
+
+    // Check for specific prompts
+    const lowerPrompt = prompt.toLowerCase();
+    if (
+      lowerPrompt.includes("what's your name") ||
+      lowerPrompt.includes("what is your name") ||
+      lowerPrompt.includes("who made you") ||
+      lowerPrompt.includes("who created you") ||
+      lowerPrompt.includes("who developed you")
+    ) {
+      return new Response(
+        JSON.stringify({ text: "I am SmartTaxBot, developed by Mehboob Iqbal." }),
+        {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
     }
 
     // Initialize the Google Generative AI client.

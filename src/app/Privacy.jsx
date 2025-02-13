@@ -6,7 +6,7 @@ const Privacy = () => {
       <h2>Privacy Policy</h2>
 
       <p>
-        At USA Tax Advisor, we value the privacy of our users and are committed to protecting their personal data.
+        At Tax Advisor, we value the privacy of our users and are committed to protecting their personal data.
         This Privacy Policy explains how we collect, use, and disclose your information when you use our website and services.
       </p>
 
@@ -66,7 +66,7 @@ const Privacy = () => {
       <p>
         If you have any questions or concerns about this Privacy Policy or how we handle your data, please contact us at:
       </p>
-      <p>Email: support@usataxadvisor.com</p>
+      <p>Email: support@taxadvisor.live</p>
      
 
       <footer style={{ marginTop: "30px", textAlign: "center" }}>

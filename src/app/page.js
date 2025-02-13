@@ -1,36 +1,51 @@
-// src/app/Page.jsx or wherever your main page is defined
-'use client'; // Marking this as a client component
+// src/app/page.jsx
+'use client';
 
-import Header from "./Header";
-import Footer from "./Footer";
-import TaxCalculator from "./TaxCalculator";
-import { NewsList } from "./NewsList";  
+import Head from 'next/head';
+import Header from './Header';
+import Footer from './Footer';
+import TaxCalculator from './TaxCalculator';
 import { BuyMeCoffee } from './components/BuyMeCoffee';
+import SmartTaxBot from './components/SmartTaxBot';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import ChatComponent from "./components/ChatComponent"; // Updated import
+import './globals.css'; // Global styles including Tailwind directives
 
-import "./globals.css"; // Global styles
-
-const Home = () => {
+export default function Home() {
   return (
-    <div className="app-container">
-      {/* Header Component */}
-      <Header />
-      <BuyMeCoffee />
+    <>
+      <Head>
+        <title>TaxAdvisor - Professional Tax Solutions</title>
+        <meta
+          name="description"
+          content="TaxAdvisor offers professional tax and financial solutions. Get the latest tools and advice to manage your taxes efficiently."
+        />
+      </Head>
 
-      {/* Main Content */}
-      <main className="main-content p-6">
-        <TaxCalculator />
-        <ChatComponent /> {/* ChatComponent for the chatbot */}
-        <NewsList /> {/* Display the tax news component */}
-       
-      </main>
+      <div className="min-h-screen flex flex-col bg-gray-100">
+        {/* Header with Logo */}
+        <Header>
+          <div className="flex justify-center items-center py-4">
+            <img
+              src="https://i.ibb.co/vxKbKLHT/photo.jpg"
+              alt="TaxAdvisor Logo"
+              className="h-12"
+            />
+          </div>
+        </Header>
 
-      {/* Footer Component */}
-      <Footer />
-    </div>
+        {/* Buy Me Coffee Component */}
+        <BuyMeCoffee />
+
+        {/* Main Content */}
+        <main className="flex-grow p-6 container mx-auto">
+          <TaxCalculator />
+          <SmartTaxBot />
+        </main>
+
+        {/* Footer Component */}
+        <Footer />
+      </div>
+    </>
   );
-};
-
-export default Home;
+}
