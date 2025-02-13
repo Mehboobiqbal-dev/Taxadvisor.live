@@ -4,6 +4,7 @@ import path from 'path';
 import matter from 'gray-matter';
 import { remark } from 'remark';
 import html from 'remark-html';
+import Script from "next/script"; // ✅ Correct way to load scripts
 import Head from 'next/head';
 import Header from '@/app/Header';
 import Footer from '@/app/Footer';
@@ -17,7 +18,6 @@ function calculateReadingTime(text) {
 }
 
 async function getBlogContent(slug) {
-  // Remove any existing ".md" extension from the slug
   const normalizedSlug = slug.endsWith('.md') ? slug.slice(0, -3) : slug;
   const filePath = path.join(process.cwd(), 'content', `${normalizedSlug}.md`);
   
@@ -28,67 +28,21 @@ async function getBlogContent(slug) {
   const fileContent = fs.readFileSync(filePath, 'utf-8');
   const { data, content } = matter(fileContent);
 
-  // Convert Markdown content to HTML
   const processedContent = await remark().use(html).process(content);
   const contentHtml = processedContent.toString();
 
-  // Calculate reading time
   const readingTime = calculateReadingTime(content);
 
   return { frontMatter: data, content: contentHtml, readingTime };
 }
 
-async function getBlogPosts() {
+export async function generateStaticParams() {
   const contentDir = path.join(process.cwd(), 'content');
   const files = await fsp.readdir(contentDir);
 
-  const posts = await Promise.all(
-    files.map(async (filename) => {
-      const filePath = path.join(contentDir, filename);
-      const fileContent = await fsp.readFile(filePath, 'utf-8');
-      const { data } = matter(fileContent);
-
-      return { slug: filename.replace('.md', ''), frontMatter: data };
-    })
-  );
-
-  return posts;
-}
-
-// Generate static params for dynamic routes
-export async function generateStaticParams() {
-  const posts = await getBlogPosts();
-  return posts.map(post => ({
-    slug: post.slug,
+  return files.map((filename) => ({
+    slug: filename.replace('.md', ''),
   }));
-}
-
-export async function GET(request) {
-  try {
-    const contentDir = path.join(process.cwd(), 'content');
-    const files = await fs.promises.readdir(contentDir);
-
-    const posts = await Promise.all(
-      files.map(async (filename) => {
-        const filePath = path.join(contentDir, filename);
-        const fileContent = await fs.promises.readFile(filePath, 'utf-8');
-        const { data } = matter(fileContent);
-
-        // Remove .md or .mdx extension from the slug
-        const slug = filename.replace(/\.mdx?$/, '');
-        return { frontMatter: data, slug };
-      })
-    );
-
-    return new Response(JSON.stringify(posts), {
-      headers: { 'Content-Type': 'application/json' },
-    });
-  } catch (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
 }
 
 // Main BlogPost component
@@ -98,6 +52,14 @@ export default async function BlogPost({ params }) {
 
   return (
     <>
+      {/* ✅ Correct placement for Google AdSense */}
+      <Script 
+        async 
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2663142027592405"
+        crossOrigin="anonymous"
+        strategy="afterInteractive"
+      />
+
       <Header />
       <article className="blog-post">
         <Head>
@@ -106,9 +68,8 @@ export default async function BlogPost({ params }) {
             name="description"
             content={frontMatter.excerpt || frontMatter.title}
           />
-          {/* Additional SEO meta tags can be added here */}
         </Head>
-        
+
         {/* Blog Post Header */}
         <header className="blog-post-header">
           <h1>{frontMatter.title}</h1>

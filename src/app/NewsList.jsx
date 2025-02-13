@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Script from "next/script"; // Import Next.js Script component
 import Head from "next/head";
 import Header from "./Header";
 import Footer from "./Footer";
@@ -31,13 +32,21 @@ function NewsList() {
 
   return (
     <>
-      <Header />
+      {/* Google AdSense Script - Correct Placement */}
+      <Script 
+        async 
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2663142027592405"
+        crossOrigin="anonymous"
+        strategy="afterInteractive"
+      />
 
       <Head>
         {/* SEO and Meta Tags */}
         <title>Latest Tax News & Updates - SmartTaxBot</title>
         {/* ... other meta tags ... */}
       </Head>
+
+      <Header />
 
       <div className="container py-4">
         <h1 className="mb-4 text-center">
@@ -103,6 +112,7 @@ function NewsList() {
           </>
         )}
       </div>
+      
       <Footer />
     </>
   );

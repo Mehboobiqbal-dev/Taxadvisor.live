@@ -1,9 +1,19 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Head from "next/head";
 
 const Contact = () => {
+  // Inject AdSense script
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.async = true;
+    script.src =
+      "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2663142027592405";
+    script.crossOrigin = "anonymous";
+    document.body.appendChild(script);
+  }, []);
+
   // State for form input fields
   const [formData, setFormData] = useState({
     name: "",
@@ -27,9 +37,7 @@ const Contact = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (formData.name && formData.email && formData.message) {
-      // Simulate form submission success
       setSubmitSuccess(true);
-      // Reset the form
       setFormData({
         name: "",
         email: "",
@@ -48,24 +56,12 @@ const Contact = () => {
           name="description"
           content="Get in touch with TaxAdvisor for accurate tax calculations, expert advice, and financial insights. Our team is here to assist you."
         />
-        <meta
-          name="keywords"
-          content="contact tax advisor, contact us, tax assistance, tax inquiries"
-        />
+        <meta name="keywords" content="contact tax advisor, contact us, tax assistance, tax inquiries" />
         <meta property="og:title" content="Contact Us | TaxAdvisor" />
-        <meta
-          property="og:description"
-          content="Get in touch with TaxAdvisor for accurate tax calculations and expert advice."
-        />
-        <meta
-          property="og:url"
-          content="https://taxadviser.live/contact"
-        />
+        <meta property="og:description" content="Get in touch with TaxAdvisor for accurate tax calculations and expert advice." />
+        <meta property="og:url" content="https://taxadvisor.live/contact" />
         <meta name="twitter:title" content="Contact Us | TaxAdvisor" />
-        <meta
-          name="twitter:description"
-          content="Reach out to TaxAdvisor for expert tax assistance and advice."
-        />
+        <meta name="twitter:description" content="Reach out to TaxAdvisor for expert tax assistance and advice." />
         <meta name="twitter:card" content="summary" />
       </Head>
 

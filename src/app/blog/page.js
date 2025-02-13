@@ -4,6 +4,7 @@ import matter from 'gray-matter';
 import BlogSearch from './BlogSearch';
 import Header from '../Header';
 import Footer from '../Footer';
+import Script from 'next/script'; // ✅ Import Next.js Script component
 
 // Function to fetch blog posts
 async function getBlogPosts() {
@@ -30,6 +31,14 @@ export default async function BlogListPage() {
 
   return (
     <>
+      {/* ✅ Corrected placement for Google AdSense */}
+      <Script 
+        async 
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2663142027592405"
+        crossOrigin="anonymous"
+        strategy="afterInteractive"
+      />
+
       <Header /> {/* Added Header component */}
       <div className="max-w-3xl mx-auto p-6 bg-gray-50 shadow-md rounded-lg">
         <h1 className="text-4xl font-extrabold mb-6 text-blue-800">Tax Blog</h1>
