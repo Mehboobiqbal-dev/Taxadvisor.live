@@ -1,3 +1,10 @@
+---
+title: "How to File Income Tax "
+date: "2025-02-11"
+author: "Mahboob Iqbal"
+excerpt: "A comprehensive guide to understanding tax deductions for the year 2024."
+coverImage: "/images/tax-deductions.jpg"
+---
 # How to File Income Tax in the USA: A Comprehensive Guide
 
 Filing income taxes is a crucial responsibility for individuals in the United States. Whether you're filing for the first time or a seasoned taxpayer, the process can be daunting without the right guidance. This guide will walk you through the essential steps of filing your income tax return, explaining the key forms, deductions, and credits available, and offering tips for ensuring a smooth filing process.

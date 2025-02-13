@@ -1,16 +1,24 @@
-// app/api/posts/route.js
-import { NextResponse } from "next/server";
-import fs from "fs/promises";
-import path from "path";
+import path from 'path';
+import fs from 'fs/promises';
+import matter from 'gray-matter';
 
-export async function GET() {
+export default async function handler(req, res) {
   try {
-    const filePath = path.join(process.cwd(), "data", "posts.json");
-    const fileContents = await fs.readFile(filePath, "utf8");
-    const allPostsData = JSON.parse(fileContents);
+    const contentDir = path.join(process.cwd(), 'content');
+    const files = await fs.readdir(contentDir);
 
-    return NextResponse.json(allPostsData);
+    const posts = await Promise.all(
+      files.map(async (filename) => {
+        const filePath = path.join(contentDir, filename);
+        const fileContent = await fs.readFile(filePath, 'utf-8');
+        const { data } = matter(fileContent);
+
+        return { slug: filename.replace('.md', ''), frontMatter: data };
+      })
+    );
+
+    res.status(200).json(posts);
   } catch (error) {
-    return NextResponse.json({ error: "Failed to load posts" }, { status: 500 });
+    res.status(500).json({ error: error.message });
   }
 }
