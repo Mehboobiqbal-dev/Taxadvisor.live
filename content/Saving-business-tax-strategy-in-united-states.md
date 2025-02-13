@@ -240,7 +240,7 @@ A QSEHRA allows small businesses to reimburse employees for medical expenses and
 
 If your business is struggling and you incur losses, there are ways to use those losses to offset other taxable income.
 
-### Net Operating Losses (NOLs)
+## Net Operating Losses (NOLs)
 
 Net Operating Losses occur when your business expenses exceed your income. NOLs can be carried forward to future tax years, offsetting profits in those years and reducing your taxable income.
 
