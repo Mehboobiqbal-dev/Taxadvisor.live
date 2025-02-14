@@ -1,22 +1,88 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Head from "next/head";
 import "./SmartTaxBot.css";
 
 export default function SmartTaxBot() {
+  // State declarations
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [listening, setListening] = useState(false);
   const [speaking, setSpeaking] = useState(false);
   const [permissionError, setPermissionError] = useState(false);
+
+  // Refs
   const messagesContainerRef = useRef(null);
   const recognitionRef = useRef(null);
   const speakModeRef = useRef(false);
 
-  const initializeRecognition = () => {
+  // Memoized speak function
+  const speak = useCallback((text) => {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.onstart = () => setSpeaking(true);
+    utterance.onend = () => setSpeaking(false);
+    speechSynthesis.speak(utterance);
+  }, []);
+
+  // Memoized handleSubmit function
+  const handleSubmit = useCallback(
+    async (userMessage) => {
+      if (!userMessage.trim()) return;
+      setLoading(true);
+      setInput("");
+
+      const newMessages = [
+        ...messages,
+        { text: userMessage, sender: "user" },
+      ];
+      setMessages(newMessages);
+
+      const conversationContext = newMessages
+        .map((msg) =>
+          msg.sender === "user"
+            ? `User: ${msg.text}`
+            : `AI: ${msg.text}`
+        )
+        .join("\n");
+
+      const fullPrompt = conversationContext + "\nAI:";
+
+      try {
+        const res = await fetch("/api/gemini", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt: fullPrompt }),
+        });
+        const data = await res.json();
+        const aiMessage = data.text || "No response from AI.";
+        const updatedMessages = [
+          ...newMessages,
+          { text: aiMessage, sender: "ai" },
+        ];
+        setMessages(updatedMessages);
+
+        if (speakModeRef.current) {
+          speak(aiMessage);
+          speakModeRef.current = false;
+        }
+      } catch (error) {
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          { text: "Error fetching response.", sender: "ai" },
+        ]);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [messages, speak]
+  );
+
+  // Memoized initializeRecognition function
+  const initializeRecognition = useCallback(() => {
     try {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const SpeechRecognition =
+        window.SpeechRecognition || window.webkitSpeechRecognition;
       if (!SpeechRecognition) {
         console.error("Speech recognition not supported in this browser.");
         return;
@@ -40,15 +106,14 @@ export default function SmartTaxBot() {
     } catch (error) {
       console.error("Speech recognition initialization error:", error);
     }
-  };
+  }, [handleSubmit]); // Included handleSubmit
 
-  const speak = (text) => {
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.onstart = () => setSpeaking(true);
-    utterance.onend = () => setSpeaking(false);
-    speechSynthesis.speak(utterance);
-  };
+  // Initialize recognition on mount
+  useEffect(() => {
+    initializeRecognition();
+  }, [initializeRecognition]);
 
+  // Start listening function
   const startListening = () => {
     if (recognitionRef.current && !listening) {
       try {
@@ -61,82 +126,37 @@ export default function SmartTaxBot() {
     }
   };
 
-  const handleSubmit = async (userMessage) => {
-    if (!userMessage.trim()) return;
-    setLoading(true);
-    setInput("");
-    const newMessages = [...messages, { text: userMessage, sender: "user" }];
-    setMessages(newMessages);
-    const conversationContext = newMessages.map((msg) => msg.sender === "user" ? `User: ${msg.text}` : `AI: ${msg.text}`).join("\n");
-    const fullPrompt = conversationContext + "\nAI:";
-    try {
-      const res = await fetch("/api/gemini", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: fullPrompt }),
-      });
-      const data = await res.json();
-      const aiMessage = data.text || "No response from AI.";
-      const updatedMessages = [...newMessages, { text: aiMessage, sender: "ai" }];
-      setMessages(updatedMessages);
-      if (speakModeRef.current) {
-        speak(aiMessage);
-        speakModeRef.current = false;
-      }
-    } catch (error) {
-      setMessages((prevMessages) => [...prevMessages, { text: "Error fetching response.", sender: "ai" }]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    initializeRecognition();
-  }, []);
-
+  // Scroll to bottom when messages update
   useEffect(() => {
     if (messagesContainerRef.current) {
-      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+      messagesContainerRef.current.scrollTop =
+        messagesContainerRef.current.scrollHeight;
     }
   }, [messages]);
 
   return (
     <>
       <Head>
-        <title>SmartTaxBot - Your Virtual Tax Assistant</title>
-        <meta
-          name="description"
-          content="SmartTaxBot provides instant tax assistance. Ask questions and get expert answers powered by AI."
-        />
-        <meta
-          name="keywords"
-          content="tax assistant, AI tax bot, tax questions, virtual assistant, tax advice, chatbot"
-        />
-        <meta
-          property="og:title"
-          content="SmartTaxBot - Your Virtual Tax Assistant"
-        />
-        <meta
-          property="og:description"
-          content="Get instant, AI-powered tax assistance with SmartTaxBot."
-        />
-        <meta property="og:image" content="https://your-site.com/smarttaxbot-image.jpg" />
-        <meta property="og:url" content="https://your-site.com/smarttaxbot" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="SmartTaxBot - Your Virtual Tax Assistant" />
-        <meta name="twitter:description" content="Get expert tax advice with SmartTaxBot, your AI-powered tax assistant." />
-        <meta name="twitter:image" content="https://your-site.com/smarttaxbot-image.jpg" />
+        {/* ... your existing Head content ... */}
       </Head>
 
       <div className="smarttaxbot-container">
         <h1 className="smarttaxbot-title">SmartTaxBot</h1>
-        <div ref={messagesContainerRef} className="smarttaxbot-messages" aria-live="polite">
+        <div
+          ref={messagesContainerRef}
+          className="smarttaxbot-messages"
+          aria-live="polite"
+        >
           {messages.map((msg, index) => (
             <div key={index} className={`message ${msg.sender}`}>
               <p>{msg.text}</p>
             </div>
           ))}
-          {loading && <div className="message ai"><p>AI is thinking...</p></div>}
+          {loading && (
+            <div className="message ai">
+              <p>AI is thinking...</p>
+            </div>
+          )}
         </div>
         <form
           onSubmit={(e) => {
@@ -172,9 +192,23 @@ export default function SmartTaxBot() {
           >
             Speak
           </button>
-          {listening && <div className="listening-indicator" aria-live="assertive"></div>}
-          {speaking && <div className="speaking-indicator" aria-live="assertive"></div>}
-          {permissionError && <p style={{ color: "red" }} aria-live="assertive">Microphone access denied. Please allow microphone access.</p>}
+          {listening && (
+            <div
+              className="listening-indicator"
+              aria-live="assertive"
+            ></div>
+          )}
+          {speaking && (
+            <div
+              className="speaking-indicator"
+              aria-live="assertive"
+            ></div>
+          )}
+          {permissionError && (
+            <p style={{ color: "red" }} aria-live="assertive">
+              Microphone access denied. Please allow microphone access.
+            </p>
+          )}
         </form>
       </div>
     </>

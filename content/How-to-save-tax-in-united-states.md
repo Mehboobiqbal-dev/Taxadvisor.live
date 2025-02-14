@@ -1,5 +1,5 @@
 ---
-title: "How to Save income Tax in The United State "
+title: "How to Save income Tax in The United States "
 date: "2025-02-11"
 author: "Mahboob Iqbal"
 excerpt: "Discover practical strategies and tips to minimize your income tax liability in the United States. Learn about tax deductions, credits, retirement savings, and more to keep more of your hard-earned money."

@@ -2,12 +2,10 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import SmartTaxBot from "./components/SmartTaxBot";
 import "./Header.css";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [showChat, setShowChat] = useState(false);
 
   // Close menu when clicking outside or on a link
   useEffect(() => {
@@ -29,7 +27,7 @@ const Header = () => {
                 src="https://i.postimg.cc/xT3d2TBK/photo-removebg-preview-1.png"
                 alt="Tax Advisor Logo"
                 className="logo"
-                loading="lazy" // Lazy loading for performance optimization
+                loading="lazy"
               />
             </a>
           </Link>
@@ -41,7 +39,7 @@ const Header = () => {
           aria-expanded={menuOpen}
           aria-controls="main-menu"
           onClick={(e) => {
-            e.stopPropagation(); // Prevent immediate closing when clicking the button
+            e.stopPropagation();
             setMenuOpen(!menuOpen);
           }}
           aria-label="Toggle Navigation Menu"
@@ -70,6 +68,13 @@ const Header = () => {
             </Link>
           </li>
           <li>
+            <Link href="/SmartTaxBot" legacyBehavior>
+              <a onClick={() => setMenuOpen(false)} aria-label="Go to SmartTaxBot Page">
+                SmartTaxBot
+              </a>
+            </Link>
+          </li>
+          <li>
             <Link href="/newslist" legacyBehavior>
               <a onClick={() => setMenuOpen(false)} aria-label="Go to News Page">
                 News
@@ -83,20 +88,8 @@ const Header = () => {
               </a>
             </Link>
           </li>
-          <li>
-            <button
-              className="chat-toggle-btn"
-              onClick={() => setShowChat(!showChat)}
-              aria-label="Toggle SmartTaxBot"
-            >
-              {showChat ? "Close SmartTaxBot" : "Open SmartTaxBot"}
-            </button>
-          </li>
         </ul>
       </nav>
-
-      {/* ChatComponent */}
-      {showChat && <SmartTaxBot />}
     </header>
   );
 };
