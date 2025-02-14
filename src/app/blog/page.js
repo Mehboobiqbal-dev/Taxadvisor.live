@@ -25,16 +25,37 @@ async function getBlogPosts() {
   return posts;
 }
 
-// SEO Structured Data for enhanced search results
-const structuredData = {
+// Structured Data for the Website (Search Action)
+const websiteStructuredData = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "url": "https://www.taxadvisor.live/",
+  "url": "https://www.taxadvisor.live",
+  "name": "TaxAdvisor",
   "potentialAction": {
     "@type": "SearchAction",
     "target": "https://www.taxadvisor.live/blog?q={search_term_string}",
     "query-input": "required name=search_term_string"
   }
+};
+
+// Breadcrumb Structured Data
+const breadcrumbStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://www.taxadvisor.live"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tax Blog",
+      "item": "https://www.taxadvisor.live/blog"
+    }
+  ]
 };
 
 export default async function BlogListPage() {
@@ -60,6 +81,8 @@ export default async function BlogListPage() {
         />
         <meta property="og:url" content="https://www.taxadvisor.live/blog" />
         <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="TaxAdvisor" />
+        <meta property="og:locale" content="en_US" />
         <meta property="og:image" content="https://www.taxadvisor.live/og-image.jpg" />
 
         {/* Twitter Card Meta Tags */}
@@ -70,11 +93,17 @@ export default async function BlogListPage() {
           content="Stay updated with the latest tax news, tips, and blog posts on TaxAdvisor. Learn about tax regulations, tax-saving strategies, and more."
         />
         <meta name="twitter:image" content="https://www.taxadvisor.live/twitter-image.jpg" />
+        <meta name="twitter:site" content="@TaxAdvisor" />
+        <meta name="twitter:creator" content="@TaxAdvisor" />
 
         {/* JSON‑LD Structured Data */}
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteStructuredData) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbStructuredData) }}
         />
 
         {/* Favicon */}
