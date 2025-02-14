@@ -49,13 +49,13 @@ function NewsList() {
         />
         <meta name="robots" content="index, follow" /> {/* Index and follow this page */}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="canonical" href="https://www.smarttaxbot.com/news" /> {/* Canonical URL */}
+        <link rel="canonical" href="https://taxadvisor.live/newslist" /> {/* Canonical URL */}
 
         {/* Open Graph Meta Tags for Social Sharing */}
         <meta property="og:title" content="Latest Tax News & Updates - SmartTaxBot" />
         <meta property="og:description" content="Stay updated with the latest tax news, tax-saving tips, and tax regulations. SmartTaxBot brings you the most relevant tax-related articles." />
         <meta property="og:image" content="/path/to/thumbnail.jpg" /> {/* Replace with a relevant image */}
-        <meta property="og:url" content="https://www.smarttaxbot.com/news" />
+        <meta property="og:url" content="https://taxadvisor.live/newslist" />
         <meta property="og:type" content="website" />
 
         {/* Twitter Card Meta Tags */}
