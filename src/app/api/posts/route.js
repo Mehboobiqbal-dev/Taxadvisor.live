@@ -2,6 +2,8 @@ import path from 'path';
 import fs from 'fs/promises';
 import matter from 'gray-matter';
 
+// ... existing code ...
+
 export default async function handler(req, res) {
   try {
     const contentDir = path.join(process.cwd(), 'content');
@@ -11,9 +13,17 @@ export default async function handler(req, res) {
       files.map(async (filename) => {
         const filePath = path.join(contentDir, filename);
         const fileContent = await fs.readFile(filePath, 'utf-8');
-        const { data } = matter(fileContent);
+        const { data, content } = matter(fileContent);
 
-        return { slug: filename.replace('.md', ''), frontMatter: data };
+        // SEO: Include metadata for structured data
+        return { 
+          slug: filename.replace('.md', ''), 
+          frontMatter: {
+            ...data,
+            metaDescription: content.slice(0, 160)
+          },
+          content: content.slice(0, 160) // Include a snippet for description
+        };
       })
     );
 

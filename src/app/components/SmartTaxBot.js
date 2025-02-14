@@ -17,13 +17,13 @@ export default function SmartTaxBot() {
   const recognitionRef = useRef(null);
   const speakModeRef = useRef(false);
 
-  // Memoized speak function
-  const speak = useCallback((text) => {
+  // 'speak' function
+  const speak = (text) => {
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.onstart = () => setSpeaking(true);
     utterance.onend = () => setSpeaking(false);
     speechSynthesis.speak(utterance);
-  }, []);
+  };
 
   // Memoized handleSubmit function
   const handleSubmit = useCallback(
@@ -32,17 +32,12 @@ export default function SmartTaxBot() {
       setLoading(true);
       setInput("");
 
-      const newMessages = [
-        ...messages,
-        { text: userMessage, sender: "user" },
-      ];
+      const newMessages = [...messages, { text: userMessage, sender: "user" }];
       setMessages(newMessages);
 
       const conversationContext = newMessages
         .map((msg) =>
-          msg.sender === "user"
-            ? `User: ${msg.text}`
-            : `AI: ${msg.text}`
+          msg.sender === "user" ? `User: ${msg.text}` : `AI: ${msg.text}`
         )
         .join("\n");
 
@@ -75,7 +70,8 @@ export default function SmartTaxBot() {
         setLoading(false);
       }
     },
-    [messages, speak]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [messages]
   );
 
   // Memoized initializeRecognition function
@@ -183,29 +179,33 @@ export default function SmartTaxBot() {
           >
             {loading ? "Thinking..." : "Ask AI"}
           </button>
+          {/* Speak Button */}
           <button
             type="button"
-            className="smarttaxbot-speak"
+            className="smarttaxbot-speak speak-button"
             onClick={startListening}
             disabled={loading}
             aria-label="Speak your tax question"
           >
             Speak
           </button>
-          {listening && (
-            <div
-              className="listening-indicator"
-              aria-live="assertive"
-            ></div>
-          )}
-          {speaking && (
-            <div
-              className="speaking-indicator"
-              aria-live="assertive"
-            ></div>
-          )}
+          {/* Indicators */}
+          <div className="indicator-container">
+            {listening && (
+              <div
+                className="listening-indicator"
+                aria-live="assertive"
+              ></div>
+            )}
+            {speaking && (
+              <div
+                className="speaking-indicator"
+                aria-live="assertive"
+              ></div>
+            )}
+          </div>
           {permissionError && (
-            <p style={{ color: "red" }} aria-live="assertive">
+            <p className="permission-error" aria-live="assertive">
               Microphone access denied. Please allow microphone access.
             </p>
           )}
