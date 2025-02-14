@@ -1,3 +1,10 @@
+---
+title: "Tax Rate Comparison: United States Vs World "
+date: "2025-02-13"
+author: "Mahboob Iqbal"
+excerpt: "Explore the differences in tax rates between the United States and other countries, and understand the impact on businesses and individuals."
+coverImage: "/images/business-tax-saving-strategy.jpg"
+---
 # Tax Rate Comparison: United States, Germany, United Kingdom, and Japan
 
 ## Introduction
