@@ -13,7 +13,6 @@ import {
 } from '@mui/material';
 import styles from '@/app/TaxCalculator.module.css';
 
-
 // 2024 Federal tax brackets (single filer) for ordinary income
 const federalTaxBrackets = [
   { min: 0, max: 9950, rate: 0.10 },
@@ -116,7 +115,6 @@ const TaxCalculator = () => {
     const deductionUsed = Math.max(standardDeduction, itemizedDeduction);
     setDeductionStrategy(itemizedDeduction > standardDeduction ? 'Itemized' : 'Standard');
 
-    // Assume totalIncome includes all sources.
     // Ordinary income = totalIncome minus preferential income (qualified dividends + LT gains)
     const ordinaryIncome = totalIncome - (qDividends + ltGains);
     // Apply deductions only to the ordinary income
@@ -197,11 +195,15 @@ const TaxCalculator = () => {
   };
 
   return (
-    <Box className={styles.container}>
+    <Box className={styles.container} component="main" tabIndex={-1}>
       <Typography variant="h4" className={styles.heading} gutterBottom>
         2024 Tax Calculator
       </Typography>
-      {error && <Typography className={styles.error}>{error}</Typography>}
+      {error && (
+        <Typography className={styles.error} aria-live="assertive" role="alert">
+          {error}
+        </Typography>
+      )}
       <Stack spacing={2}>
         <TextField
           label="Total Income"
@@ -210,6 +212,7 @@ const TaxCalculator = () => {
           onChange={(e) => setIncome(e.target.value)}
           fullWidth
           className={styles.inputField}
+          inputProps={{ 'aria-label': 'Enter total income in dollars' }}
         />
         <TextField
           label="Qualified Dividends"
@@ -218,6 +221,7 @@ const TaxCalculator = () => {
           onChange={(e) => setQualifiedDividends(e.target.value)}
           fullWidth
           className={styles.inputField}
+          inputProps={{ 'aria-label': 'Enter qualified dividends amount' }}
         />
         <TextField
           label="Long-Term Capital Gains"
@@ -226,9 +230,12 @@ const TaxCalculator = () => {
           onChange={(e) => setLongTermGains(e.target.value)}
           fullWidth
           className={styles.inputField}
+          inputProps={{ 'aria-label': 'Enter long-term capital gains amount' }}
         />
 
-        <Typography variant="h6">Itemized Deductions</Typography>
+        <Typography variant="h6" component="h2">
+          Itemized Deductions
+        </Typography>
         <TextField
           label="Medical Expenses"
           type="number"
@@ -236,6 +243,7 @@ const TaxCalculator = () => {
           onChange={(e) => setMedical(e.target.value)}
           fullWidth
           className={styles.inputField}
+          inputProps={{ 'aria-label': 'Enter medical expenses' }}
         />
         <TextField
           label="State and Local Taxes (SALT)"
@@ -244,6 +252,7 @@ const TaxCalculator = () => {
           onChange={(e) => setSalt(e.target.value)}
           fullWidth
           className={styles.inputField}
+          inputProps={{ 'aria-label': 'Enter state and local taxes' }}
         />
         <TextField
           label="Mortgage Interest"
@@ -252,6 +261,7 @@ const TaxCalculator = () => {
           onChange={(e) => setMortgage(e.target.value)}
           fullWidth
           className={styles.inputField}
+          inputProps={{ 'aria-label': 'Enter mortgage interest amount' }}
         />
         <TextField
           label="Charitable Contributions"
@@ -260,6 +270,7 @@ const TaxCalculator = () => {
           onChange={(e) => setCharity(e.target.value)}
           fullWidth
           className={styles.inputField}
+          inputProps={{ 'aria-label': 'Enter charitable contributions amount' }}
         />
         <TextField
           label="Business Expenses"
@@ -268,11 +279,17 @@ const TaxCalculator = () => {
           onChange={(e) => setBusiness(e.target.value)}
           fullWidth
           className={styles.inputField}
+          inputProps={{ 'aria-label': 'Enter business expenses amount' }}
         />
 
         <FormControl fullWidth className={styles.inputField}>
-          <InputLabel>State</InputLabel>
-          <Select value={state} onChange={(e) => setState(e.target.value)}>
+          <InputLabel id="state-select-label">State</InputLabel>
+          <Select
+            labelId="state-select-label"
+            value={state}
+            onChange={(e) => setState(e.target.value)}
+            label="State"
+          >
             {Object.keys(statesTaxRates).map((stateCode) => (
               <MenuItem key={stateCode} value={stateCode}>
                 {stateCode}
@@ -282,23 +299,25 @@ const TaxCalculator = () => {
         </FormControl>
 
         <Stack direction="row" className={styles.buttons} spacing={2}>
-          <Button variant="contained" color="primary" onClick={calculateTaxes}>
+          <Button variant="contained" color="primary" onClick={calculateTaxes} aria-label="Calculate Taxes">
             Calculate Taxes
           </Button>
-          <Button variant="outlined" color="secondary" onClick={handleReset}>
+          <Button variant="outlined" color="secondary" onClick={handleReset} aria-label="Reset Form">
             Reset
           </Button>
-          <Button variant="contained" color="success" onClick={handleSave}>
+          <Button variant="contained" color="success" onClick={handleSave} aria-label="Save Data">
             Save
           </Button>
-          <Button variant="contained" color="info" onClick={handleLoad}>
+          <Button variant="contained" color="info" onClick={handleLoad} aria-label="Load Saved Data">
             Load
           </Button>
         </Stack>
 
         {(federalTaxAmount > 0 || stateTaxAmount > 0) && (
-          <Box className={styles.results}>
-            <Typography variant="h6">Results</Typography>
+          <Box className={styles.results} role="region" aria-labelledby="results-heading">
+            <Typography variant="h6" id="results-heading">
+              Results
+            </Typography>
             <Typography>
               Deduction Strategy: {deductionStrategy} (Deduction used: $
               {Math.max(

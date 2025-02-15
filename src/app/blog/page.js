@@ -1,3 +1,4 @@
+// app/blog/page.jsx
 import path from 'path';
 import fs from 'fs/promises';
 import matter from 'gray-matter';
@@ -5,7 +6,7 @@ import BlogSearch from './BlogSearch';
 import Header from '../Header';
 import Footer from '../Footer';
 import Script from 'next/script';
-import Head from 'next/head';
+import SEO from '@/app/components/SEO';
 
 // Function to fetch blog posts
 async function getBlogPosts() {
@@ -17,15 +18,13 @@ async function getBlogPosts() {
       const filePath = path.join(contentDir, filename);
       const fileContent = await fs.readFile(filePath, 'utf-8');
       const { data } = matter(fileContent);
-
       return { frontMatter: data, slug: filename.replace(/\.mdx?$/, '') };
     })
   );
-
   return posts;
 }
 
-// Structured Data for the Website (Search Action)
+// Website and Breadcrumb structured data
 const websiteStructuredData = {
   "@context": "https://schema.org",
   "@type": "WebSite",
@@ -38,23 +37,12 @@ const websiteStructuredData = {
   }
 };
 
-// Breadcrumb Structured Data
 const breadcrumbStructuredData = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Home",
-      "item": "https://www.taxadvisor.live"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Tax Blog",
-      "item": "https://www.taxadvisor.live/blog"
-    }
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.taxadvisor.live" },
+    { "@type": "ListItem", "position": 2, "name": "Tax Blog", "item": "https://www.taxadvisor.live/blog" }
   ]
 };
 
@@ -63,52 +51,29 @@ export default async function BlogListPage() {
 
   return (
     <>
-      <Head>
-        <title>Tax Blog | TaxAdvisor</title>
-        <meta
-          name="description"
-          content="Stay updated with the latest tax news, tips, and blog posts on TaxAdvisor. Learn about tax regulations, tax-saving strategies, and more."
-        />
-        <meta name="robots" content="index, follow" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="canonical" href="https://www.taxadvisor.live/blog" />
-
-        {/* Open Graph Meta Tags */}
-        <meta property="og:title" content="Tax Blog | TaxAdvisor" />
-        <meta
-          property="og:description"
-          content="Stay updated with the latest tax news, tips, and blog posts on TaxAdvisor. Learn about tax regulations, tax-saving strategies, and more."
-        />
-        <meta property="og:url" content="https://www.taxadvisor.live/blog" />
-        <meta property="og:type" content="website" />
-        <meta property="og:site_name" content="TaxAdvisor" />
-        <meta property="og:locale" content="en_US" />
-        <meta property="og:image" content="https://www.taxadvisor.live/og-image.jpg" />
-
-        {/* Twitter Card Meta Tags */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Tax Blog | TaxAdvisor" />
-        <meta
-          name="twitter:description"
-          content="Stay updated with the latest tax news, tips, and blog posts on TaxAdvisor. Learn about tax regulations, tax-saving strategies, and more."
-        />
-        <meta name="twitter:image" content="https://www.taxadvisor.live/twitter-image.jpg" />
-        <meta name="twitter:site" content="@TaxAdvisor" />
-        <meta name="twitter:creator" content="@TaxAdvisor" />
-
-        {/* JSON‑LD Structured Data */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteStructuredData) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbStructuredData) }}
-        />
-
-        {/* Favicon */}
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <SEO
+        title="Tax Blog | TaxAdvisor"
+        description="Stay updated with the latest tax news, tips, and blog posts on TaxAdvisor. Learn about tax regulations, tax-saving strategies, and more."
+        canonical="https://www.taxadvisor.live/blog"
+        openGraph={{
+          title: "Tax Blog | TaxAdvisor",
+          description: "Stay updated with the latest tax news, tips, and blog posts on TaxAdvisor. Learn about tax regulations, tax-saving strategies, and more.",
+          url: "https://www.taxadvisor.live/blog",
+          type: "website",
+          site_name: "TaxAdvisor",
+          locale: "en_US",
+          image: "https://www.taxadvisor.live/og-image.jpg",
+        }}
+        twitter={{
+          card: "summary_large_image",
+          title: "Tax Blog | TaxAdvisor",
+          description: "Stay updated with the latest tax news, tips, and blog posts on TaxAdvisor. Learn about tax regulations, tax-saving strategies, and more.",
+          image: "https://www.taxadvisor.live/twitter-image.jpg",
+          site: "@TaxAdvisor",
+          creator: "@TaxAdvisor",
+        }}
+        structuredData={[websiteStructuredData, breadcrumbStructuredData]}
+      />
 
       {/* Google AdSense */}
       <Script

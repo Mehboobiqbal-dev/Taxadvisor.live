@@ -1,115 +1,101 @@
-import fs from 'fs';
-import fsp from 'fs/promises';
+// app/blog/[slug]/page.jsx
 import path from 'path';
+import { promises as fs } from 'fs';
 import matter from 'gray-matter';
 import { remark } from 'remark';
 import html from 'remark-html';
-import Script from "next/script";
-import Head from 'next/head';
+import Script from 'next/script';
+import SEO from '@/app/components/SEO';
 import Header from '@/app/Header';
 import Footer from '@/app/Footer';
 import './blog.css';
 
-// Utility function: calculate reading time (assuming 200 words per minute)
+// Utility function: calculate reading time (200 words per minute)
 function calculateReadingTime(text) {
-  const wordsPerMinute = 200;
   const words = text.trim().split(/\s+/).length;
-  return Math.ceil(words / wordsPerMinute);
+  return Math.ceil(words / 200);
 }
 
 async function getBlogContent(slug) {
-  const normalizedSlug = slug.endsWith('.md') ? slug.slice(0, -3) : slug;
+  const normalizedSlug = slug.replace(/\.md$/, '');
   const filePath = path.join(process.cwd(), 'content', `${normalizedSlug}.md`);
+  let fileContent;
 
-  if (!fs.existsSync(filePath)) {
-    throw new Error(`File not found: ${filePath}`);
+  try {
+    fileContent = await fs.readFile(filePath, 'utf-8');
+  } catch (error) {
+    throw new Error(`Blog post not found: ${filePath}`);
   }
 
-  const fileContent = fs.readFileSync(filePath, 'utf-8');
   const { data, content } = matter(fileContent);
-
   const processedContent = await remark().use(html).process(content);
   const contentHtml = processedContent.toString();
-
   const readingTime = calculateReadingTime(content);
 
   return { frontMatter: data, content: contentHtml, readingTime };
 }
 
+// Generate static paths for dynamic routes
 export async function generateStaticParams() {
   const contentDir = path.join(process.cwd(), 'content');
-  const files = await fsp.readdir(contentDir);
-
+  const files = await fs.readdir(contentDir);
   return files.map((filename) => ({
-    slug: filename.replace('.md', ''),
+    slug: filename.replace(/\.md$/, ''),
   }));
 }
 
-// Main BlogPost component
 export default async function BlogPost({ params }) {
   const { slug } = params;
   const { frontMatter, content, readingTime } = await getBlogContent(slug);
 
   return (
     <>
-      <Script 
-        async 
+      <Script
+        async
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2663142027592405"
         crossOrigin="anonymous"
         strategy="afterInteractive"
       />
 
+      <SEO
+        title={`${frontMatter.title} | TaxAdvisor Blog`}
+        description={frontMatter.excerpt || frontMatter.title}
+        canonical={`https://taxadvisor.live/blog/${slug}`}
+        openGraph={{
+          title: frontMatter.title,
+          description: frontMatter.excerpt || frontMatter.title,
+          url: `https://taxadvisor.live/blog/${slug}`,
+          type: "article",
+          image: frontMatter.image || "/default-image.jpg",
+          locale: "en_US",
+          site_name: "TaxAdvisor",
+        }}
+        twitter={{
+          card: "summary_large_image",
+          title: frontMatter.title,
+          description: frontMatter.excerpt || frontMatter.title,
+          image: frontMatter.image || "/default-image.jpg",
+          site: "@TaxAdvisor",
+          creator: "@TaxAdvisor",
+        }}
+      />
+
       <Header />
       <article className="blog-post">
-        <Head>
-          <title>{frontMatter.title} | TaxAdvisor Blog</title>
-          <meta
-            name="description"
-            content={frontMatter.excerpt || frontMatter.title}
-          />
-          <meta name="robots" content="index, follow" />
-          <meta property="og:type" content="article" />
-          <meta property="og:title" content={frontMatter.title} />
-          <meta
-            property="og:description"
-            content={frontMatter.excerpt || frontMatter.title}
-          />
-          <meta property="og:url" content={`https://taxadvisor.live/blog/${params.slug}`} />
-          <meta property="og:image" content={frontMatter.image || "/default-image.jpg"} />
-          <meta property="og:author" content={frontMatter.author || 'TaxAdvisor'} />
-          <meta property="article:published_time" content={frontMatter.date} />
-          <meta property="article:modified_time" content={frontMatter.date} />
-          <meta property="article:section" content="Blog" />
-          <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:title" content={frontMatter.title} />
-          <meta
-            name="twitter:description"
-            content={frontMatter.excerpt || frontMatter.title}
-          />
-          <meta name="twitter:image" content={frontMatter.image || "/default-image.jpg"} />
-        </Head>
-
-        {/* Blog Post Header */}
         <header className="blog-post-header">
           <h1>{frontMatter.title}</h1>
           <div className="blog-meta">
             <span className="blog-date">{frontMatter.date}</span>
-            {readingTime && (
-              <span className="blog-reading-time">{readingTime} min read</span>
-            )}
+            {readingTime && <span className="blog-reading-time">{readingTime} min read</span>}
           </div>
-          {frontMatter.author && (
-            <p className="blog-author">By {frontMatter.author}</p>
-          )}
+          {frontMatter.author && <p className="blog-author">By {frontMatter.author}</p>}
         </header>
-        
-        {/* Blog Post Content */}
+
         <div
           className="blog-content"
           dangerouslySetInnerHTML={{ __html: content }}
         />
 
-        {/* Blog Post Footer */}
         <footer className="blog-footer">
           <a href="/blog" className="back-to-blog">← Back to Blog</a>
         </footer>
