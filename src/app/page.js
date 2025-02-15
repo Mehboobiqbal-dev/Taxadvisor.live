@@ -1,11 +1,13 @@
 import Head from 'next/head';
-import Script from 'next/script'; // Import Next.js Script component
+import Script from 'next/script';
 import Header from './Header';
 import Footer from './Footer';
 import TaxCalculator from './TaxCalculator';
-import { BuyMeCoffee } from './components/BuyMeCoffee';
 import SmartTaxBot from './components/SmartTaxBot';
+import { BuyMeCoffee } from './components/BuyMeCoffee';
+import Image from 'next/image';
 
+// If possible, remove one of the CSS frameworks to reduce bundle size
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './globals.css'; // Global styles including Tailwind directives
 
@@ -31,18 +33,30 @@ export default function Home() {
           property="og:description"
           content="Get the latest tools and advice from TaxAdvisor to manage your taxes efficiently."
         />
-        <meta property="og:image" content="https://i.ibb.co/vxKbKLHT/photo.jpg" />
+        <meta
+          property="og:image"
+          content="https://i.ibb.co/vxKbKLHT/photo.jpg"
+        />
         <meta property="og:url" content="https://taxadvisor.live" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="TaxAdvisor - Professional Tax Solutions" />
-        <meta name="twitter:description" content="Get the latest tools and advice from TaxAdvisor to manage your taxes efficiently." />
-        <meta name="twitter:image" content="https://i.ibb.co/vxKbKLHT/photo.jpg" />
+        <meta
+          name="twitter:title"
+          content="TaxAdvisor - Professional Tax Solutions"
+        />
+        <meta
+          name="twitter:description"
+          content="Get the latest tools and advice from TaxAdvisor to manage your taxes efficiently."
+        />
+        <meta
+          name="twitter:image"
+          content="https://i.ibb.co/vxKbKLHT/photo.jpg"
+        />
         <meta name="twitter:creator" content="@TaxAdvisorLive" />
         <link rel="canonical" href="https://taxadvisor.live" />
         <meta name="robots" content="index, follow" />
       </Head>
 
-      {/* Google AdSense Script using Next.js Script component */}
+      {/* Google AdSense Script */}
       <Script 
         async 
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2663142027592405"
@@ -51,13 +65,16 @@ export default function Home() {
       />
 
       <div className="min-h-screen flex flex-col bg-gray-100">
-        {/* Header with Logo */}
+        {/* Header with optimized logo */}
         <Header>
           <div className="flex justify-center items-center py-4">
-            <img
+            <Image
               src="https://i.ibb.co/vxKbKLHT/photo.jpg"
               alt="TaxAdvisor Logo"
-              className="h-12"
+              width={48}      // explicit width
+              height={48}     // explicit height
+              priority       // preload this image for above-the-fold content
+              className="h-12" // additional styling if needed
             />
           </div>
         </Header>
