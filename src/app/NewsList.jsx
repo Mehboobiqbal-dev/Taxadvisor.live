@@ -1,36 +1,50 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import Script from "next/script";
-import Head from "next/head";
+// app/newslist/page.jsx
+import Parser from "rss-parser";
 import Header from "./Header";
 import Footer from "./Footer";
+import Script from "next/script";
+import Head from "next/head";
+import Image from "next/image";
 import "./NewsList.css";
 
-function NewsList() {
-  const [news, setNews] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+// Mark this as a server component (no "use client" directive)
+export const dynamic = "force-dynamic"; // Ensure the page fetches fresh data
 
-  useEffect(() => {
-    const fetchNews = async () => {
-      try {
-        const response = await fetch("/api/google-news");
-        if (!response.ok) throw new Error(`Error: ${response.status}`);
-        const data = await response.json();
-        console.log("News API Response:", data);
-        setNews(data.articles);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+// Fetch news on the server
+async function getNews() {
+  const parser = new Parser({
+    customFields: {
+      item: [["media:content", "image", { keepArray: false, attr: "url" }]],
+    },
+  });
 
-    fetchNews();
-  }, []);
+  const feed = await parser.parseURL(
+    "https://news.google.com/rss/search?q=tax+finance&hl=en-US&gl=US&ceid=US:en"
+  );
 
-  // Define structured data for a collection page
+  const seenLinks = new Set();
+  const articles = [];
+
+  for (const item of feed.items) {
+    const link = item.link;
+    if (!seenLinks.has(link)) {
+      seenLinks.add(link);
+      articles.push({
+        title: item.title?.trim(),
+        link,
+        published: item.pubDate,
+        description: item.contentSnippet || "No description available",
+        image: item.image || null,
+      });
+    }
+  }
+  return articles;
+}
+
+export default async function NewsList() {
+  const news = await getNews();
+
+  // JSON‑LD Structured Data for SEO
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -44,12 +58,11 @@ function NewsList() {
         "url": "https://taxadvisor.live/path/to/logo.jpg" // Replace with your logo URL
       }
     }
-    // Optionally, add a mainEntity ItemList if you have server-side article data
   };
 
   return (
     <>
-      {/* Google AdSense */}
+      {/* Google AdSense Script */}
       <Script
         async
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2663142027592405"
@@ -58,7 +71,6 @@ function NewsList() {
       />
 
       <Head>
-        {/* SEO Meta Tags */}
         <title>Latest Tax News & Updates - SmartTaxBot</title>
         <meta
           name="description"
@@ -74,7 +86,10 @@ function NewsList() {
           property="og:description"
           content="Stay updated with the latest tax news, tax-saving tips, and tax regulations. SmartTaxBot brings you the most relevant tax-related articles."
         />
-        <meta property="og:image" content="https://taxadvisor.live/path/to/thumbnail.jpg" />
+        <meta
+          property="og:image"
+          content="https://taxadvisor.live/path/to/thumbnail.jpg"
+        />
         <meta property="og:url" content="https://taxadvisor.live/newslist" />
         <meta property="og:type" content="website" />
 
@@ -85,7 +100,10 @@ function NewsList() {
           name="twitter:description"
           content="Stay updated with the latest tax news, tax-saving tips, and tax regulations."
         />
-        <meta name="twitter:image" content="https://taxadvisor.live/path/to/thumbnail.jpg" />
+        <meta
+          name="twitter:image"
+          content="https://taxadvisor.live/path/to/thumbnail.jpg"
+        />
 
         {/* JSON‑LD Structured Data */}
         <script
@@ -98,61 +116,54 @@ function NewsList() {
 
       <div className="container py-4">
         <h1 className="mb-4 text-center">Latest Tax News & Updates - SmartTaxBot</h1>
-
-        {loading && <div>Loading latest tax news...</div>}
-        {error && <div>Error: {error}</div>}
-
-        {!loading && !error && (
-          <>
-            {news.length === 0 ? (
-              <p className="text-center">
-                No tax-related news found. Check back later for updates.
-              </p>
-            ) : (
-              <div className="row">
-                {news.map((article, index) => (
-                  <div
-                    key={article.link || index}
-                    className="col-md-4 mb-4 animate__animated animate__fadeInUp"
+        {news.length === 0 ? (
+          <p className="text-center">
+            No tax-related news found. Check back later for updates.
+          </p>
+        ) : (
+          <div className="row">
+            {news.map((article, index) => (
+              <div
+                key={article.link || index}
+                className="col-md-4 mb-4 animate__animated animate__fadeInUp"
+              >
+                <article className="card h-100 shadow-sm">
+                  <a
+                    href={article.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-decoration-none text-dark"
                   >
-                    <article className="card h-100 shadow-sm">
-                      <a
-                        href={article.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-decoration-none text-dark"
-                      >
-                        {article.image && (
-                          <img
-                            src={article.image}
-                            alt={article.title}
-                            className="card-img-top"
-                            style={{
-                              objectFit: "cover",
-                              maxHeight: "200px",
-                            }}
-                          />
-                        )}
-                        <div className="card-body">
-                          <h2 className="card-title">{article.title}</h2>
-                          <p className="card-text">{article.description}</p>
-                          <p className="card-text">
-                            <small className="text-muted">
-                              {new Date(article.published).toLocaleDateString("en-US", {
-                                year: "numeric",
-                                month: "long",
-                                day: "numeric",
-                              })}
-                            </small>
-                          </p>
-                        </div>
-                      </a>
-                    </article>
-                  </div>
-                ))}
+                    {article.image && (
+                      <div className="card-img-wrapper">
+                        <Image
+                          src={article.image}
+                          alt={article.title}
+                          layout="responsive"
+                          width={400} // Set based on your design
+                          height={200} // Set based on your design
+                          objectFit="cover"
+                        />
+                      </div>
+                    )}
+                    <div className="card-body">
+                      <h2 className="card-title">{article.title}</h2>
+                      <p className="card-text">{article.description}</p>
+                      <p className="card-text">
+                        <small className="text-muted">
+                          {new Date(article.published).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          })}
+                        </small>
+                      </p>
+                    </div>
+                  </a>
+                </article>
               </div>
-            )}
-          </>
+            ))}
+          </div>
         )}
       </div>
 
@@ -160,5 +171,3 @@ function NewsList() {
     </>
   );
 }
-
-export default NewsList;
