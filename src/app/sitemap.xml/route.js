@@ -1,5 +1,5 @@
-// src/app/sitemap.xml.js
-export default async function sitemap() {
+// src/app/sitemap.xml/route.js
+export async function GET() {
     const baseUrl = 'https://taxadvisor.live';
   
     // List out the public URL routes you want to include
@@ -13,18 +13,15 @@ export default async function sitemap() {
       'tax-calculator',
       'newslist',
       'about',
-     
-      // Add more routes as needed
     ];
   
     // Create XML entries for each route
     const urls = routes
       .map((route) => {
         const path = route ? `/${route}` : '';
-        return `
-    <url>
-      <loc>${baseUrl}${path}</loc>
-    </url>`;
+        return `<url>
+    <loc>${baseUrl}${path}</loc>
+  </url>`;
       })
       .join('');
   
@@ -36,8 +33,8 @@ export default async function sitemap() {
   
     return new Response(sitemapXml, {
       headers: {
-        'Content-Type': 'application/xml',
-      },
+        'Content-Type': 'application/xml'
+      }
     });
   }
   
