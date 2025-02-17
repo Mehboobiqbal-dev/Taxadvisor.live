@@ -11,38 +11,28 @@ export async function POST(request) {
       });
     }
 
-    // Check for specific prompts
+    // Convert prompt to lowercase for comparison
     const lowerPrompt = prompt.toLowerCase();
-    if (
-      lowerPrompt.includes("what's your name") ||
-      lowerPrompt.includes("what is your name") ||
-      lowerPrompt.includes("who are you") ||
-      lowerPrompt.includes("tell me your name") ||
-      lowerPrompt.includes("introduce yourself") ||
-      lowerPrompt.includes("who made you") ||
-      lowerPrompt.includes("who created you") ||
-      lowerPrompt.includes("what do you do") ||
-      lowerPrompt.includes("what is your purpose")
-    ) {
-      return new Response(
-        JSON.stringify({
-          text: "I am SmartTaxBot, an AI assistant developed by Mahboob Iqbal. My purpose is to help you with tax-related queries and financial information.",
-        }),
-        {
-          status: 200,
-          headers: { "Content-Type": "application/json" },
-        }
-      );
+
+    // Custom handling for specific prompts
+    const predefinedPrompts = [
+      "what's your name", "what is your name", "who are you", "tell me your name",
+      "introduce yourself", "who made you", "who created you", "what do you do",
+      "what is your purpose"
+    ];
+
+    if (predefinedPrompts.some(q => lowerPrompt.includes(q))) {
+      prompt = `${prompt} (Answer as SmartTaxBot, an AI assistant developed by Mahboob Iqbal, focusing on tax-related queries and financial information.)`;
     }
 
     // Initialize the Google Generative AI client
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-    // Generate content based on the prompt
+    // Generate content based on the modified prompt
     const result = await model.generateContent(prompt);
-    
-    // ✅ Correct way to extract response
+
+    // Extract response properly from API
     const responseText = result?.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, I couldn't generate a response.";
 
     // Return the response from the API
