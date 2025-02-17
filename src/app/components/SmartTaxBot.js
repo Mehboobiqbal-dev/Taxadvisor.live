@@ -25,6 +25,30 @@ export default function SmartTaxBot() {
     speechSynthesis.speak(utterance);
   };
 
+  // Message Component
+  function Message({ text, sender }) {
+    const [expanded, setExpanded] = useState(false);
+    const isLongMessage = text.length > 300; // Adjust the length as needed
+
+    return (
+      <div className={`message ${sender}`}>
+        {isLongMessage && !expanded ? (
+          <div>
+            {text.slice(0, 300)}...{" "}
+            <button onClick={() => setExpanded(true)}>Read more</button>
+          </div>
+        ) : (
+          <div>
+            {text}{" "}
+            {isLongMessage && (
+              <button onClick={() => setExpanded(false)}>Read less</button>
+            )}
+          </div>
+        )}
+      </div>
+    );
+  }
+
   // Memoized handleSubmit function to process user input and fetch AI response
   const handleSubmit = useCallback(
     async (userMessage) => {
@@ -70,7 +94,6 @@ export default function SmartTaxBot() {
         setLoading(false);
       }
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [messages]
   );
 
@@ -182,17 +205,17 @@ export default function SmartTaxBot() {
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebApplication",
-              "name": "SmartTaxBot",
-              "url": "https://taxadvisor.live/SmartTaxBot",
-              "applicationCategory": "BusinessApplication",
-              "operatingSystem": "ALL",
-              "description":
+              name: "SmartTaxBot",
+              url: "https://taxadvisor.live/SmartTaxBot",
+              applicationCategory: "BusinessApplication",
+              operatingSystem: "ALL",
+              description:
                 "SmartTaxBot is an AI-powered tax assistant designed to help you navigate tax-related queries quickly and efficiently.",
-              "offers": {
+              offers: {
                 "@type": "Offer",
-                "price": "0",
-                "priceCurrency": "USD"
-              }
+                price: "0",
+                priceCurrency: "USD",
+              },
             }),
           }}
         />
@@ -206,9 +229,7 @@ export default function SmartTaxBot() {
           aria-live="polite"
         >
           {messages.map((msg, index) => (
-            <div key={index} className={`message ${msg.sender}`}>
-              <p>{msg.text}</p>
-            </div>
+            <Message key={index} text={msg.text} sender={msg.sender} />
           ))}
           {loading && (
             <div className="message ai">

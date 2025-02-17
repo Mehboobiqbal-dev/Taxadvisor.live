@@ -5,8 +5,7 @@
   justify-content: space-between;
   width: 100%;
   max-width: 600px;
-  min-height: 500px;
-  max-height: 80vh;
+  height: 80vh; /* Set a fixed height */
   margin: 2rem auto;
   background: #212e3f;
   border-radius: 12px;
@@ -28,17 +27,10 @@
 .smarttaxbot-messages {
   flex-grow: 1;
   padding: 20px;
-  overflow-y: auto;
+  overflow-y: auto; /* Ensure it scrolls vertically */
   background: #f9f9f9;
   border-radius: 8px;
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
   margin-bottom: 1rem;
-  display: -webkit-box;
-  -webkit-line-clamp: 10;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  scrollbar-width: thin;
-  -webkit-overflow-scrolling: touch;
 }
 
 /* Message Style */
@@ -52,6 +44,7 @@
   color: #000;
   line-height: 1.4;
   transition: background-color 0.3s ease;
+  overflow-wrap: break-word; /* Prevent text from overflowing */
 }
 
 /* User's Message */
@@ -124,99 +117,6 @@
   cursor: not-allowed;
 }
 
-/* Listening Indicator */
-.listening-indicator {
-  background-color: #ffd700;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  margin-left: 1rem;
-  animation: pulse 1s infinite;
-}
-
-
-.speaking-indicator {
-  background-color: #32cd32;
-  
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  margin-left: 1rem;
-  animation: pulse 1s infinite;
-}
-
-/* Keyframes for pulse animation */
-@keyframes pulse {
-  0% { transform: scale(0.9); opacity: 0.7; }
-  50% { transform: scale(1.1); opacity: 1; }
-  100% { transform: scale(0.9); opacity: 0.7; }
-}
-
-/* Responsive Adjustments for Tablets */
-@media (max-width: 768px) {
-  .smarttaxbot-container {
-    max-width: 90%;
-    height: 70vh;
-    margin: 1rem auto;
-    padding: 1.5rem;
-  }
-  
-  .smarttaxbot-title {
-    font-size: 1.5rem;
-    margin-bottom: 0.75rem;
-  }
-  
-  .message {
-    font-size: 14px;
-    padding: 12px 15px;
-  }
-  
-  .smarttaxbot-input,
-  .smarttaxbot-submit {
-    padding: 12px;
-    font-size: 14px;
-  }
-}
-
-/* Additional Responsive Adjustments for Mobile Phones */
-@media (max-width: 480px) {
-  .smarttaxbot-container {
-    max-width: 100%;
-    height: 80vh;
-    margin: 0.5rem auto;
-    padding: 1rem;
-    border-radius: 0;
-  }
-  
-  .smarttaxbot-title {
-    font-size: 1.3rem;
-    margin-bottom: 0.5rem;
-  }
-  
-  .smarttaxbot-messages {
-    padding: 10px;
-  }
-  
-  .message {
-    font-size: 13px;
-    padding: 10px 12px;
-  }
-  
-  .smarttaxbot-input,
-  .smarttaxbot-submit {
-    font-size: 13px;
-    padding: 10px;
-  }
-  
-  .smarttaxbot-form {
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-  
-  .smarttaxbot-submit {
-    width: 100%;
-  }
-}
 /* Speak Button */
 .speak-button {
   background-color: #28a745; /* Green color */
@@ -283,13 +183,32 @@
   margin-top: 1rem;
 }
 
-/* Responsive adjustments for the new elements */
+/* Responsive Adjustments for Tablets */
 @media (max-width: 768px) {
-  .speak-button {
-    padding: 10px 15px;
-    font-size: 14px;
+  .smarttaxbot-container {
+    max-width: 90%;
+    height: 70vh;
+    margin: 1rem auto;
+    padding: 1.5rem;
   }
   
+  .smarttaxbot-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .message {
+    font-size: 14px;
+    padding: 12px 15px;
+  }
+  
+  .smarttaxbot-input,
+  .smarttaxbot-submit,
+  .speak-button {
+    padding: 12px;
+    font-size: 14px;
+  }
+
   .listening-indicator,
   .speaking-indicator {
     width: 16px;
@@ -297,17 +216,57 @@
   }
 }
 
+/* Additional Responsive Adjustments for Mobile Phones */
 @media (max-width: 480px) {
+  .smarttaxbot-container {
+    max-width: 100%;
+    height: 80vh;
+    margin: 0.5rem auto;
+    padding: 1rem;
+    border-radius: 0;
+  }
+  
+  .smarttaxbot-title {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .smarttaxbot-messages {
+    padding: 10px;
+  }
+  
+  .message {
+    font-size: 13px;
+    padding: 10px 12px;
+  }
+  
+  .smarttaxbot-input,
+  .smarttaxbot-submit,
+  .speak-button {
+    font-size: 13px;
+    padding: 10px;
+  }
+  
+  .smarttaxbot-form {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .smarttaxbot-submit,
   .speak-button {
     width: 100%;
     justify-content: center;
     margin-left: 0;
-    padding: 10px;
-    font-size: 13px;
   }
-  
+
   .indicator-container {
     justify-content: center;
     margin: 0.5rem 0;
+  }
+
+  .listening-indicator,
+  .speaking-indicator {
+    width: 16px;
+    height: 16px;
   }
 }
