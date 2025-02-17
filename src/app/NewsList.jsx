@@ -1,4 +1,5 @@
 // app/newslist/page.jsx
+
 import Parser from "rss-parser";
 import Header from "./Header";
 import Footer from "./Footer";
@@ -7,57 +8,69 @@ import Head from "next/head";
 import Image from "next/image";
 import "./NewsList.css";
 
-// Mark this as a server component (no "use client" directive)
-export const dynamic = "force-dynamic"; // Ensure the page fetches fresh data
+// This page is a server component by default (no "use client" directive)
+// and therefore supports async/await.
+export const dynamic = "force-dynamic"; // Ensures the page fetches fresh data
 
 // Fetch news on the server
 async function getNews() {
-  const parser = new Parser({
-    customFields: {
-      item: [["media:content", "image", { keepArray: false, attr: "url" }]],
-    },
-  });
+  try {
+    const parser = new Parser({
+      customFields: {
+        item: [["media:content", "image", { keepArray: false, attr: "url" }]],
+      },
+    });
 
-  const feed = await parser.parseURL(
-    "https://news.google.com/rss/search?q=tax+finance&hl=en-US&gl=US&ceid=US:en"
-  );
+    const feed = await parser.parseURL(
+      "https://news.google.com/rss/search?q=tax+finance&hl=en-US&gl=US&ceid=US:en"
+    );
 
-  const seenLinks = new Set();
-  const articles = [];
-
-  for (const item of feed.items) {
-    const link = item.link;
-    if (!seenLinks.has(link)) {
-      seenLinks.add(link);
-      articles.push({
-        title: item.title?.trim(),
-        link,
-        published: item.pubDate,
-        description: item.contentSnippet || "No description available",
-        image: item.image || null,
-      });
+    if (!feed || !feed.items) {
+      throw new Error("Invalid feed data");
     }
+
+    const seenLinks = new Set();
+    const articles = [];
+
+    for (const item of feed.items) {
+      const link = item.link;
+      if (!seenLinks.has(link)) {
+        seenLinks.add(link);
+        articles.push({
+          title: item.title?.trim(),
+          link,
+          published: item.pubDate,
+          description: item.contentSnippet || "No description available",
+          image: item.image || null,
+        });
+      }
+    }
+    return articles;
+  } catch (error) {
+    console.error("Error fetching news:", error);
+    // Return an empty array so the page renders gracefully.
+    return [];
   }
-  return articles;
 }
 
 export default async function NewsList() {
   const news = await getNews();
 
-  // JSON‑LD Structured Data for SEO
+  // Reintroduce the structuredData variable
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "headline": "Latest Tax News & Updates - SmartTaxBot",
-    "description": "Stay updated with the latest tax news, tax-saving tips, and tax regulations. SmartTaxBot brings you the most relevant tax-related articles.",
-    "publisher": {
+    headline: "Latest Tax News & Updates - SmartTaxBot",
+    description:
+      "Stay updated with the latest tax news, tax-saving tips, and tax regulations. SmartTaxBot brings you the most relevant tax-related articles.",
+    publisher: {
       "@type": "Organization",
-      "name": "SmartTaxBot",
-      "logo": {
+      name: "SmartTaxBot",
+      logo: {
         "@type": "ImageObject",
-        "url": "https://taxadvisor.live/path/to/logo.jpg" // Replace with your logo URL
-      }
-    }
+        url: "https://taxadvisor.live/path/to/logo.jpg", // Replace with your logo URL
+      },
+    },
   };
 
   return (
@@ -81,7 +94,10 @@ export default async function NewsList() {
         <link rel="canonical" href="https://taxadvisor.live/newslist" />
 
         {/* Open Graph Meta Tags */}
-        <meta property="og:title" content="Latest Tax News & Updates - SmartTaxBot" />
+        <meta
+          property="og:title"
+          content="Latest Tax News & Updates - SmartTaxBot"
+        />
         <meta
           property="og:description"
           content="Stay updated with the latest tax news, tax-saving tips, and tax regulations. SmartTaxBot brings you the most relevant tax-related articles."
@@ -95,7 +111,10 @@ export default async function NewsList() {
 
         {/* Twitter Card Meta Tags */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Latest Tax News & Updates - SmartTaxBot" />
+        <meta
+          name="twitter:title"
+          content="Latest Tax News & Updates - SmartTaxBot"
+        />
         <meta
           name="twitter:description"
           content="Stay updated with the latest tax news, tax-saving tips, and tax regulations."
@@ -108,14 +127,19 @@ export default async function NewsList() {
         {/* JSON‑LD Structured Data */}
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(structuredData),
+          }}
         />
       </Head>
 
+      {/* Place Header inside the returned JSX */}
       <Header />
 
       <div className="container py-4">
-        <h1 className="mb-4 text-center">Latest Tax News & Updates - SmartTaxBot</h1>
+        <h1 className="mb-4 text-center">
+          Latest Tax News & Updates - SmartTaxBot
+        </h1>
         {news.length === 0 ? (
           <p className="text-center">
             No tax-related news found. Check back later for updates.
@@ -139,10 +163,9 @@ export default async function NewsList() {
                         <Image
                           src={article.image}
                           alt={article.title}
-                          layout="responsive"
-                          width={400} // Set based on your design
-                          height={200} // Set based on your design
-                          objectFit="cover"
+                          width={400} // Adjust as needed
+                          height={200} // Adjust as needed
+                          style={{ objectFit: "cover" }}
                         />
                       </div>
                     )}
@@ -151,11 +174,14 @@ export default async function NewsList() {
                       <p className="card-text">{article.description}</p>
                       <p className="card-text">
                         <small className="text-muted">
-                          {new Date(article.published).toLocaleDateString("en-US", {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                          })}
+                          {new Date(article.published).toLocaleDateString(
+                            "en-US",
+                            {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                            }
+                          )}
                         </small>
                       </p>
                     </div>
