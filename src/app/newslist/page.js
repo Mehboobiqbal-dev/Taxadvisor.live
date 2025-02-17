@@ -3,7 +3,7 @@ import NewsList from "../NewsList";  // Adjust import path if needed
 
 const NewsPage = () => {
   return (
-    <div className="container py-4">
+    <div>
      
       <NewsList /> 
     </div>
