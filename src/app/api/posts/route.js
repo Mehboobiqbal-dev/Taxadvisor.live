@@ -2,9 +2,7 @@ import path from 'path';
 import fs from 'fs/promises';
 import matter from 'gray-matter';
 
-// ... existing code ...
-
-export default async function handler(req, res) {
+export async function GET() {
   try {
     const contentDir = path.join(process.cwd(), 'content');
     const files = await fs.readdir(contentDir);
@@ -15,20 +13,19 @@ export default async function handler(req, res) {
         const fileContent = await fs.readFile(filePath, 'utf-8');
         const { data, content } = matter(fileContent);
 
-        // SEO: Include metadata for structured data
-        return { 
-          slug: filename.replace('.md', ''), 
+        return {
+          slug: filename.replace('.md', ''),
           frontMatter: {
             ...data,
-            metaDescription: content.slice(0, 160)
+            metaDescription: content.slice(0, 160),
           },
-          content: content.slice(0, 160) // Include a snippet for description
+          content: content.slice(0, 160), // Include a snippet for description
         };
       })
     );
 
-    res.status(200).json(posts);
+    return Response.json(posts, { status: 200 });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return Response.json({ error: error.message }, { status: 500 });
   }
 }
