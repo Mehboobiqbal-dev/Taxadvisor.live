@@ -16,7 +16,7 @@ const Footer = () => {
 
         {/* Navigation Links */}
         <nav className="footer-links" aria-labelledby="footer-navigation">
-          <h2 id="footer-navigation" className="visually-hidden">Footer Navigation</h2>
+          <h2 id="footer-navigation" className="visually-hidden"></h2>
           <ul>
             <li>
               <Link href="/about" aria-label="About Us">

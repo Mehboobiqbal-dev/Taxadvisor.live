@@ -1,29 +1,37 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Metadata } from "next";
+import localFont from "next/font/local";
 import Script from "next/script";
+import Head from "next/head";
 import "./globals.css";
-import Head from "next/head"; // Import Head for metadata
+import { Toaster } from "@/app/components/ui/sonner";
 
-const geistSans = Geist({
+// Using local fonts
+const geistSans = localFont({
+  src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
-  subsets: ["latin"],
+  weight: "100 900",
 });
-
-const geistMono = Geist_Mono({
+const geistMono = localFont({
+  src: "./fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: "100 900",
 });
 
-// Metadata for SEO
-export const metadata = {
+// Metadata for SEO and site settings
+export const metadata: Metadata = {
   title: "Tax Advisor",
   description: "Simplifying taxation",
   other: {
-    "google-site-verification": "wLF0iQsjbx3PcKcGjJIFnZEC8GX_kUCWA7oz4JKJtjA", // Site Verification
+    "google-site-verification": "wLF0iQsjbx3PcKcGjJIFnZEC8GX_kUCWA7oz4JKJtjA",
     "google-adsense-account": "ca-pub-2663142027592405",
   },
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
       <Head>
@@ -32,17 +40,15 @@ export default function RootLayout({ children }) {
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
           rel="stylesheet"
         />
-        
         {/* Animate.css */}
         <link
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
         />
       </Head>
-      
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <Toaster />
         {children}
-
         {/* Google Analytics */}
         <Script
           strategy="afterInteractive"

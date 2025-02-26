@@ -1,3 +1,7 @@
+'use client';
+
+
+import { useState } from 'react';
 import Head from 'next/head';
 import Script from 'next/script';
 import Header from './Header';
@@ -64,6 +68,9 @@ export default function Home() {
         strategy="afterInteractive"
       />
 
+      {/* New: SessionProvider wrapping UserButton from your page.tsx */}
+      
+
       <div className="min-h-screen flex flex-col bg-gray-100">
         {/* Header with optimized logo */}
         <Header>
@@ -86,6 +93,7 @@ export default function Home() {
         <main className="flex-grow p-6 container mx-auto">
           <TaxCalculator />
           <SmartTaxBot />
+          
         </main>
 
         {/* Footer Component */}

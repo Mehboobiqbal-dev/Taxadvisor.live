@@ -49,13 +49,17 @@
   gap: 1.5rem;
   margin: 0;
   padding: 0;
-  margin-left: auto;
+  margin-right: auto;
 }
 
 .header-links li {
   font-size: 1rem;
 }
-
+/* Header Left - Logo */
+.header-left {
+  flex-shrink: 0;
+  text-align: left;
+}
 .header-links a {
   color: white;
   text-decoration: none;
@@ -105,7 +109,7 @@
     font-size: 1.5rem; /* Smaller icon */
   }
 
-  /* If you still use a dropdown menu, adjust its position */
+  /* Adjust mobile navigation links */
   .header-links {
     display: none;
     flex-direction: column;
@@ -135,4 +139,28 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Styles for authentication links in the header */
+/* Styles for authentication links (if used separately) */
+.auth-links {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.auth-links a {
+  color: white;
+  background: transparent;
+  border: 1px solid white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-family: 'Poppins', sans-serif;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.auth-links a:hover {
+  background: white;
+  color: #141e30;
 }
