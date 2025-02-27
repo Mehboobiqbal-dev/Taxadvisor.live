@@ -1,6 +1,5 @@
 import SmartTaxBot from "@/app/components/SmartTaxBot";
 
-
 const SmartTaxBotPage = () => {
   return (
     <div>
