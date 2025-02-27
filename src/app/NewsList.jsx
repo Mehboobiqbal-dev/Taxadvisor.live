@@ -5,6 +5,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Script from "next/script";
 import Head from "next/head";
+import { BuyMeCoffee } from './components/BuyMeCoffee';
 import Image from "next/image";
 import "./NewsList.css";
 
@@ -135,7 +136,7 @@ export default async function NewsList() {
 
       {/* Place Header inside the returned JSX */}
       <Header />
-
+      <BuyMeCoffee />
       <div className="container py-4">
         <h1 className="mb-4 text-center">
           Latest Tax News & Updates - SmartTaxBot

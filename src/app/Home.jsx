@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Head from 'next/head';
 import Header from "./Header"; // Ensure correct path
 import Footer from "./Footer"; // Ensure correct path
+import { BuyMeCoffee } from './components/BuyMeCoffee';
 import SmartTaxBot from './components/SmartTaxBot'; // Adjust path if needed
 import './Home.css';
 
@@ -76,7 +77,7 @@ const Home = () => {
 
       {/* Include Header */}
       <Header />
-
+      <BuyMeCoffee />
       {/* Main Content */}
       <main className="home">
         {/* Intro Section */}
