@@ -11,7 +11,8 @@ export const GET = async () => {
 
     // Optional: Create a new MongoClient to perform a ping
     // Make sure to replace <db_password> with your actual database password
-    const uri = "mongodb+srv://Mehboob090:Mehboob090%40@cluster0.zvqxj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+    const uri =
+      "";
     const pingClient = new MongoClient(uri, {
       serverApi: {
         version: ServerApiVersion.v1,
