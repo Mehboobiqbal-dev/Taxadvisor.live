@@ -7,7 +7,7 @@ import GithubProvider from "next-auth/providers/github";
 
 export const authOptions = {
   session: {
-    strategy: "jwt",
+    strategy: "jwt" as const,
   },
   providers: [
     GithubProvider({
@@ -47,7 +47,9 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async signIn({ account, profile }) {
+    async signIn(params) {
+      // Destructure the parameters provided by NextAuth
+      const { account, profile } = params;
       if (account?.provider === "github") {
         await connectToDatabase();
         const existingUser = await User.findOne({ email: profile?.email });
@@ -73,7 +75,7 @@ export const authOptions = {
         session.user = {
           email: token.email as string,
           name: token.name as string,
-          image: token.picture as string || null,
+          image: (token.picture as string) || null,
         };
       }
       return session;
