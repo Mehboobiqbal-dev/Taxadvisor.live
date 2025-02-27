@@ -1,11 +1,13 @@
+// src/app/api/auth/[...nextauth]/route.ts
+
 import NextAuth from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import GithubProvider from "next-auth/providers/github";
 import User from "@/app/models/user";
 import connectToDatabase from "@/app/lib/mongodb";
 import bcrypt from "bcryptjs";
-import CredentialsProvider from "next-auth/providers/credentials";
-import GithubProvider from "next-auth/providers/github";
 
-export const authOptions = {
+const authOptions = {
   session: {
     strategy: "jwt" as const,
   },
@@ -48,7 +50,6 @@ export const authOptions = {
   ],
   callbacks: {
     async signIn(params) {
-      // Destructure the parameters provided by NextAuth
       const { account, profile } = params;
       if (account?.provider === "github") {
         await connectToDatabase();
@@ -75,7 +76,6 @@ export const authOptions = {
         session.user = {
           email: token.email as string,
           name: token.name as string,
-          image: (token.picture as string) || null,
         };
       }
       return session;
@@ -87,6 +87,6 @@ export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 };
 
-const handler = NextAuth(authOptions);
-
-export { handler as GET, handler as POST };
+// Directly export NextAuth handler as default export
+export const GET = NextAuth(authOptions);
+export const POST = NextAuth(authOptions);

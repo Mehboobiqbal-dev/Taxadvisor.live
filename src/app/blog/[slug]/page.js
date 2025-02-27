@@ -1,4 +1,5 @@
 // app/blog/[slug]/page.jsx
+
 import path from 'path';
 import { promises as fs } from 'fs';
 import matter from 'gray-matter';
@@ -8,6 +9,7 @@ import Script from 'next/script';
 import SEO from '@/app/components/SEO';
 import Header from '@/app/Header';
 import Footer from '@/app/Footer';
+import Link from 'next/link'; // Imported Link component
 import './blog.css';
 
 // Utility function: calculate reading time (200 words per minute)
@@ -65,18 +67,18 @@ export default async function BlogPost({ params }) {
           title: frontMatter.title,
           description: frontMatter.excerpt || frontMatter.title,
           url: `https://taxadvisor.live/blog/${slug}`,
-          type: "article",
-          image: frontMatter.image || "/default-image.jpg",
-          locale: "en_US",
-          site_name: "TaxAdvisor",
+          type: 'article',
+          image: frontMatter.image || '/default-image.jpg',
+          locale: 'en_US',
+          site_name: 'TaxAdvisor',
         }}
         twitter={{
-          card: "summary_large_image",
+          card: 'summary_large_image',
           title: frontMatter.title,
           description: frontMatter.excerpt || frontMatter.title,
-          image: frontMatter.image || "/default-image.jpg",
-          site: "@TaxAdvisor",
-          creator: "@TaxAdvisor",
+          image: frontMatter.image || '/default-image.jpg',
+          site: '@TaxAdvisor',
+          creator: '@TaxAdvisor',
         }}
       />
 
@@ -86,9 +88,13 @@ export default async function BlogPost({ params }) {
           <h1>{frontMatter.title}</h1>
           <div className="blog-meta">
             <span className="blog-date">{frontMatter.date}</span>
-            {readingTime && <span className="blog-reading-time">{readingTime} min read</span>}
+            {readingTime && (
+              <span className="blog-reading-time">{readingTime} min read</span>
+            )}
           </div>
-          {frontMatter.author && <p className="blog-author">By {frontMatter.author}</p>}
+          {frontMatter.author && (
+            <p className="blog-author">By {frontMatter.author}</p>
+          )}
         </header>
 
         <div
@@ -97,7 +103,9 @@ export default async function BlogPost({ params }) {
         />
 
         <footer className="blog-footer">
-          <a href="/blog" className="back-to-blog">← Back to Blog</a>
+          <Link href="/blog" className="back-to-blog">
+            ← Back to Blog
+          </Link>
         </footer>
       </article>
       <Footer />
