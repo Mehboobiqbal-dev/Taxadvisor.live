@@ -10,18 +10,18 @@ import About from './About';
 import Privacy from './Privacy';
 import Contact from './Contact';
 import Home from './Home';
-import AiContent from './AiContent'; // AI content page import
+import AiContent from './AiContent';
 import './Global.css';
 
 const App = () => {
-  // State variables for tax calculator form and API response
+ 
   const [country, setCountry] = useState('');
   const [income, setIncome] = useState('');
   const [advice, setAdvice] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // API call function for AI content
+  
   const getAIContent = async (query) => {
     try {
       const response = await fetch('/api/gemini', {
@@ -36,56 +36,50 @@ const App = () => {
         throw new Error('Failed to fetch AI content');
       }
 
-      const data = await response.json(); // Assuming the response returns a JSON object
-      return data.result; // Modify this according to the structure of your API response
+      const data = await response.json(); 
+      return data.result; 
     } catch (error) {
       console.error(error);
       throw new Error('Error fetching AI content');
     }
   };
 
-  // Handle form submission to fetch AI content (tax advice)
+
   const handleSubmit = async (event) => {
-    event.preventDefault();  // Prevent the default form action
-    setAdvice('');           // Reset advice before new submission
-    setError('');            // Reset error state before new submission
-    setLoading(true);        // Set loading state while API is being called
+    event.preventDefault(); 
+    setAdvice('');          
+    setError('');           
+    setLoading(true);       
 
     try {
-      // Fetch AI content with a request string
+    
       const result = await getAIContent(`Tax advice for ${country} with income ${income}`);
-      setAdvice(result);      // Set the result in state as advice
+      setAdvice(result);    
     } catch (err) {
       console.error('Error fetching tax advice:', err);
-      setError('Failed to fetch tax advice. Please try again later.');  // Display error message
+      setError('Failed to fetch tax advice. Please try again later.'); 
     } finally {
-      setLoading(false);      // Stop loading spinner after API call
+      setLoading(false);     
     }
   };
 
   return (
     <Router>
       <div className="app-container">
-        {/* Header Component */}
-        <Header />
+                <Header />
 
-        {/* Main Content */}
-        <main className="main-content">
+                <main className="main-content">
           <Routes>
-            {/* Home Route */}
-            <Route path="/" element={<Home />} />
+                        <Route path="/" element={<Home />} />
 
-            {/* AI Content Route */}
-            <Route path="/ai" element={<AiContent />} />
+                        <Route path="/ai" element={<AiContent />} />
 
-            {/* Other Routes */}
-            <Route path="/news" element={<News />} />
+                        <Route path="/news" element={<News />} />
             <Route path="/about" element={<About />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/contact" element={<Contact />} />
 
-            {/* Tax Calculator Route */}
-            <Route
+                        <Route
               path="/tax-calculator"
               element={
                 <TaxCalculator
@@ -101,13 +95,11 @@ const App = () => {
               }
             />
 
-            {/* Chatbot Route */}
-            <Route path="/chatbot" element={<Chatbot />} />
+                        <Route path="/chatbot" element={<Chatbot />} />
           </Routes>
         </main>
 
-        {/* Footer Component */}
-        <Footer />
+                <Footer />
       </div>
     </Router>
   );

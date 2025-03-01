@@ -1,6 +1,6 @@
 "use client";
 
-// shadcn/ui components
+
 import { Button } from "@/app/components/ui/button";
 import {
   Card,
@@ -12,7 +12,7 @@ import {
 import { Input } from "@/app/components/ui/input";
 import { Separator } from "@/app/components/ui/separator";
 
-// React and Next.js imports
+
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -21,11 +21,11 @@ import { TriangleAlert } from "lucide-react";
 import { signIn } from "next-auth/react";
 import ReCAPTCHA from "react-google-recaptcha";
 
-// Icons
+
 import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 
-// Replace with your actual Site Key
+
 const SITE_KEY = "6LcPG-YqAAAAAI98ubN_Np9jQBF-_S50dHgpe5zZ";
 
 const SignUp = () => {
@@ -42,7 +42,7 @@ const SignUp = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null); // Clear previous errors
+    setError(null); 
 
     if (!captchaToken) {
       setError("Please complete the reCAPTCHA verification.");
@@ -90,8 +90,7 @@ const SignUp = () => {
           </CardDescription>
         </CardHeader>
 
-        {/* Error Message Display */}
-        {!!error && (
+                {!!error && (
           <div className="bg-red-100 p-3 rounded-md flex items-center gap-x-2 text-sm text-red-700 mb-6">
             <TriangleAlert className="text-red-700" />
             <p className="font-bold">{error}</p>
@@ -135,12 +134,11 @@ const SignUp = () => {
               required
             />
 
-            {/* Google reCAPTCHA */}
-            <div className="flex justify-center">
+                        <div className="flex justify-center">
               <ReCAPTCHA
                 sitekey={SITE_KEY}
                 onChange={(token) => setCaptchaToken(token)}
-                theme="light" // Optional: "light" or "dark"
+                theme="light" 
               />
             </div>
 

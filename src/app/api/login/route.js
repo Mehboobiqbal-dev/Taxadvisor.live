@@ -31,20 +31,20 @@ export async function POST(req) {
   try {
     const { email, password } = await req.json();
     const client = await clientPromise;
-    const db = client.db(); // Uses the default database
+    const db = client.db(); 
 
-    // Hash the password
+    
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create a new user with a unique ID
+    
     const newUser = {
       id: uuidv4(),
       email,
       password: hashedPassword,
-      name: 'John Doe', // Replace with actual user name as needed
+      name: 'John Doe', 
     };
 
-    // Store the new user in the database
+    
     await db.collection('users').insertOne(newUser);
 
     return NextResponse.json(
@@ -60,7 +60,7 @@ export async function POST(req) {
   }
 }
 
-// Optional: Export a GET method that returns a 405 error for unsupported methods
+
 export async function GET() {
   return NextResponse.json(
     { error: 'Method not allowed' },

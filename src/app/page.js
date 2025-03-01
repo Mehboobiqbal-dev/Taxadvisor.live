@@ -11,10 +11,9 @@ import SmartTaxBot from './components/SmartTaxBot';
 import { BuyMeCoffee } from './components/BuyMeCoffee';
 import Image from 'next/image';
 
-// If possible, remove one of the CSS frameworks to reduce bundle size
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './globals.css'; // Global styles including Tailwind directives
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './globals.css'; 
 export default function Home() {
   return (
     <>
@@ -60,44 +59,38 @@ export default function Home() {
         <meta name="robots" content="index, follow" />
       </Head>
 
-      {/* Google AdSense Script */}
-      <Script 
+            <Script 
         async 
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2663142027592405"
         crossOrigin="anonymous"
         strategy="afterInteractive"
       />
 
-      {/* New: SessionProvider wrapping UserButton from your page.tsx */}
-      
+            
 
       <div className="min-h-screen flex flex-col bg-gray-100">
-        {/* Header with optimized logo */}
-        <Header>
+                <Header>
           <div className="flex justify-center items-center py-4">
             <Image
               src="https://i.ibb.co/vxKbKLHT/photo.jpg"
               alt="TaxAdvisor Logo"
-              width={48}      // explicit width
-              height={48}     // explicit height
-              priority       // preload this image for above-the-fold content
-              className="h-12" // additional styling if needed
+              width={48}     
+              height={48}     
+              priority      
+              className="h-12" 
             />
           </div>
         </Header>
 
-        {/* Buy Me Coffee Component */}
-        <BuyMeCoffee />
+                <BuyMeCoffee />
 
-        {/* Main Content */}
-        <main className="flex-grow p-6 container mx-auto">
+                <main className="flex-grow p-6 container mx-auto">
           <TaxCalculator />
           <SmartTaxBot />
           
         </main>
 
-        {/* Footer Component */}
-        <Footer />
+                <Footer />
       </div>
     </>
   );

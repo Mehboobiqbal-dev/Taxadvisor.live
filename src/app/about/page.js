@@ -1,5 +1,5 @@
-// about/page.js
-import About from '../About'; // Correct relative path to the About component
+
+import About from '../About';
 
 const AboutPage = () => {
   return (

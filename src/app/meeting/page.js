@@ -7,8 +7,7 @@ export default function Meeting() {
 
   const handleSchedule = async (e) => {
     e.preventDefault();
-    // Here, you could call an API to save the meeting details in a database
-    // or integrate with a scheduling tool like Calendly.
+       
     setMessage(`Meeting scheduled at ${meetingTime}`);
   };
 

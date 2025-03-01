@@ -1,4 +1,4 @@
-// app/blog/[slug]/page.jsx
+
 
 import path from 'path';
 import { promises as fs } from 'fs';
@@ -9,10 +9,10 @@ import Script from 'next/script';
 import SEO from '@/app/components/SEO';
 import Header from '@/app/Header';
 import Footer from '@/app/Footer';
-import Link from 'next/link'; // Imported Link component
+import Link from 'next/link';
 import './blog.css';
 
-// Utility function: calculate reading time (200 words per minute)
+
 function calculateReadingTime(text) {
   const words = text.trim().split(/\s+/).length;
   return Math.ceil(words / 200);
@@ -37,7 +37,7 @@ async function getBlogContent(slug) {
   return { frontMatter: data, content: contentHtml, readingTime };
 }
 
-// Generate static paths for dynamic routes
+
 export async function generateStaticParams() {
   const contentDir = path.join(process.cwd(), 'content');
   const files = await fs.readdir(contentDir);

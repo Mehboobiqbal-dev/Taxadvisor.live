@@ -5,7 +5,7 @@ import Head from "next/head";
 import "./globals.css";
 import { Toaster } from "@/app/components/ui/sonner";
 
-// Using local fonts
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -17,7 +17,7 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-// Metadata for SEO and site settings
+
 export const metadata: Metadata = {
   title: "Tax Advisor",
   description: "Simplifying taxation",
@@ -35,13 +35,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Head>
-        {/* Bootstrap CSS */}
-        <link
+                <link
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
           rel="stylesheet"
         />
-        {/* Animate.css */}
-        <link
+                <link
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
         />
@@ -49,8 +47,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Toaster />
         {children}
-        {/* Google Analytics */}
-        <Script
+                <Script
           strategy="afterInteractive"
           src="https://www.googletagmanager.com/gtag/js?id=G-46NW49XJ57"
         />

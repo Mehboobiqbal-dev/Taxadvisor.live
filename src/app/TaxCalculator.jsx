@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import styles from '@/app/TaxCalculator.module.css';
 
-// 2024 Federal tax brackets (single filer) for ordinary income
+
 const federalTaxBrackets = [
   { min: 0, max: 9950, rate: 0.10 },
   { min: 9950, max: 40525, rate: 0.12 },
@@ -25,14 +25,14 @@ const federalTaxBrackets = [
   { min: 523600, max: Infinity, rate: 0.37 },
 ];
 
-// 2024 Capital gains brackets (for qualified dividends and long-term gains)
+
 const capitalGainsBrackets = [
   { min: 0, max: 44725, rate: 0.00 },
   { min: 44725, max: 492300, rate: 0.15 },
   { min: 492300, max: Infinity, rate: 0.20 },
 ];
 
-// Flat state tax rates for most states (approximation for 2024)
+
 const statesTaxRates = {
   AL: 0.04, AK: 0, AZ: 0.056, AR: 0.065, CA: 0.0725, CO: 0.029,
   CT: 0.0635, DE: 0, FL: 0.06, GA: 0.04, HI: 0.04, ID: 0.06,
@@ -45,7 +45,7 @@ const statesTaxRates = {
   WI: 0.05, WY: 0,
 };
 
-// California progressive tax brackets for 2024
+
 const caTaxBrackets = [
   { min: 0, max: 9325, rate: 0.01 },
   { min: 9325, max: 22107, rate: 0.02 },
@@ -59,7 +59,7 @@ const caTaxBrackets = [
   { min: 1000000, max: Infinity, rate: 0.133 },
 ];
 
-// Helper function to calculate tax based on progressive brackets
+
 const calculateTaxFromBrackets = (income, brackets) => {
   let tax = 0;
   for (let bracket of brackets) {
@@ -74,7 +74,7 @@ const calculateTaxFromBrackets = (income, brackets) => {
 };
 
 const TaxCalculator = () => {
-  // Input fields
+ 
   const [income, setIncome] = useState('');
   const [qualifiedDividends, setQualifiedDividends] = useState('');
   const [longTermGains, setLongTermGains] = useState('');
@@ -85,14 +85,14 @@ const TaxCalculator = () => {
   const [business, setBusiness] = useState('');
   const [state, setState] = useState('CA');
 
-  // Results and messages
+  
   const [federalTaxAmount, setFederalTaxAmount] = useState(0);
   const [stateTaxAmount, setStateTaxAmount] = useState(0);
   const [totalTaxAmount, setTotalTaxAmount] = useState(0);
   const [deductionStrategy, setDeductionStrategy] = useState('Standard');
   const [error, setError] = useState('');
 
-  // Calculate all taxes when the user clicks "Calculate Taxes"
+  
   const calculateTaxes = () => {
     if (!income || isNaN(income) || parseFloat(income) <= 0) {
       setError('Please enter a valid income.');
@@ -110,7 +110,7 @@ const TaxCalculator = () => {
       (parseFloat(charity) || 0) +
       (parseFloat(business) || 0);
 
-    const standardDeduction = 13850; // 2024 standard deduction for single filers
+    const standardDeduction = 13850; 
     const deductionUsed = Math.max(standardDeduction, itemizedDeduction);
     setDeductionStrategy(itemizedDeduction > standardDeduction ? 'Itemized' : 'Standard');
 
@@ -138,7 +138,7 @@ const TaxCalculator = () => {
     setTotalTaxAmount(totalTax);
   };
 
-  // Save current inputs to localStorage
+
   const handleSave = () => {
     const taxInfo = {
       income,
@@ -154,7 +154,7 @@ const TaxCalculator = () => {
     localStorage.setItem('taxInfo', JSON.stringify(taxInfo));
   };
 
-  // Load saved inputs from localStorage
+ 
   const handleLoad = () => {
     const saved = localStorage.getItem('taxInfo');
     if (saved) {
@@ -171,7 +171,7 @@ const TaxCalculator = () => {
     }
   };
 
-  // Reset all fields
+  
   const handleReset = () => {
     setIncome('');
     setQualifiedDividends('');

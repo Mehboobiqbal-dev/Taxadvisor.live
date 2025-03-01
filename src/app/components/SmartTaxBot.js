@@ -4,7 +4,7 @@ import Head from "next/head";
 import "./SmartTaxBot.css";
 
 export default function SmartTaxBot() {
-  // State declarations
+
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -12,12 +12,11 @@ export default function SmartTaxBot() {
   const [speaking, setSpeaking] = useState(false);
   const [permissionError, setPermissionError] = useState(false);
 
-  // Refs
   const messagesContainerRef = useRef(null);
   const recognitionRef = useRef(null);
   const speakModeRef = useRef(false);
 
-  // 'speak' function for text-to-speech
+  
   const speak = (text) => {
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.onstart = () => setSpeaking(true);
@@ -25,11 +24,10 @@ export default function SmartTaxBot() {
     speechSynthesis.speak(utterance);
   };
 
-  // Message Component
+  
   function Message({ text, sender }) {
     const [expanded, setExpanded] = useState(false);
-    const isLongMessage = text.length > 300; // Adjust the length as needed
-
+    const isLongMessage = text.length > 300; 
     return (
       <div className={`message ${sender}`}>
         {isLongMessage && !expanded ? (
@@ -49,7 +47,7 @@ export default function SmartTaxBot() {
     );
   }
 
-  // Memoized handleSubmit function to process user input and fetch AI response
+  
   const handleSubmit = useCallback(
     async (userMessage) => {
       if (!userMessage.trim()) return;
@@ -97,7 +95,7 @@ export default function SmartTaxBot() {
     [messages]
   );
 
-  // Memoized function to initialize speech recognition
+  
   const initializeRecognition = useCallback(() => {
     try {
       const SpeechRecognition =
@@ -127,12 +125,12 @@ export default function SmartTaxBot() {
     }
   }, [handleSubmit]);
 
-  // Initialize recognition on mount
+
   useEffect(() => {
     initializeRecognition();
   }, [initializeRecognition]);
 
-  // Start listening for voice input
+ 
   const startListening = () => {
     if (recognitionRef.current && !listening) {
       try {
@@ -145,7 +143,7 @@ export default function SmartTaxBot() {
     }
   };
 
-  // Scroll to the bottom when messages update
+  
   useEffect(() => {
     if (messagesContainerRef.current) {
       messagesContainerRef.current.scrollTop =
@@ -165,8 +163,7 @@ export default function SmartTaxBot() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="canonical" href="https://taxadvisor.live/SmartTaxBot" />
 
-        {/* Open Graph Meta Tags */}
-        <meta
+                <meta
           property="og:title"
           content="SmartTaxBot - Your AI Tax Assistant"
         />
@@ -181,8 +178,7 @@ export default function SmartTaxBot() {
           content="https://taxadvisor.live/SmartTaxBot-og-image.jpg"
         />
 
-        {/* Twitter Card Meta Tags */}
-        <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:card" content="summary_large_image" />
         <meta
           name="twitter:title"
           content="SmartTaxBot - Your AI Tax Assistant"
@@ -198,8 +194,7 @@ export default function SmartTaxBot() {
         <meta name="twitter:site" content="@TaxAdvisor" />
         <meta name="twitter:creator" content="@TaxAdvisor" />
 
-        {/* JSON‑LD Structured Data for Web Application */}
-        <script
+                <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
@@ -262,8 +257,7 @@ export default function SmartTaxBot() {
           >
             {loading ? "Thinking..." : "Ask AI"}
           </button>
-          {/* Speak Button */}
-          <button
+                    <button
             type="button"
             className="smarttaxbot-speak speak-button"
             onClick={startListening}
@@ -272,8 +266,7 @@ export default function SmartTaxBot() {
           >
             Speak
           </button>
-          {/* Status Indicators */}
-          <div className="indicator-container">
+                    <div className="indicator-container">
             {listening && (
               <div
                 className="listening-indicator"

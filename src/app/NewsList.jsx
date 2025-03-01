@@ -1,4 +1,4 @@
-// app/newslist/page.jsx
+
 
 import Parser from "rss-parser";
 import Header from "./Header";
@@ -9,11 +9,9 @@ import { BuyMeCoffee } from './components/BuyMeCoffee';
 import Image from "next/image";
 import "./NewsList.css";
 
-// This page is a server component by default (no "use client" directive)
-// and therefore supports async/await.
-export const dynamic = "force-dynamic"; // Ensures the page fetches fresh data
 
-// Fetch news on the server
+export const dynamic = "force-dynamic"; 
+
 async function getNews() {
   try {
     const parser = new Parser({
@@ -49,7 +47,7 @@ async function getNews() {
     return articles;
   } catch (error) {
     console.error("Error fetching news:", error);
-    // Return an empty array so the page renders gracefully.
+
     return [];
   }
 }
@@ -57,7 +55,7 @@ async function getNews() {
 export default async function NewsList() {
   const news = await getNews();
 
-  // Reintroduce the structuredData variable
+  
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -76,8 +74,7 @@ export default async function NewsList() {
 
   return (
     <>
-      {/* Google AdSense Script */}
-      <Script
+            <Script
         async
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2663142027592405"
         crossOrigin="anonymous"
@@ -94,8 +91,7 @@ export default async function NewsList() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="canonical" href="https://taxadvisor.live/newslist" />
 
-        {/* Open Graph Meta Tags */}
-        <meta
+                <meta
           property="og:title"
           content="Latest Tax News & Updates - SmartTaxBot"
         />
@@ -110,8 +106,7 @@ export default async function NewsList() {
         <meta property="og:url" content="https://taxadvisor.live/newslist" />
         <meta property="og:type" content="website" />
 
-        {/* Twitter Card Meta Tags */}
-        <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:card" content="summary_large_image" />
         <meta
           name="twitter:title"
           content="Latest Tax News & Updates - SmartTaxBot"
@@ -125,8 +120,7 @@ export default async function NewsList() {
           content="https://taxadvisor.live/path/to/thumbnail.jpg"
         />
 
-        {/* JSON‑LD Structured Data */}
-        <script
+                <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(structuredData),
@@ -134,8 +128,7 @@ export default async function NewsList() {
         />
       </Head>
 
-      {/* Place Header inside the returned JSX */}
-      <Header />
+            <Header />
       <BuyMeCoffee />
       <div className="container py-4">
         <h1 className="mb-4 text-center">
@@ -164,8 +157,8 @@ export default async function NewsList() {
                         <Image
                           src={article.image}
                           alt={article.title}
-                          width={400} // Adjust as needed
-                          height={200} // Adjust as needed
+                          width={400} 
+                          height={200} 
                           style={{ objectFit: "cover" }}
                         />
                       </div>

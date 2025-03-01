@@ -1,11 +1,10 @@
 import React from "react";
-import Script from "next/script"; // ✅ Import Next.js Script component
+import Script from "next/script"; 
 
 const Privacy = () => {
   return (
     <>
-      {/* ✅ Correct way to include Google AdSense */}
-      <Script 
+            <Script 
         async 
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2663142027592405"
         crossOrigin="anonymous"

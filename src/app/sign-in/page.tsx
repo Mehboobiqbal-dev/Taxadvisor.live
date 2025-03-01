@@ -1,6 +1,6 @@
 "use client";
 
-//shadcn ui
+
 
 import { Button } from "@/app/components/ui/button";
 import {
@@ -15,7 +15,7 @@ import { Separator } from "@/app/components/ui/separator";
 
 import Link from "next/link";
 
-//react icons
+
 import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { useState } from "react";

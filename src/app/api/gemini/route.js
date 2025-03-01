@@ -2,7 +2,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export async function POST(request) {
   try {
-    // Parse the request JSON.
+  
     const { prompt } = await request.json();
     if (!prompt) {
       return new Response(JSON.stringify({ error: "Missing 'prompt'" }), {
@@ -11,7 +11,7 @@ export async function POST(request) {
       });
     }
 
-    // Check for specific prompts
+  
     const lowerPrompt = prompt.toLowerCase();
     if (
       lowerPrompt.includes("what's your name") ||
@@ -29,14 +29,14 @@ export async function POST(request) {
       );
     }
 
-    // Initialize the Google Generative AI client.
+  
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     
-    // Generate content based on the prompt.
+  
     const result = await model.generateContent(prompt);
 
-    // Return the result.
+  
     return new Response(JSON.stringify({ text: result.response.text() }), {
       status: 200,
       headers: { "Content-Type": "application/json" },

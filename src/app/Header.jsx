@@ -8,7 +8,7 @@ const HeaderContent = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
 
-  // Close menu when clicking outside
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -26,8 +26,7 @@ const HeaderContent = () => {
 
   return (
     <header className="bg-gradient-to-br from-[#141e30] to-[#243b55] text-white py-2 px-4 sticky top-0 w-full z-50 shadow-md flex items-center justify-between">
-      {/* Logo */}
-      <div className="flex-shrink-0">
+            <div className="flex-shrink-0">
         <h1 className="text-xl font-bold p-1 rounded">
           <Link
             href="/"
@@ -44,12 +43,10 @@ const HeaderContent = () => {
         </h1>
       </div>
 
-      {/* User Button and Menu Toggle */}
-      <div className="flex items-center">
+            <div className="flex items-center">
         <UserButton />
 
-        {/* Menu Toggle Button */}
-        <button
+                <button
           className="text-2xl text-white ml-4"
           aria-expanded={menuOpen}
           aria-controls="main-menu"
@@ -63,8 +60,7 @@ const HeaderContent = () => {
         </button>
       </div>
 
-      {/* Navigation Menu */}
-      {menuOpen && (
+            {menuOpen && (
         <nav
           ref={menuRef}
           id="main-menu"

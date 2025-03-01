@@ -54,8 +54,7 @@ export function BuyMeCoffee() {
 
   return (
     <>
-      {/* Bootstrap Modal for Payment Details */}
-      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+            <Modal show={showModal} onHide={() => setShowModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Buy Me a Coffee ☕</Modal.Title>
         </Modal.Header>
@@ -106,8 +105,7 @@ export function BuyMeCoffee() {
               <p className="fw-bold">{paymentDetails.address}</p>
               <p>Confirmations Needed: {paymentDetails.confirms_needed}</p>
               <p>Payment Timeout: {paymentDetails.timeout} minutes</p>
-              {/* Optionally, include a QR code here using a QR code library */}
-            </div>
+                          </div>
           )}
         </Modal.Body>
         <Modal.Footer>

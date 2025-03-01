@@ -7,8 +7,7 @@ type ToasterProps = React.ComponentProps<typeof Sonner>;
 
 const Toaster = ({ ...props }: ToasterProps) => {
   const { theme, resolvedTheme } = useTheme();
-  // If theme is "system", fall back to resolvedTheme (or "light" if unresolved)
-  const effectiveTheme = theme === "system" ? resolvedTheme || "light" : theme;
+    const effectiveTheme = theme === "system" ? resolvedTheme || "light" : theme;
 
   return (
     <Sonner

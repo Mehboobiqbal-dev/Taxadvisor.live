@@ -12,7 +12,7 @@ export default function BlogSearch({ blogs }) {
     if (query.trim() === '') {
       setResults(blogs);
     } else {
-      // Create a Fuse index and perform the search whenever query or blogs change
+     
       const fuse = new Fuse(blogs, {
         keys: ['frontMatter.title', 'frontMatter.excerpt', 'frontMatter.tags'],
         threshold: 0.3,

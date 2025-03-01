@@ -1,4 +1,4 @@
-// app/blog/page.jsx
+
 import path from 'path';
 import fs from 'fs/promises';
 import matter from 'gray-matter';
@@ -8,7 +8,7 @@ import Footer from '../Footer';
 import Script from 'next/script';
 import SEO from '@/app/components/SEO';
 
-// Function to fetch blog posts
+
 async function getBlogPosts() {
   const contentDir = path.join(process.cwd(), 'content');
   const files = await fs.readdir(contentDir);
@@ -24,7 +24,7 @@ async function getBlogPosts() {
   return posts;
 }
 
-// Website and Breadcrumb structured data
+
 const websiteStructuredData = {
   "@context": "https://schema.org",
   "@type": "WebSite",
@@ -75,8 +75,7 @@ export default async function BlogListPage() {
         structuredData={[websiteStructuredData, breadcrumbStructuredData]}
       />
 
-      {/* Google AdSense */}
-      <Script
+            <Script
         async
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2663142027592405"
         crossOrigin="anonymous"

@@ -1,4 +1,4 @@
-// src/app/api/auth/[...nextauth]/route.ts
+
 
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -87,6 +87,6 @@ const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 };
 
-// Directly export NextAuth handler as default export
+
 export const GET = NextAuth(authOptions);
 export const POST = NextAuth(authOptions);

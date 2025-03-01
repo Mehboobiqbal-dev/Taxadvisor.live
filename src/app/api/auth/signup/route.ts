@@ -8,7 +8,7 @@ export async function POST(request: Request) {
     const { name, email, password, confirmPassword, recaptchaToken } =
       await request.json();
 
-    // ✅ Step 1: Check if all fields are provided
+   
     if (
       !name ||
       !email ||
@@ -22,7 +22,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // ✅ Step 2: Validate email format
+
     const isValidEmail = (email: string) =>
       /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     if (!isValidEmail(email)) {
@@ -32,7 +32,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // ✅ Step 3: Validate password
+    
     if (password.length < 6) {
       return NextResponse.json(
         { message: "Password must be at least 6 characters long" },
@@ -46,7 +46,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // ✅ Step 4: Verify reCAPTCHA Token
+   
     const secretKey = process.env.RECAPTCHA_SECRET_KEY;
     if (!secretKey) {
       return NextResponse.json(
@@ -64,7 +64,7 @@ export async function POST(request: Request) {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: new URLSearchParams({
           secret: secretKey,
-          response: recaptchaToken, // Token from client
+          response: recaptchaToken, 
         }),
       }
     );
@@ -72,7 +72,7 @@ export async function POST(request: Request) {
     const recaptchaData = await recaptchaResponse.json();
 
     if (!recaptchaData.success) {
-      // Optional: Log error codes for debugging
+     
       console.error(
         "reCAPTCHA verification failed:",
         recaptchaData["error-codes"]
@@ -83,10 +83,10 @@ export async function POST(request: Request) {
       );
     }
 
-    // ✅ Step 5: Connect to database
+   
     await connectToDatabase();
 
-    // ✅ Step 6: Check if user already exists
+   
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return NextResponse.json(
@@ -95,10 +95,10 @@ export async function POST(request: Request) {
       );
     }
 
-    // ✅ Step 7: Hash password
+    
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // ✅ Step 8: Create and save new user
+  
     const newUser = new User({
       name,
       email,
@@ -107,7 +107,7 @@ export async function POST(request: Request) {
 
     await newUser.save();
 
-    // ✅ Step 9: Return success response
+    
     return NextResponse.json(
       { message: "User registered successfully" },
       { status: 201 }

@@ -1,7 +1,6 @@
 "use client";
 
-import TaxCalculator from "../TaxCalculator";  // Adjust import path if needed
-
+import TaxCalculator from "../TaxCalculator";  
 const Calculateyoutax = () => {
   return (
     <div className="container py-4">

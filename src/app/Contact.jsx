@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Head from "next/head";
 
 const Contact = () => {
-  // Inject AdSense script
+
   useEffect(() => {
     const script = document.createElement("script");
     script.async = true;
@@ -14,17 +14,16 @@ const Contact = () => {
     document.body.appendChild(script);
   }, []);
 
-  // State for form input fields
+ 
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: "",
   });
 
-  // State for success message
+
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
-  // Handle form data change
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
@@ -33,7 +32,7 @@ const Contact = () => {
     }));
   };
 
-  // Handle form submission
+ 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (formData.name && formData.email && formData.message) {

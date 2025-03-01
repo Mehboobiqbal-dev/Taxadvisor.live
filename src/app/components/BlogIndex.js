@@ -1,4 +1,4 @@
-"use client";  // Ensures this runs on the client side
+"use client";  
 
 import Head from "next/head";
 import Link from "next/link";
