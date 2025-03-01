@@ -26,7 +26,8 @@ import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 
 // Ensure the environment variable is accessible
-const SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "";
+// Replace "YOUR_SITE_KEY_HERE" with your actual Site Key
+const SITE_KEY = "6LcPG-YqAAAAAI98ubN_Np9jQBF-_S50dHgpe5zZ";
 
 const SignUp = () => {
   const [form, setForm] = useState({
