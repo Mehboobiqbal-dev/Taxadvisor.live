@@ -25,7 +25,7 @@ const HeaderContent = () => {
   }, [menuOpen]);
 
   return (
-    <header className="bg-gradient-to-br from-[#141e30] to-[#243b55] text-white py-2 px-4 md:px-8 sticky top-0 w-full z-50 shadow-md flex items-center justify-between">
+    <header className="bg-gradient-to-br from-[#141e30] to-[#243b55] text-white py-2 px-4 sticky top-0 w-full z-50 shadow-md flex items-center justify-between">
       {/* Logo */}
       <div className="flex-shrink-0">
         <h1 className="text-xl font-bold p-1 rounded">
@@ -44,14 +44,15 @@ const HeaderContent = () => {
         </h1>
       </div>
 
-      {/* User Button outside of navbar */}
-      <div className="flex items-center md:order-2">
+      {/* User Button and Menu Toggle */}
+      <div className="flex items-center">
         <UserButton />
-        {/* Mobile Menu Toggle */}
+
+        {/* Menu Toggle Button */}
         <button
-          className="text-2xl text-white ml-4 md:hidden"
+          className="text-2xl text-white ml-4"
           aria-expanded={menuOpen}
-          aria-controls="mobile-menu"
+          aria-controls="main-menu"
           onClick={(e) => {
             e.stopPropagation();
             setMenuOpen((prev) => !prev);
@@ -62,31 +63,12 @@ const HeaderContent = () => {
         </button>
       </div>
 
-      {/* Desktop Navigation Menu */}
-      <nav className="hidden md:flex md:order-1 space-x-6">
-        <Link href="/home" aria-label="Go to Home Page">
-          Home
-        </Link>
-        <Link href="/tax-calculator" aria-label="Tax Calculator">
-          Tax Calculator
-        </Link>
-        <Link href="/SmartTaxBot" aria-label="SmartTaxBot Page">
-          SmartTaxBot
-        </Link>
-        <Link href="/newslist" aria-label="News Page">
-          News
-        </Link>
-        <Link href="/blog" aria-label="Blog Page">
-          Blog
-        </Link>
-      </nav>
-
-      {/* Mobile Navigation Menu */}
+      {/* Navigation Menu */}
       {menuOpen && (
         <nav
           ref={menuRef}
-          id="mobile-menu"
-          className="md:hidden absolute top-full left-0 w-full bg-black/95 p-4 text-center transition-all duration-400"
+          id="main-menu"
+          className="absolute top-full left-0 w-full bg-gradient-to-br from-[#141e30] to-[#243b55] p-4 text-center transition-all duration-400"
         >
           <ul>
             <li className="py-2">
@@ -94,6 +76,7 @@ const HeaderContent = () => {
                 href="/home"
                 onClick={() => setMenuOpen(false)}
                 aria-label="Go to Home Page"
+                className="text-white hover:text-[#FFD700] transition-colors duration-200"
               >
                 Home
               </Link>
@@ -103,6 +86,7 @@ const HeaderContent = () => {
                 href="/tax-calculator"
                 onClick={() => setMenuOpen(false)}
                 aria-label="Tax Calculator"
+                className="text-white hover:text-[#FFD700] transition-colors duration-200"
               >
                 Tax Calculator
               </Link>
@@ -112,6 +96,7 @@ const HeaderContent = () => {
                 href="/SmartTaxBot"
                 onClick={() => setMenuOpen(false)}
                 aria-label="SmartTaxBot Page"
+                className="text-white hover:text-[#FFD700] transition-colors duration-200"
               >
                 SmartTaxBot
               </Link>
@@ -121,6 +106,7 @@ const HeaderContent = () => {
                 href="/newslist"
                 onClick={() => setMenuOpen(false)}
                 aria-label="News Page"
+                className="text-white hover:text-[#FFD700] transition-colors duration-200"
               >
                 News
               </Link>
@@ -130,6 +116,7 @@ const HeaderContent = () => {
                 href="/blog"
                 onClick={() => setMenuOpen(false)}
                 aria-label="Blog Page"
+                className="text-white hover:text-[#FFD700] transition-colors duration-200"
               >
                 Blog
               </Link>
