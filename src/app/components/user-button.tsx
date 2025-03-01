@@ -32,11 +32,13 @@ const UserButton = () => {
         <DropdownMenu>
           <DropdownMenuTrigger className="outline-none relative p-2 md:p-4">
             <div className="flex items-center gap-2 md:gap-4">
-              <span className="hidden sm:block">{session.user?.name}</span>
+              <span className="hidden sm:block text-white font-semibold">
+                {session.user?.name}
+              </span>
               <Avatar className="w-8 h-8 md:w-10 md:h-10 hover:opacity-75 transition">
                 <AvatarImage
-                  className="w-8 h-8 md:w-10 md:h-10 hover:opacity-75 transition"
                   src={session.user?.image || undefined}
+                  alt={session.user?.name || "User"}
                 />
                 <AvatarFallback className="bg-sky-900 text-white">
                   {avatarFallback}
@@ -50,7 +52,7 @@ const UserButton = () => {
             className="bg-white text-[#141e30] rounded shadow-lg w-32 py-2"
           >
             <DropdownMenuItem
-              className="h-10 flex items-center justify-center hover:bg-gray-200"
+              className="h-10 flex items-center justify-center hover:bg-gray-200 cursor-pointer"
               onClick={handleSignOut}
             >
               Log out
@@ -61,15 +63,15 @@ const UserButton = () => {
         <div className="flex items-center gap-2 md:gap-4">
           <Link
             href="/sign-in"
-            className="text-white bg-transparent border border-white px-2 py-1 md:px-4 md:py-2 rounded transition-colors duration-300 hover:bg-white hover:text-[#141e30] text-sm md:text-base"
+            className="relative inline-flex items-center justify-center px-4 py-2 font-medium tracking-wide text-white bg-gradient-to-r from-purple-500 to-blue-500 rounded shadow-md hover:from-purple-600 hover:to-blue-600 focus:outline-none transition duration-200 transform hover:-translate-y-0.5"
           >
-            Sign in
+            <span>Sign In</span>
           </Link>
           <Link
             href="/sign-up"
-            className="text-white bg-transparent border border-white px-2 py-1 md:px-4 md:py-2 rounded transition-colors duration-300 hover:bg-white hover:text-[#141e30] text-sm md:text-base"
+            className="relative inline-flex items-center justify-center px-4 py-2 font-medium tracking-wide text-[#141e30] bg-white rounded shadow-md hover:bg-gray-100 focus:outline-none transition duration-200 transform hover:-translate-y-0.5"
           >
-            Sign up
+            <span>Sign Up</span>
           </Link>
         </div>
       )}
