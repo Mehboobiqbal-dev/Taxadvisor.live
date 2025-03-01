@@ -19,10 +19,14 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { TriangleAlert } from "lucide-react";
 import { signIn } from "next-auth/react";
+import ReCAPTCHA from "react-google-recaptcha";
 
 // Icons
 import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+
+// Ensure the environment variable is accessible
+const SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "";
 
 const SignUp = () => {
   const [form, setForm] = useState({
@@ -31,19 +35,25 @@ const SignUp = () => {
     password: "",
     confirmPassword: "",
   });
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setPending(true);
+    if (!captchaToken) {
+      setError("Please complete the reCAPTCHA verification.");
+      return;
+    }
 
+    setPending(true);
+    setError(null); // Clear previous errors
     try {
       const res = await fetch("/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, recaptchaToken: captchaToken }), // Updated key to match server
       });
       const data = await res.json();
 
@@ -54,6 +64,7 @@ const SignUp = () => {
         setError(data.message || "An error occurred during sign up.");
       }
     } catch (err) {
+      console.error("Sign-up error:", err);
       setError("An unexpected error occurred.");
     } finally {
       setPending(false);
@@ -119,14 +130,23 @@ const SignUp = () => {
               }
               required
             />
-           <button
-  type="submit"
-  disabled={pending}
-  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
->
-  Continue
-</button>
 
+            {/* Google reCAPTCHA */}
+            <div className="flex justify-center">
+              <ReCAPTCHA
+                sitekey={SITE_KEY}
+                onChange={(token) => setCaptchaToken(token)}
+                theme="light" // Optional: "light" or "dark"
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={pending}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
+              {pending ? "Submitting..." : "Continue"}
+            </button>
           </form>
 
           <Separator />
