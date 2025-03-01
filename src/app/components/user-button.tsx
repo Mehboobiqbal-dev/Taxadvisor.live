@@ -16,9 +16,7 @@ const UserButton = () => {
   const { data: session, status } = useSession();
 
   if (status === "loading") {
-    return (
-      <Loader className="w-6 h-6 mr-4 mt-4 animate-spin" />
-    );
+    return <Loader className="w-6 h-6 mr-4 mt-4 animate-spin" />;
   }
 
   const avatarFallback = session?.user?.name?.charAt(0).toUpperCase();
@@ -31,13 +29,13 @@ const UserButton = () => {
   return (
     <nav>
       {session ? (
-        <DropdownMenu modal={false}>
-          <DropdownMenuTrigger className="outline-none relative p-4 md:p-8">
-            <div className="flex gap-4 items-center">
-              <span>{session.user?.name}</span>
-              <Avatar className="w-10 h-10 hover:opacity-75 transition">
+        <DropdownMenu>
+          <DropdownMenuTrigger className="outline-none relative p-2 md:p-4">
+            <div className="flex items-center gap-2 md:gap-4">
+              <span className="hidden sm:block">{session.user?.name}</span>
+              <Avatar className="w-8 h-8 md:w-10 md:h-10 hover:opacity-75 transition">
                 <AvatarImage
-                  className="w-10 h-10 hover:opacity-75 transition"
+                  className="w-8 h-8 md:w-10 md:h-10 hover:opacity-75 transition"
                   src={session.user?.image || undefined}
                 />
                 <AvatarFallback className="bg-sky-900 text-white">
@@ -47,9 +45,9 @@ const UserButton = () => {
             </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            align="center"
+            align="end"
             side="bottom"
-            className="bg-white text-[#141e30] rounded shadow-lg w-40 py-2"
+            className="bg-white text-[#141e30] rounded shadow-lg w-32 py-2"
           >
             <DropdownMenuItem
               className="h-10 flex items-center justify-center hover:bg-gray-200"
@@ -60,16 +58,16 @@ const UserButton = () => {
           </DropdownMenuContent>
         </DropdownMenu>
       ) : (
-        <div className="flex gap-4">
+        <div className="flex items-center gap-2 md:gap-4">
           <Link
             href="/sign-in"
-            className="text-white bg-transparent border border-white px-4 py-2 rounded transition-colors duration-300 hover:bg-white hover:text-[#141e30]"
+            className="text-white bg-transparent border border-white px-2 py-1 md:px-4 md:py-2 rounded transition-colors duration-300 hover:bg-white hover:text-[#141e30] text-sm md:text-base"
           >
             Sign in
           </Link>
           <Link
             href="/sign-up"
-            className="text-white bg-transparent border border-white px-4 py-2 rounded transition-colors duration-300 hover:bg-white hover:text-[#141e30]"
+            className="text-white bg-transparent border border-white px-2 py-1 md:px-4 md:py-2 rounded transition-colors duration-300 hover:bg-white hover:text-[#141e30] text-sm md:text-base"
           >
             Sign up
           </Link>
