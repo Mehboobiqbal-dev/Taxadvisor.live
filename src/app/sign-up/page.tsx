@@ -25,8 +25,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 
-// Ensure the environment variable is accessible
-// Replace "YOUR_SITE_KEY_HERE" with your actual Site Key
+// Replace with your actual Site Key
 const SITE_KEY = "6LcPG-YqAAAAAI98ubN_Np9jQBF-_S50dHgpe5zZ";
 
 const SignUp = () => {
@@ -43,18 +42,19 @@ const SignUp = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null); // Clear previous errors
+
     if (!captchaToken) {
       setError("Please complete the reCAPTCHA verification.");
       return;
     }
 
     setPending(true);
-    setError(null); // Clear previous errors
     try {
       const res = await fetch("/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, recaptchaToken: captchaToken }), // Updated key to match server
+        body: JSON.stringify({ ...form, recaptchaToken: captchaToken }),
       });
       const data = await res.json();
 
@@ -85,16 +85,19 @@ const SignUp = () => {
       <Card className="md:h-auto w-[80%] sm:w-[420px] p-4 sm:p-8">
         <CardHeader>
           <CardTitle className="text-center text-white ml-7">Sign up</CardTitle>
-          <CardDescription className="text-sm text-center text-accent-foreground text-white ml-7">
+          <CardDescription className="text-sm text-center text-white ml-7">
             Use email or service to create an account
           </CardDescription>
         </CardHeader>
+
+        {/* Error Message Display */}
         {!!error && (
-          <div className="bg-destructive/15 p-3 rounded-md flex items-center gap-x-2 text-sm text-destructive mb-6">
-            <TriangleAlert />
-            <p>{error}</p>
+          <div className="bg-red-100 p-3 rounded-md flex items-center gap-x-2 text-sm text-red-700 mb-6">
+            <TriangleAlert className="text-red-700" />
+            <p className="font-bold">{error}</p>
           </div>
         )}
+
         <CardContent className="px-2 sm:px-6">
           <form onSubmit={handleSubmit} className="space-y-3">
             <Input
@@ -171,10 +174,7 @@ const SignUp = () => {
           </div>
           <p className="text-white ml-7">
             Already have an account?
-            <Link
-              className="text-sky-700 ml-2 hover:underline"
-              href="/sign-in"
-            >
+            <Link className="text-sky-700 ml-2 hover:underline" href="/sign-in">
               Sign in
             </Link>
           </p>
