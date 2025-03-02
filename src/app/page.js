@@ -9,6 +9,7 @@ import Footer from './Footer';
 import TaxCalculator from './TaxCalculator';
 import SmartTaxBot from './components/SmartTaxBot';
 import { BuyMeCoffee } from './components/BuyMeCoffee';
+import AdvisorChat from "../components/AdvisorChat";
 import Image from 'next/image';
 
 
@@ -82,7 +83,7 @@ export default function Home() {
             />
           </div>
         </Header>
-
+               <h1>Talk to live Tax       <AdvisorChat /></h1>
                 <BuyMeCoffee />
 
                 <main className="flex-grow p-6 container mx-auto">
