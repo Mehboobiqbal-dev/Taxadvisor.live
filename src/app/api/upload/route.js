@@ -1,49 +1,52 @@
-// pages/api/upload.js
-import nextConnect from 'next-connect';
-import multer from 'multer';
+// src/app/api/upload/route.js
+
+import { NextResponse } from 'next/server';
+import { promises as fs } from 'fs';
 import path from 'path';
 
-// Configure Multer storage to store files in the public/uploads folder
-const upload = multer({
-  storage: multer.diskStorage({
-    destination: './public/uploads/',
-    filename: (req, file, cb) => {
-      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-      cb(null, uniqueSuffix + '-' + file.originalname);
-    },
-  }),
-  fileFilter: (req, file, cb) => {
-    // Allow only images and PDFs (you can add more file types if needed)
-    if (file.mimetype.startsWith('image/') || file.mimetype === 'application/pdf') {
-      cb(null, true);
-    } else {
-      cb(new Error('File type not allowed'), false);
+// Configure your uploads directory
+const uploadDir = path.join(process.cwd(), 'public', 'uploads');
+
+// Ensure the upload directory exists
+async function ensureUploadDir() {
+  try {
+    await fs.access(uploadDir);
+  } catch {
+    await fs.mkdir(uploadDir, { recursive: true });
+  }
+}
+
+export const POST = async (request) => {
+  try {
+    await ensureUploadDir();
+
+    const formData = await request.formData();
+    const file = formData.get('file');
+
+    if (!file) {
+      return NextResponse.json({ error: 'No file provided' }, { status: 400 });
     }
-  },
-});
 
-const apiRoute = nextConnect({
-  onError(error, req, res) {
-    res.status(501).json({ error: `Something went wrong: ${error.message}` });
-  },
-  onNoMatch(req, res) {
-    res.status(405).json({ error: `Method '${req.method}' Not Allowed` });
-  },
-});
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
 
-// Use Multer middleware
-apiRoute.use(upload.single('file'));
+    // Generate a unique filename
+    const timestamp = Date.now();
+    const uniqueSuffix = `${timestamp}-${file.name}`;
+    const filePath = path.join(uploadDir, uniqueSuffix);
 
-apiRoute.post((req, res) => {
-  // Return the file path so the client can use it in the chat message
-  res.status(200).json({ fileUrl: `/uploads/${req.file.filename}` });
-});
+    // Save the file
+    await fs.writeFile(filePath, buffer);
 
-export default apiRoute;
+    // Return the file URL
+    const fileUrl = `/uploads/${uniqueSuffix}`;
 
-// Disable Next.js default body parser for this route so Multer can handle it
-export const config = {
-  api: {
-    bodyParser: false,
-  },
+    return NextResponse.json({ fileUrl });
+  } catch (error) {
+    console.error('Upload error:', error);
+    return NextResponse.json(
+      { error: `Something went wrong: ${error.message}` },
+      { status: 500 }
+    );
+  }
 };
