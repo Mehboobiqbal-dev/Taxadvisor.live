@@ -75,7 +75,7 @@ const Chat = () => {
         <img
           src={URL.createObjectURL(file)}
           alt="preview"
-          className="w-24 h-24 object-cover mt-2"
+          className="w-20 h-20 sm:w-24 sm:h-24 object-cover mt-2"
         />
       );
     }
@@ -83,8 +83,8 @@ const Chat = () => {
   };
 
   return (
-    <div className="flex flex-col items-center p-4 bg-gray-50 min-h-screen">
-      <h1 className="text-2xl sm:text-3xl font-bold mb-4 text-blue-600 text-center">
+    <div className="flex flex-col items-center p-2 sm:p-4 bg-gray-50 min-h-screen">
+      <h1 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 text-blue-600 text-center">
         Public Chat with Our Tax Advisor
       </h1>
       <div className="w-full max-w-md sm:max-w-lg">
@@ -95,7 +95,7 @@ const Chat = () => {
           onChange={(e) => setUsername(e.target.value)}
           className="w-full px-3 py-2 mb-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <div className="bg-white border border-gray-300 rounded-lg h-64 sm:h-80 overflow-y-scroll p-3 mb-3 shadow-md">
+        <div className="bg-white border border-gray-300 rounded-lg h-48 sm:h-64 overflow-y-scroll p-3 mb-3 shadow-md">
           {chat.map((msg, idx) => (
             <div key={idx} className="mb-3">
               <div className="flex items-start">
@@ -131,7 +131,7 @@ const Chat = () => {
           ))}
         </div>
         <textarea
-          rows="3"
+          rows="2"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={(e) => {
@@ -154,7 +154,8 @@ const Chat = () => {
                 file:border-0
                 file:text-sm file:font-semibold
                 file:bg-blue-50 file:text-blue-600
-                hover:file:bg-blue-100"
+                hover:file:bg-blue-100
+                mt-2 sm:mt-0"
             />
             {renderFilePreview()}
           </div>
