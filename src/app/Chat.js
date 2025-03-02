@@ -1,4 +1,5 @@
 "use client";
+import Image from 'next/image';
 import { useEffect, useState, useRef } from 'react';
 import io from 'socket.io-client';
 
@@ -71,7 +72,9 @@ const Chat = () => {
   const renderFilePreview = () => {
     if (!file) return null;
     if (file.type.startsWith('image/')) {
+      // For local image previews (Blob URLs), we need to use <img> and suppress the ESLint warning
       return (
+        // eslint-disable-next-line @next/next/no-img-element
         <img
           src={URL.createObjectURL(file)}
           alt="preview"
@@ -107,11 +110,15 @@ const Chat = () => {
               {msg.fileUrl && (
                 <div className="mt-2">
                   {msg.fileType.startsWith('image/') ? (
-                    <img
-                      src={msg.fileUrl}
-                      alt="attachment"
-                      className="w-32 h-32 object-cover rounded-md"
-                    />
+                    <div className="relative w-32 h-32">
+                      <Image
+                        src={msg.fileUrl}
+                        alt="attachment"
+                        layout="fill"
+                        objectFit="cover"
+                        className="rounded-md"
+                      />
+                    </div>
                   ) : (
                     <a
                       href={msg.fileUrl}
