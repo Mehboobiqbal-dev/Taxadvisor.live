@@ -83,22 +83,22 @@ const Chat = () => {
   };
 
   return (
-    <div className="flex flex-col items-center p-6 bg-gray-50 min-h-screen">
-      <h1 className="text-3xl font-bold mb-6 text-blue-600">
+    <div className="flex flex-col items-center p-4 bg-gray-50 min-h-screen">
+      <h1 className="text-2xl sm:text-3xl font-bold mb-4 text-blue-600 text-center">
         Public Chat with Our Tax Advisor
       </h1>
-      <div className="w-full max-w-lg">
+      <div className="w-full max-w-md sm:max-w-lg">
         <input
           type="text"
           placeholder="Enter your name (optional)"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-2 mb-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <div className="bg-white border border-gray-300 rounded-lg h-80 overflow-y-scroll p-4 mb-4 shadow-md">
+        <div className="bg-white border border-gray-300 rounded-lg h-64 sm:h-80 overflow-y-scroll p-3 mb-3 shadow-md">
           {chat.map((msg, idx) => (
-            <div key={idx} className="mb-4">
-              <div className="flex items-center">
+            <div key={idx} className="mb-3">
+              <div className="flex items-start">
                 <span className="font-semibold text-blue-600 mr-2">
                   {msg.sender}:
                 </span>
@@ -117,7 +117,7 @@ const Chat = () => {
                       href={msg.fileUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className="text-blue-500 underline"
+                      className="text-blue-500 underline break-words"
                     >
                       View Document
                     </a>
@@ -141,21 +141,26 @@ const Chat = () => {
             }
           }}
           placeholder="Type your message..."
-          className="w-full px-4 py-2 mb-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-2 mb-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <div className="flex items-center justify-between">
-          <div>
+        <div className="flex flex-col sm:flex-row items-center justify-between">
+          <div className="w-full sm:w-auto">
             <input
               ref={fileInputRef}
               type="file"
               onChange={(e) => setFile(e.target.files[0])}
-              className="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-600 hover:file:bg-blue-100"
+              className="block w-full text-sm text-gray-600
+                file:mr-4 file:py-2 file:px-4
+                file:border-0
+                file:text-sm file:font-semibold
+                file:bg-blue-50 file:text-blue-600
+                hover:file:bg-blue-100"
             />
             {renderFilePreview()}
           </div>
           <button
             onClick={sendMessage}
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full sm:w-auto mt-2 sm:mt-0 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             Send Message
           </button>
