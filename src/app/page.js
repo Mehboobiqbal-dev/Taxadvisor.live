@@ -83,7 +83,7 @@ export default function Home() {
             />
           </div>
         </Header>
-               <h1>Talk to live Tax       <AdvisorChat /></h1>
+               <h1>Talk to live Tax       <Chat /> </h1>
                 <BuyMeCoffee />
 
                 <main className="flex-grow p-6 container mx-auto">
