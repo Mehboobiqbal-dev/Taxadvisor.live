@@ -9,7 +9,7 @@ import Footer from './Footer';
 import TaxCalculator from './TaxCalculator';
 import SmartTaxBot from './components/SmartTaxBot';
 import { BuyMeCoffee } from './components/BuyMeCoffee';
-import AdvisorChat from "../components/AdvisorChat";
+import AdvisorChat from "./components/AdvisorChat";
 import Image from 'next/image';
 
 
