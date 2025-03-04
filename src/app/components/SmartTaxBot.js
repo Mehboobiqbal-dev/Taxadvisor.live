@@ -4,7 +4,6 @@ import Head from "next/head";
 import "./SmartTaxBot.css";
 
 export default function SmartTaxBot() {
-
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -16,7 +15,7 @@ export default function SmartTaxBot() {
   const recognitionRef = useRef(null);
   const speakModeRef = useRef(false);
 
-  
+  // Function to use Speech Synthesis for speaking text
   const speak = (text) => {
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.onstart = () => setSpeaking(true);
@@ -24,10 +23,10 @@ export default function SmartTaxBot() {
     speechSynthesis.speak(utterance);
   };
 
-  
+  // Message component to handle long messages with "Read more/less"
   function Message({ text, sender }) {
     const [expanded, setExpanded] = useState(false);
-    const isLongMessage = text.length > 300; 
+    const isLongMessage = text.length > 300;
     return (
       <div className={`message ${sender}`}>
         {isLongMessage && !expanded ? (
@@ -47,7 +46,7 @@ export default function SmartTaxBot() {
     );
   }
 
-  
+  // Handle form submission and API call to your backend
   const handleSubmit = useCallback(
     async (userMessage) => {
       if (!userMessage.trim()) return;
@@ -57,6 +56,7 @@ export default function SmartTaxBot() {
       const newMessages = [...messages, { text: userMessage, sender: "user" }];
       setMessages(newMessages);
 
+      // Build conversation context for the prompt
       const conversationContext = newMessages
         .map((msg) =>
           msg.sender === "user" ? `User: ${msg.text}` : `AI: ${msg.text}`
@@ -73,10 +73,7 @@ export default function SmartTaxBot() {
         });
         const data = await res.json();
         const aiMessage = data.text || "No response from AI.";
-        const updatedMessages = [
-          ...newMessages,
-          { text: aiMessage, sender: "ai" },
-        ];
+        const updatedMessages = [...newMessages, { text: aiMessage, sender: "ai" }];
         setMessages(updatedMessages);
 
         if (speakModeRef.current) {
@@ -95,11 +92,10 @@ export default function SmartTaxBot() {
     [messages]
   );
 
-  
+  // Initialize speech recognition for voice input
   const initializeRecognition = useCallback(() => {
     try {
-      const SpeechRecognition =
-        window.SpeechRecognition || window.webkitSpeechRecognition;
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       if (!SpeechRecognition) {
         console.error("Speech recognition not supported in this browser.");
         return;
@@ -125,12 +121,11 @@ export default function SmartTaxBot() {
     }
   }, [handleSubmit]);
 
-
   useEffect(() => {
     initializeRecognition();
   }, [initializeRecognition]);
 
- 
+  // Start voice recognition when the speak button is clicked
   const startListening = () => {
     if (recognitionRef.current && !listening) {
       try {
@@ -143,11 +138,10 @@ export default function SmartTaxBot() {
     }
   };
 
-  
+  // Auto-scroll to the bottom of messages
   useEffect(() => {
     if (messagesContainerRef.current) {
-      messagesContainerRef.current.scrollTop =
-        messagesContainerRef.current.scrollHeight;
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
     }
   }, [messages]);
 
@@ -162,39 +156,24 @@ export default function SmartTaxBot() {
         <meta name="robots" content="index, follow" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="canonical" href="https://taxadvisor.live/SmartTaxBot" />
-
-                <meta
-          property="og:title"
-          content="SmartTaxBot - Your AI Tax Assistant"
-        />
+        <meta property="og:title" content="SmartTaxBot - Your AI Tax Assistant" />
         <meta
           property="og:description"
           content="SmartTaxBot is an AI-powered tax assistant designed to help you navigate tax-related queries quickly and efficiently. Ask your tax questions and get instant responses."
         />
         <meta property="og:url" content="https://taxadvisor.live/SmartTaxBot" />
         <meta property="og:type" content="website" />
-        <meta
-          property="og:image"
-          content="https://taxadvisor.live/SmartTaxBot-og-image.jpg"
-        />
-
-                <meta name="twitter:card" content="summary_large_image" />
-        <meta
-          name="twitter:title"
-          content="SmartTaxBot - Your AI Tax Assistant"
-        />
+        <meta property="og:image" content="https://taxadvisor.live/SmartTaxBot-og-image.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="SmartTaxBot - Your AI Tax Assistant" />
         <meta
           name="twitter:description"
           content="SmartTaxBot is an AI-powered tax assistant designed to help you navigate tax-related queries quickly and efficiently. Ask your tax questions and get instant responses."
         />
-        <meta
-          name="twitter:image"
-          content="https://taxadvisor.live/SmartTaxBot-twitter-image.jpg"
-        />
+        <meta name="twitter:image" content="https://taxadvisor.live/SmartTaxBot-twitter-image.jpg" />
         <meta name="twitter:site" content="@TaxAdvisor" />
         <meta name="twitter:creator" content="@TaxAdvisor" />
-
-                <script
+        <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
@@ -215,14 +194,9 @@ export default function SmartTaxBot() {
           }}
         />
       </Head>
-
       <div className="smarttaxbot-container">
         <h1 className="smarttaxbot-title">SmartTaxBot</h1>
-        <div
-          ref={messagesContainerRef}
-          className="smarttaxbot-messages"
-          aria-live="polite"
-        >
+        <div ref={messagesContainerRef} className="smarttaxbot-messages" aria-live="polite">
           {messages.map((msg, index) => (
             <Message key={index} text={msg.text} sender={msg.sender} />
           ))}
@@ -257,7 +231,7 @@ export default function SmartTaxBot() {
           >
             {loading ? "Thinking..." : "Ask AI"}
           </button>
-                    <button
+          <button
             type="button"
             className="smarttaxbot-speak speak-button"
             onClick={startListening}
@@ -266,19 +240,9 @@ export default function SmartTaxBot() {
           >
             Speak
           </button>
-                    <div className="indicator-container">
-            {listening && (
-              <div
-                className="listening-indicator"
-                aria-live="assertive"
-              ></div>
-            )}
-            {speaking && (
-              <div
-                className="speaking-indicator"
-                aria-live="assertive"
-              ></div>
-            )}
+          <div className="indicator-container">
+            {listening && <div className="listening-indicator" aria-live="assertive"></div>}
+            {speaking && <div className="speaking-indicator" aria-live="assertive"></div>}
           </div>
           {permissionError && (
             <p className="permission-error" aria-live="assertive">
