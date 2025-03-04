@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-taxadvisor-dev-10b85-authRole",
+      "UnauthRoleArn": "arn:aws:iam::443370707258:role/amplify-taxadvisor-dev-10b85-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::443370707258:role/amplify-taxadvisor-dev-10b85-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-taxadvisor-dev-10b85-deployment",
+      "UnauthRoleName": "amplify-taxadvisor-dev-10b85-unauthRole",
+      "StackName": "amplify-taxadvisor-dev-10b85",
+      "StackId": "arn:aws:cloudformation:us-east-1:443370707258:stack/amplify-taxadvisor-dev-10b85/b738e760-f8ba-11ef-bd34-0ef5edef2bf9",
+      "AmplifyAppId": "d1ju8rb4hsqgdz"
+    }
+  }
+}
