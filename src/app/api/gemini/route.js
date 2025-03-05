@@ -13,7 +13,7 @@ export async function POST(request) {
       );
     }
 
-    // Handle some fixed responses for common questions
+    // Hndle some fixed responses for common questions
     const lowerPrompt = prompt.toLowerCase();
     if (
       lowerPrompt.includes("what's your name") ||
