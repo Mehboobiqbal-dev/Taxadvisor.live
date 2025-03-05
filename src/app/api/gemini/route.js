@@ -23,7 +23,7 @@ export async function POST(request) {
       lowerPrompt.includes("who developed you")
     ) {
       return new Response(
-        JSON.stringify({ text: "I am TaxGPT, developed by Mehboob Iqbal." }),
+        JSON.stringify({ text: "I am SmartTaxBot, developed by Mehboob Iqbal." }),
         {
           status: 200,
           headers: { "Content-Type": "application/json" },
