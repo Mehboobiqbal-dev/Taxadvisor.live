@@ -300,20 +300,57 @@ const TaxCalculator = () => {
             </Select>
           </FormControl>
 
-          <Stack direction="row" className={styles.buttons} spacing={2}>
-            <Button variant="contained" color="primary" onClick={calculateTaxes} aria-label="Calculate Taxes">
-              Calculate Taxes
-            </Button>
-            <Button variant="outlined" color="secondary" onClick={handleReset} aria-label="Reset Form">
-              Reset
-            </Button>
-            <Button variant="contained" color="success" onClick={handleSave} aria-label="Save Data">
-              Save
-            </Button>
-            <Button variant="contained" color="info" onClick={handleLoad} aria-label="Load Saved Data">
-              Load
-            </Button>
-          </Stack>
+          <Stack
+  direction={{ xs: "column", sm: "row" }}
+  spacing={{ xs: 1, sm: 2 }}
+  className={styles.buttons}
+>
+  <Button
+    variant="contained"
+    color="primary"
+    onClick={calculateTaxes}
+    aria-label="Calculate Taxes"
+    fullWidth
+    sx={{
+      whiteSpace: "nowrap", // keep the text on one line
+      fontSize: { xs: "0.8rem", sm: "1rem" },
+      // Optionally adjust padding if needed:
+      px: { xs: 1, sm: 2 },
+    }}
+  >
+    Calculate Taxes
+  </Button>
+
+  <Button
+    variant="outlined"
+    color="secondary"
+    onClick={handleReset}
+    aria-label="Reset Form"
+    fullWidth
+  >
+    Reset
+  </Button>
+
+  <Button
+    variant="contained"
+    color="success"
+    onClick={handleSave}
+    aria-label="Save Data"
+    fullWidth
+  >
+    Save
+  </Button>
+
+  <Button
+    variant="contained"
+    color="info"
+    onClick={handleLoad}
+    aria-label="Load Saved Data"
+    fullWidth
+  >
+    Load
+  </Button>
+</Stack>
 
           {(federalTaxAmount > 0 || stateTaxAmount > 0) && (
             <Box className={styles.results} role="region" aria-labelledby="results-heading">
