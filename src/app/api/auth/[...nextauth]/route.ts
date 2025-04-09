@@ -6,7 +6,7 @@ import User from "@/app/models/user";
 import connectToDatabase from "@/app/lib/mongodb";
 import bcrypt from "bcryptjs";
 
-const authOptions = {
+export const authOptions = {
   session: {
     strategy: "jwt" as const,
   },
@@ -22,11 +22,7 @@ const authOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: {
-          label: "Email",
-          type: "text",
-          placeholder: "you@example.com",
-        },
+        email: { label: "Email", type: "text", placeholder: "you@example.com" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
@@ -52,33 +48,43 @@ const authOptions = {
     }),
   ],
   callbacks: {
-    async signIn(params) {
-      const { account, profile } = params;
+    // Updated signIn callback with the correct signature
+    async signIn({ user, account, profile, email, credentials }) {
       if (account?.provider === "github" || account?.provider === "google") {
         await connectToDatabase();
-        const existingUser = await User.findOne({ email: profile?.email });
-        if (!existingUser) {
-          await User.create({
-            name: profile?.name,
-            email: profile?.email,
-          });
+        // Using profile from OAuth will have the email, but include a fallback if needed
+        const userEmail = profile?.email || email;
+        if (userEmail) {
+          const existingUser = await User.findOne({ email: userEmail });
+          if (!existingUser) {
+            await User.create({
+              name: profile?.name || (userEmail ? userEmail.split("@")[0] : "Unknown"),
+              email: userEmail,
+              provider: account?.provider,
+            });
+          }
         }
       }
       return true;
     },
-    async jwt({ token, user }) {
+
+    async jwt({ token, user, account }) {
       if (user) {
         token.id = user.id;
         token.email = user.email;
         token.name = user.name;
+        token.provider = account?.provider || "credentials";
       }
       return token;
     },
+
     async session({ session, token }) {
       if (token) {
         session.user = {
+          id: token.id,
           email: token.email as string,
           name: token.name as string,
+          provider: token.provider,
         };
       }
       return session;
