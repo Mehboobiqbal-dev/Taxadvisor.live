@@ -1,8 +1,7 @@
-
-
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GithubProvider from "next-auth/providers/github";
+import GoogleProvider from "next-auth/providers/google";
 import User from "@/app/models/user";
 import connectToDatabase from "@/app/lib/mongodb";
 import bcrypt from "bcryptjs";
@@ -15,6 +14,10 @@ const authOptions = {
     GithubProvider({
       clientId: process.env.GITHUB_ID as string,
       clientSecret: process.env.GITHUB_SECRET as string,
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
     CredentialsProvider({
       name: "Credentials",
@@ -51,7 +54,7 @@ const authOptions = {
   callbacks: {
     async signIn(params) {
       const { account, profile } = params;
-      if (account?.provider === "github") {
+      if (account?.provider === "github" || account?.provider === "google") {
         await connectToDatabase();
         const existingUser = await User.findOne({ email: profile?.email });
         if (!existingUser) {
@@ -86,7 +89,6 @@ const authOptions = {
   },
   secret: process.env.NEXTAUTH_SECRET,
 };
-
 
 export const GET = NextAuth(authOptions);
 export const POST = NextAuth(authOptions);
