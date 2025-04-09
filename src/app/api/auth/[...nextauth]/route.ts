@@ -48,17 +48,16 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    // Updated signIn callback with the correct signature
     async signIn({ user, account, profile, email, credentials }) {
       if (account?.provider === "github" || account?.provider === "google") {
         await connectToDatabase();
-        // Using profile from OAuth will have the email, but include a fallback if needed
+        // Use the email from profile or fallback to email from parameters
         const userEmail = profile?.email || email;
         if (userEmail) {
           const existingUser = await User.findOne({ email: userEmail });
           if (!existingUser) {
             await User.create({
-              name: profile?.name || (userEmail ? userEmail.split("@")[0] : "Unknown"),
+              name: profile?.name || (userEmail.split("@")[0] || "Unknown"),
               email: userEmail,
               provider: account?.provider,
             });

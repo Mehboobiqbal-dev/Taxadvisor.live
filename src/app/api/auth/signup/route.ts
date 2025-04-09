@@ -8,20 +8,12 @@ export async function POST(request: Request) {
     const { name, email, password, confirmPassword, recaptchaToken } =
       await request.json();
 
-   
-    if (
-      !name ||
-      !email ||
-      !password ||
-      !confirmPassword ||
-      !recaptchaToken
-    ) {
+    if (!name || !email || !password || !confirmPassword || !recaptchaToken) {
       return NextResponse.json(
         { message: "All fields are required" },
         { status: 400 }
       );
     }
-
 
     const isValidEmail = (email: string) =>
       /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -32,7 +24,6 @@ export async function POST(request: Request) {
       );
     }
 
-    
     if (password.length < 6) {
       return NextResponse.json(
         { message: "Password must be at least 6 characters long" },
@@ -46,13 +37,10 @@ export async function POST(request: Request) {
       );
     }
 
-   
     const secretKey = process.env.RECAPTCHA_SECRET_KEY;
     if (!secretKey) {
       return NextResponse.json(
-        {
-          message: "Server misconfiguration: reCAPTCHA secret key missing",
-        },
+        { message: "Server misconfiguration: reCAPTCHA secret key missing" },
         { status: 500 }
       );
     }
@@ -64,7 +52,7 @@ export async function POST(request: Request) {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: new URLSearchParams({
           secret: secretKey,
-          response: recaptchaToken, 
+          response: recaptchaToken,
         }),
       }
     );
@@ -72,7 +60,6 @@ export async function POST(request: Request) {
     const recaptchaData = await recaptchaResponse.json();
 
     if (!recaptchaData.success) {
-     
       console.error(
         "reCAPTCHA verification failed:",
         recaptchaData["error-codes"]
@@ -83,10 +70,8 @@ export async function POST(request: Request) {
       );
     }
 
-   
     await connectToDatabase();
 
-   
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return NextResponse.json(
@@ -95,19 +80,15 @@ export async function POST(request: Request) {
       );
     }
 
-    
     const hashedPassword = await bcrypt.hash(password, 10);
 
-  
     const newUser = new User({
       name,
       email,
       password: hashedPassword,
     });
-
     await newUser.save();
 
-    
     return NextResponse.json(
       { message: "User registered successfully" },
       { status: 201 }
