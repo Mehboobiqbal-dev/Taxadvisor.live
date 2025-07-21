@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect, useRef, useCallback } from "react";
 import Head from "next/head";
+import Image from "next/image";
 
 const BOT_AVATAR = "https://i.ibb.co/vxKbKLHT/photo.jpg";
 const USER_AVATAR = "https://ui-avatars.com/api/?name=U&background=243b55&color=fff";
@@ -33,7 +34,7 @@ export default function SmartTaxBot() {
     return (
       <div className={`flex w-full my-2 ${isUser ? 'justify-end' : 'justify-start'} animate-fadeIn`}>
         {!isUser && (
-          <img src={BOT_AVATAR} alt="AI" className="h-8 w-8 rounded-full mr-2 border-2 border-accent shadow" />
+          <Image src={BOT_AVATAR} alt="AI" width={32} height={32} className="h-8 w-8 rounded-full mr-2 border-2 border-accent shadow" />
         )}
         <div className={`flex flex-col max-w-[75vw] md:max-w-[60%] ${isUser ? 'items-end' : 'items-start'}`}>
           <div className={`rounded-2xl px-4 py-3 shadow-custom text-base whitespace-pre-line ${isUser ? 'bg-primary text-white rounded-br-none' : 'bg-white text-primary border border-primary/10 rounded-bl-none'}`}>
@@ -49,7 +50,7 @@ export default function SmartTaxBot() {
           </div>
         </div>
         {isUser && (
-          <img src={USER_AVATAR} alt="User" className="h-8 w-8 rounded-full ml-2 border-2 border-primary shadow" />
+          <Image src={USER_AVATAR} alt="User" width={32} height={32} className="h-8 w-8 rounded-full ml-2 border-2 border-primary shadow" />
         )}
       </div>
     );
@@ -152,7 +153,7 @@ export default function SmartTaxBot() {
         <div className="relative flex flex-col w-full max-w-2xl h-[80vh] bg-[#212e3f] rounded-2xl shadow-2xl overflow-hidden border border-primary">
           {/* Header Bar */}
           <div className="flex items-center gap-3 px-6 py-4 bg-[#1a2233] border-b border-primary/20">
-            <img src={BOT_AVATAR} alt="Bot" className="h-8 w-8 rounded-full border-2 border-accent shadow" />
+            <Image src={BOT_AVATAR} alt="Bot" width={32} height={32} className="h-8 w-8 rounded-full border-2 border-accent shadow" />
             <span className="text-lg font-bold text-white tracking-tight">SmartTaxBot</span>
             <span className="ml-2 text-xs text-accent bg-primary/20 rounded px-2 py-1">Online</span>
             <div className="flex-1" />
@@ -163,8 +164,8 @@ export default function SmartTaxBot() {
           <div ref={messagesContainerRef} className="flex-1 overflow-y-auto px-4 py-6 bg-[#232f41]">
             {messages.length === 0 && (
               <div className="flex flex-col items-center justify-center h-full text-white/60">
-                <img src={BOT_AVATAR} alt="Bot" className="h-16 w-16 rounded-full mb-4 border-2 border-accent shadow" />
-                <p className="text-lg font-semibold">Hi! I'm SmartTaxBot.<br/>Ask me anything about taxes.</p>
+                <Image src={BOT_AVATAR} alt="Bot" width={64} height={64} className="h-16 w-16 rounded-full mb-4 border-2 border-accent shadow" />
+                <p className="text-lg font-semibold">Hi! I&apos;m SmartTaxBot.<br/>Ask me anything about taxes.</p>
               </div>
             )}
             {messages.map((msg, index) => (
