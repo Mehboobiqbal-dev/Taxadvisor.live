@@ -43,6 +43,8 @@ export default function RootLayout({
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
         />
+        {/* Custom favicon */}
+        <link rel="icon" type="image/jpeg" href="https://i.ibb.co/vxKbKLHT/photo.jpg" />
       </Head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {/* Move Toaster to bottom-right and visually hide empty notification section */}
