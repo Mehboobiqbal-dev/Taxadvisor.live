@@ -34,45 +34,52 @@ const AdvisorChat = () => {
   };
 
   return (
-    <div className="flex flex-col items-center p-6 bg-gray-50 min-h-screen">
-      <h1 className="text-3xl font-bold mb-6 text-blue-600">
-        Advisor Chat Panel
-      </h1>
-      <div className="w-full max-w-lg bg-white border border-gray-200 rounded-lg shadow-md">
-        <div className="h-80 overflow-y-scroll p-4">
-          {chat.map((msg, idx) => (
-            <div key={idx} className="mb-4">
-              <div className="flex items-center">
-                <strong className="text-blue-600 mr-2">{msg.sender}:</strong>
-                <span className="text-gray-800">{msg.content}</span>
+    <div className="card max-w-2xl mx-auto my-8 p-0">
+      <h1 className="text-2xl font-bold text-primary px-8 pt-8 pb-2">Advisor Chat Panel</h1>
+      <div className="flex flex-col gap-1 px-4 py-4 min-h-[300px] max-h-[400px] overflow-y-auto bg-bg-alt rounded-lg">
+        {chat.map((msg, idx) => (
+          <div key={idx} className={`flex w-full my-2 ${msg.sender === 'Advisor John' ? 'justify-end' : 'justify-start'}`} style={{ animation: 'fadeIn 0.4s' }}>
+            {msg.sender !== 'Advisor John' && (
+              <div className="flex-shrink-0 mr-2">
+                <div className="h-8 w-8 rounded-full bg-accent flex items-center justify-center text-white font-bold">U</div>
               </div>
+            )}
+            <div className={`rounded-2xl px-4 py-3 shadow-custom max-w-[70%] text-base whitespace-pre-line ${msg.sender === 'Advisor John' ? 'bg-primary text-white rounded-br-none' : 'bg-white text-primary border border-primary/10 rounded-bl-none'}`}>
+              <span>{msg.content}</span>
               {msg.timestamp && (
-                <small className="block text-gray-500 text-xs mt-1">
-                  {new Date(msg.timestamp).toLocaleTimeString()}
-                </small>
+                <small className="block text-muted text-xs mt-1">{new Date(msg.timestamp).toLocaleTimeString()}</small>
               )}
             </div>
-          ))}
-        </div>
-        <div className="flex items-center p-4 border-t border-gray-200">
-          <input
-            type="text"
-            placeholder="Type a reply..."
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') sendMessage();
-            }}
-            className="flex-grow px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mr-2"
-          />
-          <button
-            onClick={sendMessage}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            Send Reply
-          </button>
-        </div>
+            {msg.sender === 'Advisor John' && (
+              <div className="flex-shrink-0 ml-2">
+                <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-white font-bold">A</div>
+              </div>
+            )}
+          </div>
+        ))}
       </div>
+      <form className="flex gap-2 items-center px-4 pb-6 pt-2" onSubmit={e => { e.preventDefault(); sendMessage(); }}>
+        <input
+          type="text"
+          placeholder="Type a reply..."
+          value={message}
+          onChange={e => setMessage(e.target.value)}
+          onKeyDown={e => { if (e.key === 'Enter') sendMessage(); }}
+          className="flex-grow rounded-lg border border-primary/20 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent text-base bg-white"
+        />
+        <button
+          type="submit"
+          className="button bg-primary-gradient hover:bg-primary text-white font-semibold px-5 py-2 rounded-lg shadow-custom disabled:opacity-60"
+        >
+          Send Reply
+        </button>
+      </form>
+      <style jsx>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: none; }
+        }
+      `}</style>
     </div>
   );
 };

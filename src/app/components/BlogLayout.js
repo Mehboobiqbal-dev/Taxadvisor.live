@@ -1,9 +1,9 @@
 function BlogLayout({ title, date, children }) {
   return (
-    <div className="max-w-3xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold">{title}</h1>
-      <p className="text-gray-500 text-sm">Published on {date}</p>
-      <div className="prose prose-lg mt-6">{children}</div>
+    <div className="card max-w-3xl mx-auto my-8 p-8">
+      <h1 className="text-3xl font-bold text-primary mb-2">{title}</h1>
+      <p className="text-accent text-sm font-medium mb-6">Published on {date}</p>
+      <div className="prose prose-lg text-text mt-6">{children}</div>
     </div>
   );
 }

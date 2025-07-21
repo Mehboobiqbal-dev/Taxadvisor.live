@@ -45,7 +45,10 @@ export default function RootLayout({
         />
       </Head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Toaster />
+        {/* Move Toaster to bottom-right and visually hide empty notification section */}
+        <div style={{ position: 'fixed', bottom: 0, right: 0, zIndex: 9999, width: 'auto', pointerEvents: 'none' }}>
+          <Toaster position="bottom-right" />
+        </div>
         {children}
                 <Script
           strategy="afterInteractive"

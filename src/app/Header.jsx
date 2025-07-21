@@ -29,33 +29,33 @@ const HeaderContent = () => {
   }, [menuOpen]);
 
   return (
-    <header className="bg-gradient-to-br from-[#141e30] to-[#243b55] text-white py-2 px-4 sticky top-0 w-full z-50 shadow-md overflow-x-hidden">
-      <div className="max-w-screen-xl mx-auto flex items-center justify-between">
+    <header className="header sticky top-0 w-full z-50 shadow-custom">
+      <div className="container flex items-center justify-between py-2">
         {/* Logo */}
-        <div className="flex-shrink-0">
-          <h1 className="text-xl font-bold p-1 rounded">
-            <Link
-              href="/"
-              onClick={() => setMenuOpen(false)}
-              aria-label="Tax Advisor Home"
-            >
-              <img
-                src="https://i.postimg.cc/xT3d2TBK/photo-removebg-preview-1.png"
-                alt="Tax Advisor Logo"
-                className="w-full max-w-[150px] md:max-w-[200px] h-auto"
-                loading="lazy"
-              />
-            </Link>
-          </h1>
+        <div className="flex items-center gap-3">
+          <Link href="/" aria-label="Tax Advisor Home" onClick={() => setMenuOpen(false)}>
+            <img
+              src="https://i.ibb.co/vxKbKLHT/photo.jpg"
+              alt="Tax Advisor Logo"
+              className="h-12 w-12 rounded-full border-2 border-accent shadow"
+              loading="lazy"
+            />
+          </Link>
+          <span className="text-2xl font-bold tracking-tight text-white hidden md:inline">TaxAdvisor</span>
         </div>
-
-        {/* User Button and Menu Toggle */}
-        <div className="flex items-center">
+        {/* Desktop Nav */}
+        <nav className="hidden md:flex gap-8 items-center">
+          <Link href="/home" className="hover:text-accent transition-colors font-medium">Home</Link>
+          <Link href="/tax-calculator" className="hover:text-accent transition-colors font-medium">Tax Calculator</Link>
+          <Link href="/SmartTaxBot" className="hover:text-accent transition-colors font-medium">SmartTaxBot</Link>
+          <Link href="/newslist" className="hover:text-accent transition-colors font-medium">News</Link>
+          <Link href="/blog" className="hover:text-accent transition-colors font-medium">Blog</Link>
+        </nav>
+        {/* User Button and Mobile Menu Toggle */}
+        <div className="flex items-center gap-2">
           <UserButton />
-
-          {/* Menu Toggle Button */}
           <button
-            className="text-2xl text-white ml-4"
+            className="text-3xl text-white md:hidden ml-2"
             aria-expanded={menuOpen}
             aria-controls="main-menu"
             onClick={(e) => {
@@ -68,69 +68,19 @@ const HeaderContent = () => {
           </button>
         </div>
       </div>
-
-      {/* Navigation Menu */}
+      {/* Mobile Nav */}
       <nav
         ref={menuRef}
         id="main-menu"
-        className={`${
-          menuOpen ? 'block' : 'hidden'
-        } bg-gradient-to-br from-[#141e30] to-[#243b55] text-white transition-all duration-400 overflow-x-hidden`}
+        className={`md:hidden ${menuOpen ? 'block' : 'hidden'} bg-gradient-to-br from-[#141e30] to-[#243b55] text-white transition-all duration-400`}
       >
-        <div className="max-w-screen-xl mx-auto px-4">
-          <ul className="text-center">
-            <li className="py-2">
-              <Link
-                href="/home"
-                onClick={() => setMenuOpen(false)}
-                aria-label="Go to Home Page"
-                className="hover:text-[#FFD700] transition-colors duration-200"
-              >
-                Home
-              </Link>
-            </li>
-            <li className="py-2">
-              <Link
-                href="/tax-calculator"
-                onClick={() => setMenuOpen(false)}
-                aria-label="Tax Calculator"
-                className="hover:text-[#FFD700] transition-colors duration-200"
-              >
-                Tax Calculator
-              </Link>
-            </li>
-            <li className="py-2">
-              <Link
-                href="/SmartTaxBot"
-                onClick={() => setMenuOpen(false)}
-                aria-label="SmartTaxBot Page"
-                className="hover:text-[#FFD700] transition-colors duration-200"
-              >
-                SmartTaxBot
-              </Link>
-            </li>
-            <li className="py-2">
-              <Link
-                href="/newslist"
-                onClick={() => setMenuOpen(false)}
-                aria-label="News Page"
-                className="hover:text-[#FFD700] transition-colors duration-200"
-              >
-                News
-              </Link>
-            </li>
-            <li className="py-2">
-              <Link
-                href="/blog"
-                onClick={() => setMenuOpen(false)}
-                aria-label="Blog Page"
-                className="hover:text-[#FFD700] transition-colors duration-200"
-              >
-                Blog
-              </Link>
-            </li>
-          </ul>
-        </div>
+        <ul className="flex flex-col items-center gap-2 py-4">
+          <li><Link href="/home" onClick={() => setMenuOpen(false)} className="hover:text-accent text-lg py-2">Home</Link></li>
+          <li><Link href="/tax-calculator" onClick={() => setMenuOpen(false)} className="hover:text-accent text-lg py-2">Tax Calculator</Link></li>
+          <li><Link href="/SmartTaxBot" onClick={() => setMenuOpen(false)} className="hover:text-accent text-lg py-2">SmartTaxBot</Link></li>
+          <li><Link href="/newslist" onClick={() => setMenuOpen(false)} className="hover:text-accent text-lg py-2">News</Link></li>
+          <li><Link href="/blog" onClick={() => setMenuOpen(false)} className="hover:text-accent text-lg py-2">Blog</Link></li>
+        </ul>
       </nav>
     </header>
   );
