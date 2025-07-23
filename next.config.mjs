@@ -1,6 +1,9 @@
+/** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  // Add your Next.js configurations here
+  images: {
+    domains: ['i.ibb.co'], // Add the hostname here
+  },
 };
 
 export default nextConfig;
