@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "node": "node generate-post.js"
+    "node": "node cron/generate-post.js"
   },
   "dependencies": {
     "@emotion/react": "^11.11.7",
