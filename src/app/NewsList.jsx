@@ -12,7 +12,7 @@ export const dynamic = "force-dynamic";
 
 async function getNews() {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
     const response = await fetch(`${baseUrl}/api/google-news`);
     if (!response.ok) {
       throw new Error('Failed to fetch news');

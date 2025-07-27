@@ -1,7 +1,7 @@
 const protocol = process.env.NODE_ENV === 'production' ? require('https') : require('http');
 
 const options = {
-  hostname: process.env.NODE_ENV === 'production' ? 'www.taxadvisor.live' : 'localhost',
+  hostname: process.env.NODE_ENV === 'production' ? 'taxadvisor.live' : 'localhost',
   port: process.env.NODE_ENV === 'production' ? 443 : 3000,
   path: '/api/fetch-news',
   method: 'GET'
