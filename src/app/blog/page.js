@@ -1,29 +1,33 @@
-
-import path from 'path';
-import fs from 'fs/promises';
-import matter from 'gray-matter';
+import { db } from '../lib/firebase';
 import BlogSearch from './BlogSearch';
 import Header from '../Header';
 import Footer from '../Footer';
 import Script from 'next/script';
 import SEO from '@/app/components/SEO';
 
-
 async function getBlogPosts() {
-  const contentDir = path.join(process.cwd(), 'content');
-  const files = await fs.readdir(contentDir);
+  const blogsCollection = db.collection('blogs');
+  const snapshot = await blogsCollection.orderBy('createdAt', 'desc').get();
 
-  const posts = await Promise.all(
-    files.map(async (filename) => {
-      const filePath = path.join(contentDir, filename);
-      const fileContent = await fs.readFile(filePath, 'utf-8');
-      const { data } = matter(fileContent);
-      return { frontMatter: data, slug: filename.replace(/\.mdx?$/, '') };
-    })
-  );
+  if (snapshot.empty) {
+    return [];
+  }
+
+  const posts = snapshot.docs.map(doc => {
+    const data = doc.data();
+    return {
+      frontMatter: {
+        title: data.title,
+        date: data.createdAt.toDate().toISOString(),
+        // Add other front matter fields if necessary
+      },
+      slug: doc.id,
+      content: data.content,
+    };
+  });
+
   return posts;
 }
-
 
 const websiteStructuredData = {
   "@context": "https://schema.org",

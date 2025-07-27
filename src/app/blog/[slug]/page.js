@@ -1,8 +1,4 @@
-
-
-import path from 'path';
-import { promises as fs } from 'fs';
-import matter from 'gray-matter';
+import { db } from '../../lib/firebase';
 import { remark } from 'remark';
 import html from 'remark-html';
 import Script from 'next/script';
@@ -12,38 +8,33 @@ import Footer from '@/app/Footer';
 import Link from 'next/link';
 import './blog.css';
 
-
 function calculateReadingTime(text) {
   const words = text.trim().split(/\s+/).length;
   return Math.ceil(words / 200);
 }
 
 async function getBlogContent(slug) {
-  const normalizedSlug = slug.replace(/\.md$/, '');
-  const filePath = path.join(process.cwd(), 'content', `${normalizedSlug}.md`);
-  let fileContent;
+  const blogRef = db.collection('blogs').doc(slug);
+  const docSnap = await blogRef.get();
 
-  try {
-    fileContent = await fs.readFile(filePath, 'utf-8');
-  } catch (error) {
-    throw new Error(`Blog post not found: ${filePath}`);
+  if (!docSnap.exists) {
+    throw new Error(`Blog post not found: ${slug}`);
   }
 
-  const { data, content } = matter(fileContent);
-  const processedContent = await remark().use(html).process(content);
+  const data = docSnap.data();
+  const processedContent = await remark().use(html).process(data.content);
   const contentHtml = processedContent.toString();
-  const readingTime = calculateReadingTime(content);
+  const readingTime = calculateReadingTime(data.content);
 
-  return { frontMatter: data, content: contentHtml, readingTime };
-}
-
-
-export async function generateStaticParams() {
-  const contentDir = path.join(process.cwd(), 'content');
-  const files = await fs.readdir(contentDir);
-  return files.map((filename) => ({
-    slug: filename.replace(/\.md$/, ''),
-  }));
+  return {
+    frontMatter: {
+      title: data.title,
+      date: data.createdAt.toDate().toISOString(),
+      // Add other front matter fields if necessary
+    },
+    content: contentHtml,
+    readingTime,
+  };
 }
 
 export default async function BlogPost({ params }) {
@@ -94,6 +85,7 @@ export default async function BlogPost({ params }) {
           </div>
           {frontMatter.author && (
             <p className="blog-author">By {frontMatter.author}</p>
+
           )}
         </header>
 

@@ -1,5 +1,3 @@
-
-
 import Parser from "rss-parser";
 import Header from "./Header";
 import Footer from "./Footer";
@@ -14,40 +12,17 @@ export const dynamic = "force-dynamic";
 
 async function getNews() {
   try {
-    const parser = new Parser({
-      customFields: {
-        item: [["media:content", "image", { keepArray: false, attr: "url" }]],
-      },
-    });
-
-    const feed = await parser.parseURL(
-      "https://news.google.com/rss/search?q=tax+finance&hl=en-US&gl=US&ceid=US:en"
-    );
-
-    if (!feed || !feed.items) {
-      throw new Error("Invalid feed data");
+    const baseUrl = process.env.NODE_ENV === 'production'
+      ? `https://${process.env.VERCEL_URL}`
+      : 'http://localhost:3000';
+    const response = await fetch(`${baseUrl}/api/google-news`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch news');
     }
-
-    const seenLinks = new Set();
-    const articles = [];
-
-    for (const item of feed.items) {
-      const link = item.link;
-      if (!seenLinks.has(link)) {
-        seenLinks.add(link);
-        articles.push({
-          title: item.title?.trim(),
-          link,
-          published: item.pubDate,
-          description: item.contentSnippet || "No description available",
-          image: item.image || null,
-        });
-      }
-    }
-    return articles;
+    const data = await response.json();
+    return data.articles;
   } catch (error) {
     console.error("Error fetching news:", error);
-
     return [];
   }
 }
