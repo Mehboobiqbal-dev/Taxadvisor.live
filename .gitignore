@@ -40,6 +40,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 env.local
+.env.local
 
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend

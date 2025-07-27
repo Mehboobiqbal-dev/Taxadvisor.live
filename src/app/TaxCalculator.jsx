@@ -7,6 +7,13 @@ import {
   Tooltip as ChartTooltip,
   Legend,
 } from 'chart.js';
+import { Button } from '@/app/components/ui/button';
+import { Input } from '@/app/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/app/components/ui/select';
+import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card';
+import { Alert, AlertDescription, AlertTitle } from '@/app/components/ui/alert';
+import { Progress } from '@/app/components/ui/progress';
+
 ChartJS.register(ArcElement, ChartTooltip, Legend);
 
 const federalTaxBrackets = [
@@ -53,11 +60,11 @@ const filingStatuses = [
   { label: 'Head of Household', value: 'head', standardDeduction: 20800 },
 ];
 const steps = [
-  { label: 'Filing Status & Income', icon: '💼' },
-  { label: 'Deductions', icon: '💸' },
-  { label: 'Credits', icon: '🎁' },
-  { label: 'State', icon: '🏛️' },
-  { label: 'Results', icon: '📊' },
+  { label: 'Filing Status & Income' },
+  { label: 'Deductions' },
+  { label: 'Credits' },
+  { label: 'State' },
+  { label: 'Results' },
 ];
 const calculateTaxFromBrackets = (income, brackets) => {
   let tax = 0;
@@ -74,49 +81,57 @@ const calculateTaxFromBrackets = (income, brackets) => {
 export default function TaxCalculator() {
   // State
   const [activeStep, setActiveStep] = useState(0);
-  const [filingStatus, setFilingStatus] = useState('single');
-  const [income, setIncome] = useState('');
-  const [qualifiedDividends, setQualifiedDividends] = useState('');
-  const [longTermGains, setLongTermGains] = useState('');
-  const [medical, setMedical] = useState('');
-  const [salt, setSalt] = useState('');
-  const [mortgage, setMortgage] = useState('');
-  const [charity, setCharity] = useState('');
-  const [business, setBusiness] = useState('');
-  const [studentLoanInterest, setStudentLoanInterest] = useState('');
-  const [retirementContributions, setRetirementContributions] = useState('');
-  const [state, setState] = useState('CA');
-  const [childTaxCredit, setChildTaxCredit] = useState('');
-  const [eitc, setEitc] = useState('');
-  const [educationCredit, setEducationCredit] = useState('');
-  const [federalTaxAmount, setFederalTaxAmount] = useState(0);
-  const [stateTaxAmount, setStateTaxAmount] = useState(0);
-  const [totalTaxAmount, setTotalTaxAmount] = useState(0);
-  const [deductionStrategy, setDeductionStrategy] = useState('Standard');
+  const [formData, setFormData] = useState({
+    filingStatus: 'single',
+    income: '',
+    qualifiedDividends: '',
+    longTermGains: '',
+    medical: '',
+    salt: '',
+    mortgage: '',
+    charity: '',
+    business: '',
+    studentLoanInterest: '',
+    retirementContributions: '',
+    state: 'CA',
+    childTaxCredit: '',
+    eitc: '',
+    educationCredit: '',
+  });
+  const [results, setResults] = useState(null);
   const [error, setError] = useState('');
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSelectChange = (name, value) => {
+    setFormData({ ...formData, [name]: value });
+  };
 
   // Calculation logic
   const calculateTaxes = () => {
-    if (!income || isNaN(income) || parseFloat(income) <= 0) {
+    if (!formData.income || isNaN(formData.income) || parseFloat(formData.income) <= 0) {
       setError('Please enter a valid income.');
       return;
     }
     setError('');
-    const totalIncome = parseFloat(income);
-    const qDividends = parseFloat(qualifiedDividends) || 0;
-    const ltGains = parseFloat(longTermGains) || 0;
+    const totalIncome = parseFloat(formData.income);
+    const qDividends = parseFloat(formData.qualifiedDividends) || 0;
+    const ltGains = parseFloat(formData.longTermGains) || 0;
     const itemizedDeduction =
-      (parseFloat(medical) || 0) +
-      (parseFloat(salt) || 0) +
-      (parseFloat(mortgage) || 0) +
-      (parseFloat(charity) || 0) +
-      (parseFloat(business) || 0) +
-      (parseFloat(studentLoanInterest) || 0) +
-      (parseFloat(retirementContributions) || 0);
-    const filing = filingStatuses.find(f => f.value === filingStatus);
+      (parseFloat(formData.medical) || 0) +
+      (parseFloat(formData.salt) || 0) +
+      (parseFloat(formData.mortgage) || 0) +
+      (parseFloat(formData.charity) || 0) +
+      (parseFloat(formData.business) || 0) +
+      (parseFloat(formData.studentLoanInterest) || 0) +
+      (parseFloat(formData.retirementContributions) || 0);
+    const filing = filingStatuses.find(f => f.value === formData.filingStatus);
     const standardDeduction = filing ? filing.standardDeduction : 13850;
     const deductionUsed = Math.max(standardDeduction, itemizedDeduction);
-    setDeductionStrategy(itemizedDeduction > standardDeduction ? 'Itemized' : 'Standard');
+    const deductionStrategy = itemizedDeduction > standardDeduction ? 'Itemized' : 'Standard';
     const ordinaryIncome = totalIncome - (qDividends + ltGains);
     const taxableOrdinaryIncome = Math.max(0, ordinaryIncome - deductionUsed);
     const federalTaxOrdinary = calculateTaxFromBrackets(taxableOrdinaryIncome, federalTaxBrackets);
@@ -124,42 +139,44 @@ export default function TaxCalculator() {
     const capitalGainsTax = calculateTaxFromBrackets(preferentialIncome, capitalGainsBrackets);
     const totalFederalTax = federalTaxOrdinary + capitalGainsTax;
     let stateTax = 0;
-    if (state === 'CA') {
+    if (formData.state === 'CA') {
       stateTax = calculateTaxFromBrackets(totalIncome, caTaxBrackets);
     } else {
-      const rate = statesTaxRates[state] || 0;
+      const rate = statesTaxRates[formData.state] || 0;
       stateTax = totalIncome * rate;
     }
     let totalTax = totalFederalTax + stateTax;
     const credits =
-      (parseFloat(childTaxCredit) || 0) +
-      (parseFloat(eitc) || 0) +
-      (parseFloat(educationCredit) || 0);
+      (parseFloat(formData.childTaxCredit) || 0) +
+      (parseFloat(formData.eitc) || 0) +
+      (parseFloat(formData.educationCredit) || 0);
     totalTax = Math.max(0, totalTax - credits);
-    setFederalTaxAmount(totalFederalTax);
-    setStateTaxAmount(stateTax);
-    setTotalTaxAmount(totalTax);
+    setResults({
+      federalTaxAmount: totalFederalTax,
+      stateTaxAmount: stateTax,
+      totalTaxAmount: totalTax,
+      deductionStrategy,
+      afterTaxIncome: Math.max(0, totalIncome - totalTax),
+    });
   };
   // Stepper navigation
   const handleNext = () => setActiveStep((prev) => Math.min(prev + 1, steps.length - 1));
   const handleBack = () => setActiveStep((prev) => Math.max(prev - 1, 0));
-  const handleStep = (step) => setActiveStep(step);
+
   // Pie chart data
   const chartData = {
-    labels: ['Federal Tax', 'State Tax', 'Credits', 'After-Tax Income'],
+    labels: ['Federal Tax', 'State Tax', 'After-Tax Income'],
     datasets: [
       {
         data: [
-          federalTaxAmount,
-          stateTaxAmount,
-          (parseFloat(childTaxCredit) || 0) + (parseFloat(eitc) || 0) + (parseFloat(educationCredit) || 0),
-          Math.max(0, (parseFloat(income) || 0) - totalTaxAmount),
+          results?.federalTaxAmount || 0,
+          results?.stateTaxAmount || 0,
+          results?.afterTaxIncome || 0,
         ],
         backgroundColor: [
-          '#243b55',
-          '#FFD700',
-          '#28a745',
-          '#218838',
+          '#ef4444',
+          '#f97316',
+          '#22c55e',
         ],
         borderWidth: 1,
       },
@@ -167,217 +184,179 @@ export default function TaxCalculator() {
   };
   // UI
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#f8fafc] to-[#e9ecef] py-8 px-2">
-      <div className="w-full max-w-2xl bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl p-6 md:p-10 border border-primary/10">
-        {/* Stepper */}
-        <div className="flex items-center justify-between mb-8">
-          {steps.map((step, idx) => (
-            <div key={step.label} className="flex-1 flex flex-col items-center relative">
-              <button
-                className={`w-10 h-10 flex items-center justify-center rounded-full border-2 text-lg font-bold transition-all duration-200 ${
-                  activeStep === idx
-                    ? 'bg-primary text-white border-primary scale-110 shadow-lg'
-                    : 'bg-white text-primary border-primary/30 hover:bg-primary/10'
-                }`}
-                onClick={() => handleStep(idx)}
-                aria-label={step.label}
-              >
-                <span>{step.icon}</span>
-              </button>
-              <span className={`mt-2 text-xs font-medium ${activeStep === idx ? 'text-primary' : 'text-gray-500'}`}>{step.label}</span>
-              {idx < steps.length - 1 && (
-                <div className={`absolute top-5 right-0 w-full h-1 z-0 ${idx < activeStep ? 'bg-primary' : 'bg-gray-200'}`}></div>
-              )}
-            </div>
-          ))}
-        </div>
-        {/* Error */}
-        {error && <div className="text-red-600 text-center mb-4 font-semibold">{error}</div>}
-        {/* Step Content */}
-        <form onSubmit={e => { e.preventDefault(); }}>
-          {activeStep === 0 && (
-            <div className="space-y-6">
-              <div>
-                <label className="block mb-1 font-semibold">Filing Status</label>
-                <select
-                  className="w-full rounded-xl border border-primary/20 px-4 py-3 bg-white focus:ring-2 focus:ring-accent"
-                  value={filingStatus}
-                  onChange={e => setFilingStatus(e.target.value)}
-                >
-                  {filingStatuses.map(status => (
-                    <option key={status.value} value={status.value}>{status.label}</option>
-                  ))}
-                </select>
+    <div className="min-h-screen flex items-center justify-center bg-muted/40 py-12 px-4">
+      <Card className="w-full max-w-3xl">
+        <CardHeader>
+          <CardTitle className="text-center text-2xl font-bold">Tax Calculator</CardTitle>
+          <Progress value={(activeStep + 1) / steps.length * 100} className="mt-4" />
+          <div className="flex justify-between mt-2">
+            {steps.map((step, idx) => (
+              <div key={step.label} className={`text-xs ${activeStep >= idx ? 'font-semibold text-primary' : 'text-muted-foreground'}`}>
+                {step.label}
               </div>
-              <div>
-                <label className="block mb-1 font-semibold">Total Income</label>
-                <input
-                  type="number"
-                  className="w-full rounded-xl border border-primary/20 px-4 py-3 bg-white focus:ring-2 focus:ring-accent"
-                  value={income}
-                  onChange={e => setIncome(e.target.value)}
-                  placeholder="Enter total income in dollars"
-                />
-              </div>
-              <div className="flex flex-col md:flex-row gap-4">
-                <div className="flex-1">
-                  <label className="block mb-1 font-semibold">Qualified Dividends</label>
-                  <input
-                    type="number"
-                    className="w-full rounded-xl border border-primary/20 px-4 py-3 bg-white focus:ring-2 focus:ring-accent"
-                    value={qualifiedDividends}
-                    onChange={e => setQualifiedDividends(e.target.value)}
-                    placeholder="Enter qualified dividends"
-                  />
-                </div>
-                <div className="flex-1">
-                  <label className="block mb-1 font-semibold">Long-Term Capital Gains</label>
-                  <input
-                    type="number"
-                    className="w-full rounded-xl border border-primary/20 px-4 py-3 bg-white focus:ring-2 focus:ring-accent"
-                    value={longTermGains}
-                    onChange={e => setLongTermGains(e.target.value)}
-                    placeholder="Enter long-term capital gains"
-                  />
-                </div>
-              </div>
-            </div>
+            ))}
+          </div>
+        </CardHeader>
+        <CardContent>
+          {error && (
+            <Alert variant="destructive" className="mb-4">
+              <AlertTitle>Error</AlertTitle>
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
           )}
-          {activeStep === 1 && (
-            <div className="space-y-4">
-              <h2 className="text-lg font-bold mb-2">Itemized Deductions</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <form onSubmit={e => { e.preventDefault(); }}>
+            {activeStep === 0 && (
+              <div className="space-y-4">
                 <div>
-                  <label className="block mb-1 font-semibold">Medical Expenses</label>
-                  <input type="number" className="w-full rounded-xl border border-primary/20 px-4 py-3 bg-white focus:ring-2 focus:ring-accent" value={medical} onChange={e => setMedical(e.target.value)} placeholder="Medical expenses" />
-                </div>
-                <div>
-                  <label className="block mb-1 font-semibold">State and Local Taxes (SALT)</label>
-                  <input type="number" className="w-full rounded-xl border border-primary/20 px-4 py-3 bg-white focus:ring-2 focus:ring-accent" value={salt} onChange={e => setSalt(e.target.value)} placeholder="SALT" />
-                </div>
-                <div>
-                  <label className="block mb-1 font-semibold">Mortgage Interest</label>
-                  <input type="number" className="w-full rounded-xl border border-primary/20 px-4 py-3 bg-white focus:ring-2 focus:ring-accent" value={mortgage} onChange={e => setMortgage(e.target.value)} placeholder="Mortgage interest" />
-                </div>
-                <div>
-                  <label className="block mb-1 font-semibold">Charitable Contributions</label>
-                  <input type="number" className="w-full rounded-xl border border-primary/20 px-4 py-3 bg-white focus:ring-2 focus:ring-accent" value={charity} onChange={e => setCharity(e.target.value)} placeholder="Charity" />
+                  <label className="block mb-1 font-medium">Filing Status</label>
+                  <Select onValueChange={(value) => handleSelectChange('filingStatus', value)} defaultValue={formData.filingStatus}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a filing status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {filingStatuses.map(status => (
+                        <SelectItem key={status.value} value={status.value}>{status.label}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
                 <div>
-                  <label className="block mb-1 font-semibold">Business Expenses</label>
-                  <input type="number" className="w-full rounded-xl border border-primary/20 px-4 py-3 bg-white focus:ring-2 focus:ring-accent" value={business} onChange={e => setBusiness(e.target.value)} placeholder="Business expenses" />
+                  <label className="block mb-1 font-medium">Total Income</label>
+                  <Input type="number" name="income" value={formData.income} onChange={handleInputChange} placeholder="Enter total income" />
                 </div>
-                <div>
-                  <label className="block mb-1 font-semibold">Student Loan Interest</label>
-                  <input type="number" className="w-full rounded-xl border border-primary/20 px-4 py-3 bg-white focus:ring-2 focus:ring-accent" value={studentLoanInterest} onChange={e => setStudentLoanInterest(e.target.value)} placeholder="Student loan interest" />
-                </div>
-                <div>
-                  <label className="block mb-1 font-semibold">Retirement Contributions</label>
-                  <input type="number" className="w-full rounded-xl border border-primary/20 px-4 py-3 bg-white focus:ring-2 focus:ring-accent" value={retirementContributions} onChange={e => setRetirementContributions(e.target.value)} placeholder="Retirement contributions" />
-                </div>
-              </div>
-            </div>
-          )}
-          {activeStep === 2 && (
-            <div className="space-y-4">
-              <h2 className="text-lg font-bold mb-2">Tax Credits</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block mb-1 font-semibold">Child Tax Credit</label>
-                  <input type="number" className="w-full rounded-xl border border-primary/20 px-4 py-3 bg-white focus:ring-2 focus:ring-accent" value={childTaxCredit} onChange={e => setChildTaxCredit(e.target.value)} placeholder="Child tax credit" />
-                </div>
-                <div>
-                  <label className="block mb-1 font-semibold">Earned Income Tax Credit (EITC)</label>
-                  <input type="number" className="w-full rounded-xl border border-primary/20 px-4 py-3 bg-white focus:ring-2 focus:ring-accent" value={eitc} onChange={e => setEitc(e.target.value)} placeholder="EITC" />
-                </div>
-                <div>
-                  <label className="block mb-1 font-semibold">Education Credits</label>
-                  <input type="number" className="w-full rounded-xl border border-primary/20 px-4 py-3 bg-white focus:ring-2 focus:ring-accent" value={educationCredit} onChange={e => setEducationCredit(e.target.value)} placeholder="Education credits" />
-                </div>
-              </div>
-            </div>
-          )}
-          {activeStep === 3 && (
-            <div className="space-y-6">
-              <div>
-                <label className="block mb-1 font-semibold">State</label>
-                <select
-                  className="w-full rounded-xl border border-primary/20 px-4 py-3 bg-white focus:ring-2 focus:ring-accent"
-                  value={state}
-                  onChange={e => setState(e.target.value)}
-                >
-                  {Object.keys(statesTaxRates).map((stateCode) => (
-                    <option key={stateCode} value={stateCode}>{stateCode}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-          )}
-          {activeStep === 4 && (
-            <div className="space-y-6">
-              <div className="w-full flex flex-col items-center">
-                <div className="w-full max-w-xs mb-6">
-                  <Pie data={chartData} options={{
-                    plugins: {
-                      legend: { position: 'bottom', labels: { color: '#243b55', font: { size: 14 } } },
-                    },
-                    responsive: true,
-                    maintainAspectRatio: false,
-                  }} height={220} />
-                </div>
-                <div className="bg-white/90 rounded-2xl shadow-lg p-6 w-full max-w-md border border-primary/10">
-                  <h3 className="text-lg font-bold mb-2 text-primary">Results</h3>
-                  <div className="space-y-1">
-                    <div className="flex justify-between"><span className="font-medium">Deduction Strategy:</span> <span>{deductionStrategy}</span></div>
-                    <div className="flex justify-between"><span className="font-medium">Federal Tax:</span> <span>${federalTaxAmount.toFixed(2)}</span></div>
-                    <div className="flex justify-between"><span className="font-medium">State Tax ({state}):</span> <span>${stateTaxAmount.toFixed(2)}</span></div>
-                    <div className="flex justify-between"><span className="font-medium">Total Tax Liability:</span> <span>${totalTaxAmount.toFixed(2)}</span></div>
-                    <div className="flex justify-between"><span className="font-medium">After-Tax Income:</span> <span>${Math.max(0, (parseFloat(income) || 0) - totalTaxAmount).toFixed(2)}</span></div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block mb-1 font-medium">Qualified Dividends</label>
+                    <Input type="number" name="qualifiedDividends" value={formData.qualifiedDividends} onChange={handleInputChange} placeholder="Enter qualified dividends" />
+                  </div>
+                  <div>
+                    <label className="block mb-1 font-medium">Long-Term Capital Gains</label>
+                    <Input type="number" name="longTermGains" value={formData.longTermGains} onChange={handleInputChange} placeholder="Enter long-term capital gains" />
                   </div>
                 </div>
               </div>
+            )}
+            {activeStep === 1 && (
+              <div className="space-y-4">
+                <h2 className="text-xl font-semibold">Itemized Deductions</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block mb-1 font-medium">Medical Expenses</label>
+                    <Input type="number" name="medical" value={formData.medical} onChange={handleInputChange} placeholder="Medical expenses" />
+                  </div>
+                  <div>
+                    <label className="block mb-1 font-medium">State and Local Taxes (SALT)</label>
+                    <Input type="number" name="salt" value={formData.salt} onChange={handleInputChange} placeholder="SALT" />
+                  </div>
+                  <div>
+                    <label className="block mb-1 font-medium">Mortgage Interest</label>
+                    <Input type="number" name="mortgage" value={formData.mortgage} onChange={handleInputChange} placeholder="Mortgage interest" />
+                  </div>
+                  <div>
+                    <label className="block mb-1 font-medium">Charitable Contributions</label>
+                    <Input type="number" name="charity" value={formData.charity} onChange={handleInputChange} placeholder="Charity" />
+                  </div>
+                  <div>
+                    <label className="block mb-1 font-medium">Business Expenses</label>
+                    <Input type="number" name="business" value={formData.business} onChange={handleInputChange} placeholder="Business expenses" />
+                  </div>
+                  <div>
+                    <label className="block mb-1 font-medium">Student Loan Interest</label>
+                    <Input type="number" name="studentLoanInterest" value={formData.studentLoanInterest} onChange={handleInputChange} placeholder="Student loan interest" />
+                  </div>
+                  <div>
+                    <label className="block mb-1 font-medium">Retirement Contributions</label>
+                    <Input type="number" name="retirementContributions" value={formData.retirementContributions} onChange={handleInputChange} placeholder="Retirement contributions" />
+                  </div>
+                </div>
+              </div>
+            )}
+            {activeStep === 2 && (
+              <div className="space-y-4">
+                <h2 className="text-xl font-semibold">Tax Credits</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block mb-1 font-medium">Child Tax Credit</label>
+                    <Input type="number" name="childTaxCredit" value={formData.childTaxCredit} onChange={handleInputChange} placeholder="Child tax credit" />
+                  </div>
+                  <div>
+                    <label className="block mb-1 font-medium">Earned Income Tax Credit (EITC)</label>
+                    <Input type="number" name="eitc" value={formData.eitc} onChange={handleInputChange} placeholder="EITC" />
+                  </div>
+                  <div>
+                    <label className="block mb-1 font-medium">Education Credits</label>
+                    <Input type="number" name="educationCredit" value={formData.educationCredit} onChange={handleInputChange} placeholder="Education credits" />
+                  </div>
+                </div>
+              </div>
+            )}
+            {activeStep === 3 && (
+              <div className="space-y-4">
+                <h2 className="text-xl font-semibold">State</h2>
+                <Select onValueChange={(value) => handleSelectChange('state', value)} defaultValue={formData.state}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a state" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.keys(statesTaxRates).map((stateCode) => (
+                      <SelectItem key={stateCode} value={stateCode}>{stateCode}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+            {activeStep === 4 && (
+              <div className="space-y-6 text-center">
+                {results && (
+                  <>
+                    <div className="w-full max-w-xs mx-auto">
+                      <Pie data={chartData} options={{
+                        plugins: {
+                          legend: { position: 'bottom' },
+                        },
+                        responsive: true,
+                        maintainAspectRatio: false,
+                      }} height={250} />
+                    </div>
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Tax Breakdown</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-2">
+                        <div className="flex justify-between"><span>Deduction Strategy:</span> <span className="font-medium">{results.deductionStrategy}</span></div>
+                        <div className="flex justify-between"><span>Federal Tax:</span> <span className="font-medium">${results.federalTaxAmount.toFixed(2)}</span></div>
+                        <div className="flex justify-between"><span>State Tax ({formData.state}):</span> <span className="font-medium">${results.stateTaxAmount.toFixed(2)}</span></div>
+                        <div className="flex justify-between text-lg font-bold"><span>Total Tax Liability:</span> <span>${results.totalTaxAmount.toFixed(2)}</span></div>
+                        <div className="flex justify-between text-lg font-bold"><span>After-Tax Income:</span> <span>${results.afterTaxIncome.toFixed(2)}</span></div>
+                      </CardContent>
+                    </Card>
+                  </>
+                )}
+              </div>
+            )}
+            <div className="flex justify-between mt-8">
+              <Button type="button" variant="outline" onClick={handleBack} disabled={activeStep === 0}>
+                Back
+              </Button>
+              {activeStep < steps.length - 1 && (
+                <Button type="button" onClick={handleNext}>
+                  Next
+                </Button>
+              )}
+              {activeStep === steps.length - 2 && (
+                <Button type="button" onClick={() => { calculateTaxes(); handleNext(); }}>
+                  Calculate
+                </Button>
+              )}
+              {activeStep === steps.length - 1 && (
+                <Button type="button" variant="secondary" onClick={() => { setActiveStep(0); setResults(null); }}>
+                  Reset
+                </Button>
+              )}
             </div>
-          )}
-          {/* Navigation Buttons */}
-          <div className="flex justify-between mt-8 gap-4">
-            <button
-              type="button"
-              className="px-6 py-3 rounded-full font-bold bg-gray-200 text-primary hover:bg-primary hover:text-white transition disabled:opacity-50"
-              onClick={handleBack}
-              disabled={activeStep === 0}
-            >
-              Back
-            </button>
-            {activeStep < steps.length - 1 && (
-              <button
-                type="button"
-                className="px-6 py-3 rounded-full font-bold bg-primary text-white hover:bg-accent hover:text-primary transition"
-                onClick={handleNext}
-              >
-                Next
-              </button>
-            )}
-            {activeStep === steps.length - 2 && (
-              <button
-                type="button"
-                className="px-6 py-3 rounded-full font-bold bg-accent text-primary hover:bg-primary hover:text-white transition"
-                onClick={() => { calculateTaxes(); handleNext(); }}
-              >
-                Calculate
-              </button>
-            )}
-            {activeStep === steps.length - 1 && (
-              <button
-                type="button"
-                className="px-6 py-3 rounded-full font-bold bg-green-600 text-white hover:bg-green-700 transition"
-                onClick={() => window.location.reload()}
-              >
-                Reset
-              </button>
-            )}
-          </div>
-        </form>
-      </div>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   );
 }

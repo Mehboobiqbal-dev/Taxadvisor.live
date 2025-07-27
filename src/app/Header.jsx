@@ -3,85 +3,74 @@ import { SessionProvider } from "next-auth/react";
 import UserButton from "@/app/components/user-button";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { Sheet, SheetContent, SheetTrigger } from "@/app/components/ui/sheet";
+import { Button } from "@/app/components/ui/button";
+import { Menu } from "lucide-react";
 
 const HeaderContent = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const menuRef = useRef(null);
+  const [isScrolled, setIsScrolled] = useState(false);
 
-  // Close menu when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        menuRef.current &&
-        !menuRef.current.contains(event.target) &&
-        event.target.getAttribute('aria-label') !== 'Toggle Navigation Menu'
-      ) {
-        setMenuOpen(false);
-      }
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
     };
-
-    if (menuOpen) {
-      document.addEventListener("click", handleClickOutside);
-    }
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      document.removeEventListener("click", handleClickOutside);
+      window.removeEventListener("scroll", handleScroll);
     };
-  }, [menuOpen]);
+  }, []);
 
   return (
-    <header className="header sticky top-0 w-full z-50 shadow-custom">
-      <div className="container flex items-center justify-between py-2">
+    <header
+      className={`sticky top-0 w-full z-50 transition-all duration-300 ${
+        isScrolled ? "bg-background/80 backdrop-blur-sm shadow-md" : "bg-transparent"
+      }`}
+    >
+      <div className="container flex items-center justify-between h-16">
         {/* Logo */}
         <div className="flex items-center gap-3">
-          <Link href="/" aria-label="Tax Advisor Home" onClick={() => setMenuOpen(false)}>
+          <Link href="/" aria-label="Tax Advisor Home">
             <img
               src="https://i.ibb.co/vxKbKLHT/photo.jpg"
               alt="Tax Advisor Logo"
-              className="h-12 w-12 rounded-full border-2 border-accent shadow"
+              className="h-10 w-10 rounded-full border-2 border-primary/50 shadow-sm hover:scale-105 transition-transform"
               loading="lazy"
             />
           </Link>
-          <span className="text-2xl font-bold tracking-tight text-white hidden md:inline">TaxAdvisor</span>
+          <span className="text-xl font-bold tracking-tight hidden md:inline">
+            TaxAdvisor
+          </span>
         </div>
         {/* Desktop Nav */}
-        <nav className="hidden md:flex gap-8 items-center">
-          <Link href="/home" className="hover:text-accent transition-colors font-medium">Home</Link>
-          <Link href="/tax-calculator" className="hover:text-accent transition-colors font-medium">Tax Calculator</Link>
-          <Link href="/SmartTaxBot" className="hover:text-accent transition-colors font-medium">SmartTaxBot</Link>
-          <Link href="/newslist" className="hover:text-accent transition-colors font-medium">News</Link>
-          <Link href="/blog" className="hover:text-accent transition-colors font-medium">Blog</Link>
+        <nav className="hidden md:flex gap-6 items-center">
+          <Link href="/home" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">Home</Link>
+          <Link href="/tax-calculator" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">Tax Calculator</Link>
+          <Link href="/SmartTaxBot" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">SmartTaxBot</Link>
+          <Link href="/newslist" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">News</Link>
+          <Link href="/blog" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">Blog</Link>
         </nav>
         {/* User Button and Mobile Menu Toggle */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
           <UserButton />
-          <button
-            className="text-3xl text-white md:hidden ml-2"
-            aria-expanded={menuOpen}
-            aria-controls="main-menu"
-            onClick={(e) => {
-              e.stopPropagation();
-              setMenuOpen((prev) => !prev);
-            }}
-            aria-label="Toggle Navigation Menu"
-          >
-            ☰
-          </button>
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="outline" size="icon" className="md:hidden">
+                <Menu className="h-6 w-6" />
+                <span className="sr-only">Toggle Navigation Menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right">
+              <nav className="grid gap-6 text-lg font-medium mt-8">
+                <Link href="/home" className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground">Home</Link>
+                <Link href="/tax-calculator" className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground">Tax Calculator</Link>
+                <Link href="/SmartTaxBot" className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground">SmartTaxBot</Link>
+                <Link href="/newslist" className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground">News</Link>
+                <Link href="/blog" className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground">Blog</Link>
+              </nav>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
-      {/* Mobile Nav */}
-      <nav
-        ref={menuRef}
-        id="main-menu"
-        className={`md:hidden ${menuOpen ? 'block' : 'hidden'} bg-gradient-to-br from-[#141e30] to-[#243b55] text-white transition-all duration-400`}
-      >
-        <ul className="flex flex-col items-center gap-2 py-4">
-          <li><Link href="/home" onClick={() => setMenuOpen(false)} className="hover:text-accent text-lg py-2">Home</Link></li>
-          <li><Link href="/tax-calculator" onClick={() => setMenuOpen(false)} className="hover:text-accent text-lg py-2">Tax Calculator</Link></li>
-          <li><Link href="/SmartTaxBot" onClick={() => setMenuOpen(false)} className="hover:text-accent text-lg py-2">SmartTaxBot</Link></li>
-          <li><Link href="/newslist" onClick={() => setMenuOpen(false)} className="hover:text-accent text-lg py-2">News</Link></li>
-          <li><Link href="/blog" onClick={() => setMenuOpen(false)} className="hover:text-accent text-lg py-2">Blog</Link></li>
-        </ul>
-      </nav>
     </header>
   );
 };

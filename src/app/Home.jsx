@@ -6,14 +6,17 @@ import Header from "./Header";
 import Footer from "./Footer"; 
 import { BuyMeCoffee } from './components/BuyMeCoffee';
 import SmartTaxBot from './components/SmartTaxBot'; 
-import './Home.css';
+import { Button } from '@/app/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/app/components/ui/dialog';
+import { CheckCircle } from 'lucide-react';
 
 const Home = () => {
   const [showChat, setShowChat] = useState(false);
 
   return (
     <>
-            <Head>
+      <Head>
         <meta name="google-site-verification" content="wLF0iQsjbx3PcKcGjJIFnZEC8GX_kUCWA7oz4JKJtjA" />
         <title>TaxAdvisor - Accurate Tax Calculations & Expert Advice</title>
         <meta
@@ -45,11 +48,11 @@ const Home = () => {
         <meta name="twitter:description" content="Get accurate tax calculations and advice with TaxAdvisor. Our smart chatbot, comprehensive tax blog, and daily news updates empower you to file taxes with confidence." />
         <meta name="twitter:image" content="https://taxadviser.live/images/photo.jpg" />         <link rel="canonical" href="https://taxadvisor.live/home" />
 
-                <link rel="icon" href="/images/photo.jpg" />
+        <link rel="icon" href="/images/photo.jpg" />
         <link rel="apple-touch-icon" href="/images/photo.jpg" />
         <link rel="icon" type="image/png" sizes="32x32" href="/images/photo.jpg" />
 
-                <script
+        <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
@@ -71,73 +74,105 @@ const Home = () => {
         />
       </Head>
 
-            <Header />
+      <Header />
       <BuyMeCoffee />
-            <main className="home">
-                <section className="home-intro text-center p-10">
-          <h1 className="text-6xl font-bold">Welcome to TaxAdvisor</h1>
-          <p className="mt-2 text-white bg-600 p-4 rounded">
-            Your one-stop online tool for tax calculations, expert advice, insightful tax blogs, and real-time tax news. Discover smart ways to reduce your taxes and file them correctly with our comprehensive guides.
-          </p>
-        </section>
-
-                <section className="home-intro p-10">
-          <h2 className="text-2xl font-bold">Why Choose TaxAdvisor?</h2>
-          <p className="mt-2 text-white bg-600 p-4 rounded">
-            We provide you with accurate tax calculations, expert advice, and the latest tax news—all in one place. Whether you're looking for quick tax estimates or in-depth guidance, we've got you covered.
-          </p>
-          <ul className="list-disc ml-6 mt-4 text-white">
-            <li><strong>Accurate Tax Calculations:</strong> Get precise estimates based on your income and deductions.</li>
-            <li><strong>Expert Tax Advice:</strong> Benefit from years of financial expertise to optimize your tax returns.</li>
-            <li><strong>SmartTaxBot:</strong> Instant answers from our AI-powered chatbot that assists you with every tax aspect.</li>
-            <li><strong>Daily Tax News:</strong> Stay updated with the latest tax laws, policy changes, and deadlines.</li>
-          </ul>
-        </section>
-
-                <section className="home-blog p-10 bg-gray-800 rounded-lg">
-          <h2 className="text-2xl font-bold text-white">Learn with Our Tax Blog</h2>
-          <p className="mt-2 text-white">
-            Our Tax Blog is packed with expert articles, practical guides, and insider tips on reducing your tax liability, filing your taxes correctly, and navigating complex tax regulations. Whether you're a first-time filer or a seasoned taxpayer, our blog offers something for everyone.
-          </p>
-          <p className="mt-2 text-white">
-            Explore topics such as:
-          </p>
-          <ul className="list-disc ml-6 mt-2 text-white">
-            <li>How to maximize your deductions and credits</li>
-            <li>Step-by-step guides on filing taxes</li>
-            <li>Latest updates on tax reforms and policies</li>
-            <li>Strategies for reducing your overall tax burden</li>
-          </ul>
-        </section>
-
-                <section className="home-news p-10 bg-gray-800 rounded-lg">
-          <h2 className="text-white font-bold">Stay Informed with Daily Tax News</h2>
-          <p className="mt-2 text-white bg-600 p-4 rounded">
-            Keep up with the ever-changing world of taxes. Our platform provides you with daily updates on tax laws, important filing deadlines, and policy changes that could affect your finances. Stay ahead and make informed decisions with our real-time news feed.
-          </p>
-        </section>
-
-                <section className="home-chat p-10">
-          <h2 className="text-white font-bold">Talk to SmartTaxBot</h2>
-          <p className="mt-2 text-white bg-600 p-4 rounded">
-            Have tax-related questions or need personalized advice? Let our AI-powered chatbot, SmartTaxBot, assist you. Get instant responses and reliable guidance on everything from tax calculations to filing tips.
-          </p>
-          <button 
-            className="bg-red-500 text-white py-2 px-4 mt-4 rounded-lg"
-            onClick={() => setShowChat(!showChat)}
-          >
-            {showChat ? 'Close Chat' : 'Talk to SmartTaxBot'}
-          </button>
-        </section>
-
-                {showChat && (
-          <div className="fixed bottom-4 right-4 p-4 bg-red-500 shadow-lg rounded-lg w-80 md:w-96">
-            <SmartTaxBot />
+      <main className="bg-muted/40">
+        <section className="py-20 text-center">
+          <div className="container">
+            <h1 className="text-5xl font-bold tracking-tight">Welcome to TaxAdvisor</h1>
+            <p className="mt-4 text-lg text-muted-foreground">
+              Your one-stop online tool for tax calculations, expert advice, insightful tax blogs, and real-time tax news.
+            </p>
           </div>
-        )}
+        </section>
+
+        <section className="py-20">
+          <div className="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <Card>
+              <CardHeader>
+                <CardTitle>Accurate Tax Calculations</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p>Get precise estimates based on your income and deductions.</p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Expert Tax Advice</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p>Benefit from years of financial expertise to optimize your tax returns.</p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>SmartTaxBot</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p>Instant answers from our AI-powered chatbot that assists you with every tax aspect.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
+        <section className="py-20 bg-background">
+          <div className="container">
+            <div className="text-center">
+              <h2 className="text-4xl font-bold tracking-tight">Learn with Our Tax Blog</h2>
+              <p className="mt-4 text-lg text-muted-foreground">
+                Our Tax Blog is packed with expert articles, practical guides, and insider tips on reducing your tax liability, filing your taxes correctly, and navigating complex tax regulations.
+              </p>
+            </div>
+            <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="flex items-start gap-4">
+                <CheckCircle className="h-6 w-6 text-primary" />
+                <div>
+                  <h3 className="font-semibold">Maximize Deductions</h3>
+                  <p className="text-muted-foreground">Learn how to maximize your deductions and credits.</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4">
+                <CheckCircle className="h-6 w-6 text-primary" />
+                <div>
+                  <h3 className="font-semibold">Filing Guides</h3>
+                  <p className="text-muted-foreground">Step-by-step guides on filing taxes.</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4">
+                <CheckCircle className="h-6 w-6 text-primary" />
+                <div>
+                  <h3 className="font-semibold">Tax Reforms</h3>
+                  <p className="text-muted-foreground">Latest updates on tax reforms and policies.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-20">
+          <div className="container text-center">
+            <h2 className="text-4xl font-bold tracking-tight">Talk to SmartTaxBot</h2>
+            <p className="mt-4 text-lg text-muted-foreground">
+              Have tax-related questions or need personalized advice? Let our AI-powered chatbot, SmartTaxBot, assist you.
+            </p>
+            <Dialog open={showChat} onOpenChange={setShowChat}>
+              <DialogTrigger asChild>
+                <Button size="lg" className="mt-8">Talk to SmartTaxBot</Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>SmartTaxBot</DialogTitle>
+                </DialogHeader>
+                <div className="h-[60vh]">
+                  <SmartTaxBot />
+                </div>
+              </DialogContent>
+            </Dialog>
+          </div>
+        </section>
       </main>
 
-            <Footer />
+      <Footer />
     </>
   );
 };

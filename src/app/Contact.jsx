@@ -2,25 +2,20 @@
 
 import React, { useState, useEffect } from "react";
 import Head from "next/head";
+import Header from "./Header";
+import Footer from "./Footer";
+import { Button } from "@/app/components/ui/button";
+import { Input } from "@/app/components/ui/input";
+import { Textarea } from "@/app/components/ui/textarea";
+import { Card, CardContent, CardHeader, CardTitle } from "@/app/components/ui/card";
+import { Alert, AlertDescription, AlertTitle } from "@/app/components/ui/alert";
 
 const Contact = () => {
-
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.async = true;
-    script.src =
-      "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2663142027592405";
-    script.crossOrigin = "anonymous";
-    document.body.appendChild(script);
-  }, []);
-
- 
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: "",
   });
-
 
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
@@ -32,7 +27,6 @@ const Contact = () => {
     }));
   };
 
- 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (formData.name && formData.email && formData.message) {
@@ -64,100 +58,68 @@ const Contact = () => {
         <meta name="twitter:card" content="summary" />
       </Head>
 
-      <div id="contact" style={{ padding: "20px" }}>
-        <h2>Contact Us</h2>
-
-        {submitSuccess && (
-          <div
-            style={{
-              backgroundColor: "#28a745",
-              color: "#fff",
-              padding: "10px",
-              marginBottom: "20px",
-              borderRadius: "5px",
-            }}
-          >
-            Your message has been sent successfully!
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit}>
-          <section style={{ marginBottom: "15px" }}>
-            <label htmlFor="name">Name</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleInputChange}
-              required
-              style={{
-                width: "100%",
-                padding: "8px",
-                fontSize: "16px",
-                border: "1px solid #ccc",
-                borderRadius: "4px",
-              }}
-              aria-label="Your full name"
-            />
-          </section>
-
-          <section style={{ marginBottom: "15px" }}>
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-              required
-              style={{
-                width: "100%",
-                padding: "8px",
-                fontSize: "16px",
-                border: "1px solid #ccc",
-                borderRadius: "4px",
-              }}
-              aria-label="Your email address"
-            />
-          </section>
-
-          <section style={{ marginBottom: "15px" }}>
-            <label htmlFor="message">Message</label>
-            <textarea
-              id="message"
-              name="message"
-              value={formData.message}
-              onChange={handleInputChange}
-              required
-              rows="5"
-              style={{
-                width: "100%",
-                padding: "8px",
-                fontSize: "16px",
-                border: "1px solid #ccc",
-                borderRadius: "4px",
-              }}
-              aria-label="Your message"
-            />
-          </section>
-
-          <button
-            type="submit"
-            style={{
-              backgroundColor: "#007bff",
-              color: "#fff",
-              padding: "10px 20px",
-              fontSize: "16px",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
-            }}
-          >
-            Send Message
-          </button>
-        </form>
-      </div>
+      <Header />
+      <main className="bg-muted/40 py-20">
+        <div className="container">
+          <Card className="max-w-2xl mx-auto">
+            <CardHeader>
+              <CardTitle className="text-center text-3xl font-bold">Contact Us</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {submitSuccess && (
+                <Alert className="mb-4">
+                  <AlertTitle>Success!</AlertTitle>
+                  <AlertDescription>
+                    Your message has been sent successfully!
+                  </AlertDescription>
+                </Alert>
+              )}
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div>
+                  <label htmlFor="name" className="block mb-1 font-medium">Name</label>
+                  <Input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    required
+                    aria-label="Your full name"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="email" className="block mb-1 font-medium">Email</label>
+                  <Input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    required
+                    aria-label="Your email address"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="message" className="block mb-1 font-medium">Message</label>
+                  <Textarea
+                    id="message"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    required
+                    rows="5"
+                    aria-label="Your message"
+                  />
+                </div>
+                <Button type="submit" className="w-full">
+                  Send Message
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+        </div>
+      </main>
+      <Footer />
     </>
   );
 };

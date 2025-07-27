@@ -5,16 +5,14 @@ import Script from "next/script";
 import Head from "next/head";
 import { BuyMeCoffee } from './components/BuyMeCoffee';
 import Image from "next/image";
-import "./NewsList.css";
-
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/app/components/ui/card";
+import { Badge } from "@/app/components/ui/badge";
 
 export const dynamic = "force-dynamic"; 
 
 async function getNews() {
   try {
-    const baseUrl = process.env.NODE_ENV === 'production'
-      ? `https://${process.env.VERCEL_URL}`
-      : 'http://localhost:3000';
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
     const response = await fetch(`${baseUrl}/api/google-news`);
     if (!response.ok) {
       throw new Error('Failed to fetch news');
@@ -49,7 +47,7 @@ export default async function NewsList() {
 
   return (
     <>
-            <Script
+      <Script
         async
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2663142027592405"
         crossOrigin="anonymous"
@@ -66,7 +64,7 @@ export default async function NewsList() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="canonical" href="https://taxadvisor.live/newslist" />
 
-                <meta
+        <meta
           property="og:title"
           content="Latest Tax News & Updates - SmartTaxBot"
         />
@@ -81,7 +79,7 @@ export default async function NewsList() {
         <meta property="og:url" content="https://taxadvisor.live/newslist" />
         <meta property="og:type" content="website" />
 
-                <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:card" content="summary_large_image" />
         <meta
           name="twitter:title"
           content="Latest Tax News & Updates - SmartTaxBot"
@@ -95,7 +93,7 @@ export default async function NewsList() {
           content="https://taxadvisor.live/path/to/thumbnail.jpg"
         />
 
-                <script
+        <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(structuredData),
@@ -103,60 +101,62 @@ export default async function NewsList() {
         />
       </Head>
 
-            <Header />
+      <Header />
       <BuyMeCoffee />
-      <div className="container py-4">
-        <h1 className="mb-4 text-center">
-          Latest Tax News & Updates - SmartTaxBot
-        </h1>
+      <div className="container py-12">
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold tracking-tight">
+            Latest Tax News & Updates
+          </h1>
+          <p className="text-muted-foreground mt-2">
+            Your daily source for the latest tax news and regulations.
+          </p>
+        </div>
         {news.length === 0 ? (
-          <p className="text-center">
+          <p className="text-center text-muted-foreground">
             No tax-related news found. Check back later for updates.
           </p>
         ) : (
-          <div className="row">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {news.map((article, index) => (
-              <div
+              <a
                 key={article.link || index}
-                className="col-md-4 mb-4 animate__animated animate__fadeInUp"
+                href={article.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-decoration-none text-dark"
               >
-                <article className="card h-100 shadow-sm">
-                  <a
-                    href={article.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-decoration-none text-dark"
-                  >
-                    {article.image && (
-                      <div className="card-img-wrapper">
-                        <Image
-                          src={article.image}
-                          alt={article.title}
-                          width={400} 
-                          height={200} 
-                          style={{ objectFit: "cover" }}
-                        />
-                      </div>
-                    )}
-                    <div className="card-body">
-                      <h2 className="card-title">{article.title}</h2>
-                      <p className="card-text">{article.description}</p>
-                      <p className="card-text">
-                        <small className="text-muted">
-                          {new Date(article.published).toLocaleDateString(
-                            "en-US",
-                            {
-                              year: "numeric",
-                              month: "long",
-                              day: "numeric",
-                            }
-                          )}
-                        </small>
-                      </p>
+                <Card className="h-full overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                  {article.image && (
+                    <div className="relative h-48 w-full">
+                      <Image
+                        src={article.image}
+                        alt={article.title}
+                        layout="fill"
+                        objectFit="cover"
+                      />
                     </div>
-                  </a>
-                </article>
-              </div>
+                  )}
+                  <CardHeader>
+                    <CardTitle className="text-lg font-semibold">{article.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground text-sm">{article.description}</p>
+                  </CardContent>
+                  <CardFooter>
+                    <Badge variant="secondary">
+                      {new Date(article.published).toLocaleDateString(
+                        "en-US",
+                        {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        }
+                      )}
+                    </Badge>
+                  </CardFooter>
+                </Card>
+              </a>
             ))}
           </div>
         )}

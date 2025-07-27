@@ -6,7 +6,9 @@ import SEO from '@/app/components/SEO';
 import Header from '@/app/Header';
 import Footer from '@/app/Footer';
 import Link from 'next/link';
-import './blog.css';
+import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card';
+import { Badge } from '@/app/components/ui/badge';
+import { Button } from '@/app/components/ui/button';
 
 function calculateReadingTime(text) {
   const words = text.trim().split(/\s+/).length;
@@ -74,32 +76,32 @@ export default async function BlogPost({ params }) {
       />
 
       <Header />
-      <article className="blog-post">
-        <header className="blog-post-header">
-          <h1>{frontMatter.title}</h1>
-          <div className="blog-meta">
-            <span className="blog-date">{frontMatter.date}</span>
-            {readingTime && (
-              <span className="blog-reading-time">{readingTime} min read</span>
-            )}
-          </div>
-          {frontMatter.author && (
-            <p className="blog-author">By {frontMatter.author}</p>
-
-          )}
-        </header>
-
-        <div
-          className="blog-content"
-          dangerouslySetInnerHTML={{ __html: content }}
-        />
-
-        <footer className="blog-footer">
-          <Link href="/blog" className="back-to-blog">
-            ← Back to Blog
-          </Link>
-        </footer>
-      </article>
+      <main className="bg-muted/40 py-20">
+        <div className="container">
+          <Card className="max-w-4xl mx-auto">
+            <CardHeader className="text-center">
+              <CardTitle className="text-4xl font-bold">{frontMatter.title}</CardTitle>
+              <div className="flex justify-center items-center gap-4 mt-4 text-sm text-muted-foreground">
+                <Badge variant="secondary">{frontMatter.date}</Badge>
+                {readingTime && (
+                  <Badge variant="outline">{readingTime} min read</Badge>
+                )}
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div
+                className="prose max-w-none"
+                dangerouslySetInnerHTML={{ __html: content }}
+              />
+              <div className="mt-8 text-center">
+                <Button asChild>
+                  <Link href="/blog">← Back to Blog</Link>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </main>
       <Footer />
     </>
   );

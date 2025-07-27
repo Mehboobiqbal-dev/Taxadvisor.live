@@ -4,7 +4,7 @@ import Script from "next/script";
 import Head from "next/head";
 import "./globals.css";
 import { Toaster } from "@/app/components/ui/sonner";
-
+import { ThemeProvider } from "next-themes";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -16,7 +16,6 @@ const geistMono = localFont({
   variable: "--font-geist-mono",
   weight: "100 900",
 });
-
 
 export const metadata: Metadata = {
   title: "Tax Advisor",
@@ -33,26 +32,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <Head>
-                <link
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-          rel="stylesheet"
-        />
-                <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-        />
-        {/* Custom favicon */}
         <link rel="icon" type="image/jpeg" href="https://i.ibb.co/vxKbKLHT/photo.jpg" />
       </Head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {/* Move Toaster to bottom-right and visually hide empty notification section */}
-        <div style={{ position: 'fixed', bottom: 0, right: 0, zIndex: 9999, width: 'auto', pointerEvents: 'none' }}>
-          <Toaster position="bottom-right" />
-        </div>
-        {children}
-                <Script
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+          <Toaster />
+        </ThemeProvider>
+        <Script
           strategy="afterInteractive"
           src="https://www.googletagmanager.com/gtag/js?id=G-46NW49XJ57"
         />

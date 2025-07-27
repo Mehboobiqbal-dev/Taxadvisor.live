@@ -4,6 +4,7 @@ import Header from '../Header';
 import Footer from '../Footer';
 import Script from 'next/script';
 import SEO from '@/app/components/SEO';
+import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card';
 
 async function getBlogPosts() {
   const blogsCollection = db.collection('blogs');
@@ -79,7 +80,7 @@ export default async function BlogListPage() {
         structuredData={[websiteStructuredData, breadcrumbStructuredData]}
       />
 
-            <Script
+      <Script
         async
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2663142027592405"
         crossOrigin="anonymous"
@@ -87,9 +88,17 @@ export default async function BlogListPage() {
       />
 
       <Header />
-      <main className="max-w-3xl mx-auto p-6 bg-gray-50 shadow-md rounded-lg">
-        <h1 className="text-4xl font-extrabold mb-6 text-blue-800">Tax Blog</h1>
-        <BlogSearch blogs={blogs} />
+      <main className="bg-muted/40 py-20">
+        <div className="container">
+          <Card className="max-w-4xl mx-auto">
+            <CardHeader>
+              <CardTitle className="text-center text-4xl font-bold">Tax Blog</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <BlogSearch blogs={blogs} />
+            </CardContent>
+          </Card>
+        </div>
       </main>
       <Footer />
     </>

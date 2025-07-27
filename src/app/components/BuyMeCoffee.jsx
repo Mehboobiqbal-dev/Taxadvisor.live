@@ -1,14 +1,25 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
+import { Button } from '@/app/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/app/components/ui/dialog';
+import { Input } from '@/app/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/app/components/ui/select';
+import { Coffee } from 'lucide-react';
 
 export function BuyMeCoffee() {
+  const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [paymentDetails, setPaymentDetails] = useState(null);
-  const [showModal, setShowModal] = useState(false);
   const [currency, setCurrency] = useState('BTC'); // Default selected cryptocurrency
   const [amount, setAmount] = useState(10); // Default payment amount in USD
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsOpen(true);
+    }, 20000); // 20 seconds
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handlePayment = async () => {
     setLoading(true);
@@ -32,90 +43,67 @@ export function BuyMeCoffee() {
     setLoading(false);
   };
 
-  useEffect(() => {
-    const timeIntervals = [15000, 60000, 120000]; // 15s, 1m, and 2m intervals
-    let currentIntervalIndex = 0;
-
-    const showModalSequence = () => {
-      if (currentIntervalIndex < timeIntervals.length) {
-        setShowModal(true);
-        setTimeout(() => {
-          setShowModal(false);
-          currentIntervalIndex++;
-          setTimeout(showModalSequence, timeIntervals[currentIntervalIndex]);
-        }, 15000); // Modal shows for 15 seconds
-      }
-    };
-
-    setTimeout(showModalSequence, timeIntervals[currentIntervalIndex]);
-
-    return () => clearTimeout(showModalSequence); // Clean up the timeout on component unmount
-  }, []);
-
   return (
     <>
-            <Modal show={showModal} onHide={() => setShowModal(false)} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Buy Me a Coffee ☕</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div className="container my-5">
-            <div className="card mx-auto" style={{ maxWidth: '500px' }}>
-              <div className="card-body">
-                <div className="mb-3">
-                  <label className="form-label">Amount in USD</label>
-                  <input
-                    type="number"
-                    className="form-control"
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                    min="1"
-                  />
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Select Cryptocurrency</label>
-                  <select
-                    className="form-select"
-                    onChange={(e) => setCurrency(e.target.value)}
-                    value={currency}
-                  >
-                    <option value="BTC">Bitcoin (BTC)</option>
-                    <option value="ETH">Ethereum (ETH)</option>
-                    <option value="LTC">Litecoin (LTC)</option>
-                    <option value="USDT">Tether (USDT)</option>
-                  </select>
-                </div>
-                <div className="d-grid">
-                  <button
-                    className="btn btn-primary"
-                    onClick={handlePayment}
-                    disabled={loading}
-                  >
-                    {loading ? 'Processing...' : 'Pay Now'}
-                  </button>
-                </div>
-              </div>
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogTrigger asChild>
+          <Button
+            className="fixed bottom-4 right-4 h-14 w-14 rounded-full shadow-lg"
+            size="icon"
+            onClick={() => setIsOpen(true)}
+          >
+            <Coffee className="h-6 w-6" />
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Buy Me a Coffee ☕</DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <label htmlFor="amount" className="text-right">
+                Amount (USD)
+              </label>
+              <Input
+                id="amount"
+                type="number"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                className="col-span-3"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <label htmlFor="currency" className="text-right">
+                Currency
+              </label>
+              <Select onValueChange={setCurrency} defaultValue={currency}>
+                <SelectTrigger className="col-span-3">
+                  <SelectValue placeholder="Select a currency" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="BTC">Bitcoin (BTC)</SelectItem>
+                  <SelectItem value="ETH">Ethereum (ETH)</SelectItem>
+                  <SelectItem value="LTC">Litecoin (LTC)</SelectItem>
+                  <SelectItem value="USDT">Tether (USDT)</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
+          <Button onClick={handlePayment} disabled={loading}>
+            {loading ? 'Processing...' : 'Pay Now'}
+          </Button>
           {paymentDetails && (
-            <div>
+            <div className="mt-4 text-sm">
               <p>
                 Send <strong>{paymentDetails.amount} {currency}</strong> to:
               </p>
-              <p className="fw-bold">{paymentDetails.address}</p>
+              <p className="font-mono bg-muted p-2 rounded-md">{paymentDetails.address}</p>
               <p>Confirmations Needed: {paymentDetails.confirms_needed}</p>
               <p>Payment Timeout: {paymentDetails.timeout} minutes</p>
-                          </div>
+            </div>
           )}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
-
-
