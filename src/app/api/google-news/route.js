@@ -1,5 +1,7 @@
 import Parser from "rss-parser";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   try {
     const parser = new Parser({
