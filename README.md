@@ -1,40 +1,69 @@
-<<<<<<< HEAD
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🧾 TaxAdvisor — AI-powered US tax calculator & assistant
 
-## Getting Started
+An all-in-one US tax web app: a step-by-step **tax calculator**, an **AI tax chatbot (SmartTaxBot, powered by Google Gemini)**, real-time **tax news**, and an auto-generated **tax blog**. Built with **Next.js, React, MongoDB, NextAuth and Socket.IO**.
 
-First, run the development server:
+**Live demo:** https://usa-tax-advisor.vercel.app
+
+## ✨ Features
+
+- 🧮 **Tax calculator**: multi-step flow covering filing status & income, deductions, credits and state, then shows your results
+- 🤖 **SmartTaxBot**: an AI tax assistant built on the Google Gemini API
+- 💬 **Real-time chat** with Socket.IO
+- 📰 **Live tax news** from RSS / Google News feeds
+- ✍️ **AI blog posts**: a cron job generates tax articles with Gemini; posts are written in Markdown/MDX
+- 🔐 **Auth**: email sign-up with reCAPTCHA, plus Google and GitHub sign-in via NextAuth
+- 📊 Charts with Chart.js / Recharts, SEO, sitemap and RSS feed
+- 🎨 UI with Tailwind CSS, MUI and Radix UI
+
+## 🧱 Tech stack
+
+| Layer | Tools |
+|---|---|
+| Frontend | Next.js, React, Tailwind CSS, MUI, Radix UI, Framer Motion |
+| Backend | Next.js API routes, GraphQL (Apollo), Socket.IO, node-cron |
+| Data & Auth | MongoDB / Mongoose, NextAuth, Firebase Admin |
+| AI | Google Gemini (`@google/generative-ai`) |
+
+## 🚀 Getting started
 
 ```bash
+git clone https://github.com/Mehboobiqbal-dev/Taxadvisor.live.git
+cd Taxadvisor.live
+npm install
+# create .env.local (see below)
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### Environment variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+MONGODB_URI=
+NEXTAUTH_SECRET=
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+GEMINI_API_KEY=
+NEWS_API_KEY=
+RECAPTCHA_SECRET_KEY=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+GITHUB_ID=
+GITHUB_SECRET=
+FIREBASE_PROJECT_ID=
+FIREBASE_CLIENT_EMAIL=
+FIREBASE_PRIVATE_KEY=
+```
 
-## Learn More
+> Never commit real keys. Keep them in `.env.local` or your hosting provider's environment settings.
 
-To learn more about Next.js, take a look at the following resources:
+## ⚠️ Disclaimer
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+TaxAdvisor gives general information and estimates only. It is not professional tax, legal or financial advice.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🤝 Contributing
 
-## Deploy on Vercel
+Issues and pull requests are welcome.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-=======
-# Tax-advisor
->>>>>>> 6f715c4da177dcdb9e4ccb62d6386ab1885e5fd0
+Made by [Mehboob Iqbal](https://github.com/Mehboobiqbal-dev). If you find it useful, please ⭐ the repo!
